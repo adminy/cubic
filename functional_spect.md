@@ -1,614 +1,718 @@
-Features
+<center>Table of Contents</center>
 ===
-**[English version](/features)**
-**[...](/CwYwhgzAbApgHFAtHAnAIzY4awBNkwCsA7ImFCBCHAIxwBMhhIQAAA==)**
-**[....](/GwMxE4HYA4EMBMC0BTcwBMiAs94FZFpktZFIQ91pp1xwAjdPIA==)**
+&nbsp;
+## [1.Introduction](#1-introduction)
+### [1.1 Purpose](#11-purpose1)
+### [1.2 Business Context](#12-business-context1)	
+### [1.3 Intended Audience and Reading Suggestions](#1.3)
+### [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.3.1 Glossary](#1.3.1)
+&nbsp;
+## [2.General Description](#2)
+### [2.1 System Functions](#2.1)	
+### [2.2 User characteristics and Objectives](#2.2)						
+### [2.3 Operational Scenarios](#2.3)
+### [2.4 Design and Implementation Constraints](#2.4)						
+### [2.5 Operating Environment](#2.5)
+### [2.6 User Documentation](#2.6)
+### [2.7 Assumptions and Dependencies](#2.7)
+&nbsp;
+## [3. Functional Requirement](#3)
+### [3.1 Sign Up/Register](#3.1)
+### [3.2 Sign In](#3.2)
+### [3.3 Chat Lobby](#3.3)
+### [3.4 Profile](#3.4)
+### [3.5 Upload Image](#3.5)
+### [3.6 Add/Remove Chats](#3.6)
+### [3.7 Log into different social media.s](#3.7)
+### [3.8  Merge/Break Chats](#3.8)
+### [3.9 Messaging](#3.9)
+### [3.10 Log Out](#3.10)
+&nbsp;
+## [4. System Architecture](#4)
+### [4.1 System Architecture Diagram](#4.1)
+### [4.2 Website](#4.2)
+### [4.3 PHP API](#4.3)
+### [4.4 Database](#4.4)
+## [5. High-Level Design](#5)
+### [5.1 Design Overview](#5.1)
+### [5.2 High Level Description](#5.2)
+###	[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.2.1 High Level Design 
+Diagram](#5.2.1)
+### [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.2.2 High Level Design Diagram 
+(From our Perspective)](#5.2.2)
+### [5.3 Context Diagram](#5.3)	
+&nbsp;
+## [6. Schedule](#6)
+### [6.1 Overview of Preliminary Schedule](#6.1)
+### [6.2 Task List](6.2)
+### [6.3 Task Tracker](6.3)
+&nbsp;
+## [7. Appendix](#7)
+### [7.1 Appendix A: Resources](#7.1)
+### [7.2 Appendix B: References](#7.1)
+       										 
+&nbsp;
 
-**Do not modify this note.** Thank you very much :smile:
-**If you want to say hello or play with something, please go to 
-[Playground](/CwDgDAZgTFCcCmBaAhvAJgVkceA2AzIgEYDGIJiIGIU8GYRYJA7PkAAA)**
-
-Introduction
+<center>1 Introduction</center>
 ===
-<i class="fa fa-file-text"></i> **HackMD** is a realtime, multiplatform 
-collaborative markdown note editor.
-This means that you can write notes with other people on your 
-**desktop**, **tablet** or even on the **phone**.
-You can sign-in via **Facebook**, **Twitter**, **GitHub**, or 
-**Dropbox** in the [_homepage_](/).
 
-Note that this service is still in an early stage, and thus still has 
-some 
-[_issues_](https://github.com/hackmdio/hackmd/issues?q=is%3Aopen+is%3Aissue+label%3Abug).
-Please report new issues in 
-[GitHub](https://github.com/hackmdio/hackmd/issues/new).
-If you need instant help, please send us a [Facebook 
-message](https://www.messenger.com/t/hackmdio).
-**Thank you very much!**
+### <center>1.1 Purpose</center>
 
-Workspace
+The product being developed is best described as an Messaging 
+Application. It will allow people to link up their various social media 
+chat feature into one application. Members will be able receive and send 
+messages from various social medias in our application. They can then 
+send one message, to another user that will send to all that users 
+social media selected. The system was developed to serve the needs of 
+people with limited time to check all their messaging social media.s, 
+this application helps satisfy that need. Various other functions are 
+available, and these will be listed and explained more in depth later. 
+For now, we have decided to use three social medias as the foundation of 
+this app, however that number might increase depending on the API.s that 
+we find, please note that this is still in the early stage.
+
+
+### <center>1.2 Business Context</center>
+
+There are four possible business contexts in relation to this product. 
+These contexts are:
+
+* *Selling the Application: The product could be sold in the electronic 
+stores with a one-off payment.*
+
+* *Buying the Application: Larger companies get in touch to buy the 
+software.*
+ 
+* *Advertising: The application can have a system for advertisement to 
+develop, this can be generalized or targeted at specific users of the 
+application. <br/>There is also the  possibility that bigger companies 
+like facebook and instagram would want to collaborate with our 
+application.*
+
+* *Features: Application can have special features within, that can only 
+be accessed through a subscription or a fee. *
+
+
+
+### <center>1.3 Intended Audience and Reading Suggestions</center>
+
+The Application is targeting anyone who has more than one social media 
+platform that we have chosen, therefore the target audience is very 
+broad. 
+This document is targeted for computer science majors, developers, 
+computer science lecturers or anyone that has an interest in application 
+development. We suggest people read the document from the beginning to 
+end, however the table of content is there for anyone who has an 
+interest in certain sections of the document.
+The document has several words that are related to the technological 
+aspect of the application and therefore we will provide a glossary for 
+keywords in this document. 
+
+
+### <center>1.3.1 Glossary</center>
+
+
+
+* **PHP**: Recursive acronym for PHP Hypertext Processor. An open 
+source, server-side, HTML embedded scripting language used to create 
+dynamic Web pages. 
+
+* **API**: In computer programming, an application programming interface 
+(API) is a set of subroutine definitions, protocols, and tools for 
+building application software. In general terms, it is a set of clearly 
+defined methods of communication between various software components.
+
+* **Material Design Framework**: It is a complete open-source SDK. A 
+modern responsive front-end framework based on Material Design  Concept 
+designed by Google. 
+
+* **Server**: Sharing data or resources among multiple clients, or 
+performing computation for a client, also this will be our personal 
+server.
+
+* **HTML**: Acronym for: Hypertext Markup Language. This is the 
+authoring language used to create documents on the World Wide Web.
+ 
+* **SQL**:An example of Associative Memory in Databases and the 
+implications in terms of programming languages is SQL. In SQL, data is 
+stored as tuples (rows) in relations (tables).
+
+* **MYSQL**:MySQL is an open-source relational database management 
+system
+
+* **Session**: The period of time a user interfaces with an application. 
+The user session begins when the user accesses the application and ends 
+when the user quits the application. This also refers to the amount of 
+time a user uses a website for. The session starts once the user logs in 
+and finishes when the user logs out.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<center>2	GENERAL DESCRIPTION</center>
 ===
-## Modes
-**Desktop & Tablet**
 
-<i class="fa fa-edit fa-fw"></i> Edit: See only the editor.
-<i class="fa fa-eye fa-fw"></i> View: See only the result.
-<i class="fa fa-columns fa-fw"></i> Both: See both in split view.
+### <center>2.1 System Functions</center>
 
-**Mobile**
+Since our project is a messaging application, it will have several 
+functions which will be briefly touched upon in this section. Starting 
+up the application users will need to go through a process. We will 
+outline the general process below:
 
-<i class="fa fa-toggle-on fa-fw"></i> View: See only the result.
-<i class="fa fa-toggle-off fa-fw"></i> Edit: See only the editor.
+* *Register* ~ New users are required to register to access the 
+application.
 
-## Image Upload:
-You can upload an image simply by clicking on the camera button <i 
-class="fa fa-camera"></i>.
-Alternatively, you can **drag-n-drop** an image into the editor. Even 
-**pasting** images is possible!
-This will automatically upload the image to 
-**[imgur](http://imgur.com)**, nothing to worry. :tada:
-![](https://i.imgur.com/9cgQVqD.png)
+* *Log In* ~ Users logging in with their username and password will be 
+directed to their main        chat lobby.
 
-## Share Notes:
-If you want to share an **editable** note, just copy the URL.
-If you want to share a **read-only** note, simply press publish button 
-<i class="fa fa-share-square-o"></i> and copy the URL.
+* *Create Profile* ~ Upon registering, users will be able to make their 
+profile.
 
-## Save a Note:
-Currently, you can save to **Dropbox** <i class="fa fa-dropbox"></i> or 
-save an `.md` file <i class="fa fa-file-text"></i> locally.
+* *Upload Image(s)* ~ Users will be assigned the default picture, 
+however they are able to upload an image for their profile picture at 
+any point in time.
 
-## Import Notes:
-Similarly to the _save_ feature, you can also import an `.md` file from 
-**Dropbox** <i class="fa fa-dropbox"></i>,
-or import content from your **clipboard** <i class="fa 
-fa-clipboard"></i>, and that can parse some **html** which might be 
-useful :smiley:
+* *Add/Remove Chats* ~ Selecting the add feature in the application, the 
+users are given choices of social media to log into, where they are then 
+told to highlight the user they wish to add to the application. An 
+option to remove friends is also available if they choose to delete 
+their chat.
 
-## Permissions:
-It is possible to change the access permission to a note through the 
-little button on the top right of the view.
-There are six possible options:
+* *Merge/break* ~ Clicking on the friends chat profile, users are given 
+the choice to merge or break the chats that they have in their chat 
+lobby.
 
-<i class="fa fa-leaf fa-fw"></i> **Freely**: Anyone can edit this note.
-<i class="fa fa-pencil fa-fw"></i> **Editable**: A signed-in user can 
-edit this note.
-<i class="fa fa-id-card fa-fw"></i> **Limited**: People have to sign-in 
-to view and edit this note.
-<i class="fa fa-lock fa-fw"></i> **Locked**: Anyone can view this note 
-but only the owner can edit it.
-<i class="fa fa-umbrella fa-fw"></i> **Protected**: People have to 
-sign-in to view this note but only owner can edit.
-<i class="fa fa-hand-stop-o fa-fw"></i> **Private**: Only the owner can 
-view and edit this note.
 
-**Only the owner of the note can change the note's permissions.**
+### <center>2.2 User Characteristics and Objectives</center>
 
-## Embed a Note:
-Notes can be embedded as follows:
 
-```xml
-<iframe width="100%" height="500" src="https://hackmd.io/features" 
-frameborder="0"></iframe>
-```
+The application is cross-platform and therefore will be accessible to 
+any user with access to the internet. Since the target audience is 
+anyone with more than one social media, it will be too broad to specify 
+a specific age group or gender.
+As the application will be hosted cross-platform, the product is 
+accessible to anybody access to the Internet. The target audience will 
+be anyone with the social medias we choose to implement. The application 
+interface will be able to accommodate users with little or no knowledge 
+of computing,however a user guide/video will be provided for people who 
+have difficulty with technology.
 
-## [Slide Mode](./slide-example):
-You can use a special syntax to organize your note into slides.
-After that, you can use the **Slide Mode** <i class="fa fa-tv"></i> to 
-make a presentation.
-Visit the above link for details.
 
-## [Book Mode](./book-example):
-You can make your notes into a book.
-List your links in order or nest them.
-Then use the **Book Mode** <i class="fa fa-book"></i> to make a 
-collection.
-Visit the above link for details.
+### <center>2.3 Operational Scenarios</center>
 
-View
+Due to the design of our application, there will be different scenarios 
+under which the application will have to perform, below will be the 
+different scenarios:
+
+* Unregistered User: The unregistered user will have to register with 
+our application to be able to enter the application, they will be able 
+to register on their mobile devices or through the internet.
+
+* Registered User (not logged in): The registered user, will also have 
+to log in assuming that they logged out when they used the application 
+last. 
+
+* Registered User (logged in):In this scenario we are assuming the user 
+has registered and logged in before, and has not logged out, this will 
+direct the user directly to his chat lobby, using the application fully.
+
+* Edit Profile- Allows a logged in/registered user to update their 
+personal profile with a small bio and the ability to upload a picture.
+
+* Upload Images- You can add an image to your profile.
+
+* Add/Remove Chats- Each user will be able to add their chats they have 
+had with friends from different social medias, they can easily remove 
+their chats as well. 
+
+* Log in different social medias: After activating the Add feature, 
+users will be required to log into their perspective social medias, and 
+select the chats that they wish to import to our application
+
+* Merge/Break chats: This is one of the main features of the 
+application, users can merge existing chats into one. They will also be 
+able to reverse it with the break feature.
+
+* Log Out- Users will also have the option to log out of their 
+application, since its cross platform, having this feature ensure a 
+secure closed session.
+
+
+
+### <center>2.4 Design and Implementation Constraints</center>
+
+Since this is a messaging application data input and output is 
+essential, therefore using a database is crucial and with that memory 
+becomes a problem. Since we are using MYSQL account, we have limited 
+scalability with our project. For the early stages of the application 
+development it will not be a problem however as we increase social 
+medias and have more users, database management significance will 
+increase.
+Since this project has a time constraint, the application will implement 
+three social medias for the users, as the project evolve more API.s are 
+estimated to be added. However with our initial research, finding 
+companies with good API.s that are not deprecated will be the major 
+concern and therefore getting into contact with companies to have some 
+sort of collaboration will be essential for the growth of the 
+application.
+ 
+
+### <center>2.5 Operating Environment</center>
+
+Since the application is cross-platform, it can be accessed through any 
+device with internet access. 
+
+
+
+
+
+### <center>2.6 User Documentation</center>
+
+We hope to provide the user with a guide on how the application works, 
+either in the form of a video tutorial or a set of instructions within 
+the application. 
+
+### <center>2.7 Assumption and Dependencies</center>
+
+The application depends on the API of the social medias we choose, 
+therefore if the API is deprecated we would need to readjust the code, 
+preventing it from crashing.  The application also requires users 
+logging into their different social media to access their messaging 
+application, therefore if the user forgets their password, it will limit 
+their access in the application.
+
+
+
+<center>3	Functional Requirement</center>
 ===
-## Table of Contents:
-You can look at the bottom right section of the view area, there is a 
-_ToC_ button <i class="fa fa-bars"></i>.
-Pressing that button will show you a current _Table of Contents_, and 
-will highlight which section you're at.
-ToCs support up to **three header levels**.
+### <center> 3.1 Sign Up/Register</center>
 
-## Permalink
-Every header will automatically add a permalink on the right side.
-You can hover and click <i class="fa fa-chain"></i> to anchor on it.
+**Description**
+When using the application, there is button for the user to register, 
+this is the first step new users need to make to become a member. Once 
+the button is clicked users will be redirected to the registration part 
+of the application where they will need to input some essential 
+information, like their username and password. After completing this 
+step users will be sent back to the main log in section of the 
+application
 
-Edit:
+**Criticality**
+This is a critical step for new users to the application, without it 
+users will not be able to proceed further into the application.
+
+**Technical Issues**
+The registration process will be handled by the ionic framework used for 
+this project, also a database will be implemented to save certain pieces 
+of information pertaining to the user. 
+
+**Dependencies**
+Users have to create strong credentials both for remembering and for 
+protection.
+
+
+
+
+
+
+
+### <center>3.2 Sign In</center>
+
+**Description**
+This is considered the second step of the process, users need to input 
+their registered username and password to enter the main features of the 
+application.
+
+**Criticality**
+The process is critical for people who are either first-timers when it 
+comes to logging in or users who logged out when using the application 
+before and would need to sign in again.
+
+**Technical Issues**
+Username and password is stored in our SQL database, technically making 
+sure it's working properly would be the only technical issue. Users who 
+forget their password have the option to get their password sent to them 
+via email. 
+Making the session cookie secure enough to let the user continue a 
+session.
+
+**Dependencies**
+Users username and password.
+
+
+
+### <center>3.3 Chat Lobby</center>
+
+**Description**
+The main part of the application, the chat lobby displays all the 
+options the user has, including visually seeing the chats that already 
+exist. User can navigate to any part of the application in this section. 
+
+**Criticality**
+Without this function, users won't be able to access any other part of 
+the application.
+
+
+**Technical Issues**
+Since the application is cross platform, it means we have to make it 
+consistent across all devices, so that the design is fluid and 
+materialized while keeping the same functionality.
+
+**Dependencies**
+Software developers fixing bugs when they appear, because of the 
+different devices with different resolutions constantly appearing on the 
+market.
+
+### <center> 3.4 Profile </center>
+
+**Description**
+Users have the option to alter their profile, once clicked upon users 
+can add a small bio and have the ability to upload an image as their 
+profile picture. This part of the application isn.t mandatory, if users 
+ignore this section they will have a default image as their profile 
+picture and their bios will be empty.
+
+**Criticality**
+Not critical to the usage of the application.
+
+**Technical Issues**
+Styling it to user.s preference.
+
+**Dependencies**
+Users willingness to alter their profile.
+
+### <center> 3.5 Upload Image </center>
+
+**Description**
+This function allows the user to add an image to their profile. This 
+will allow the user to browse folders on their device and upload the 
+selected image. 
+
+**Criticality**
+This function is not essential, it is up to the user. However if they do 
+want to upload a picture, we need their permission to access their 
+library if they are using it on a mobile device. 
+
+**Technical Issues**
+ It is quite difficult to get cross platform image upload while keeping 
+the fundamental design the same.
+
+**Dependencies**
+Users permission to access their devices library. 
+
+
+
+
+
+
+
+### <center>3.6 Add/Remove chat</center>
+
+**Description**
+A function that allows users to import their social media.s chats to the 
+application. There will also be an option to remove existing chats.
+
+**Criticality**
+This function is critical to the application, as this is the main 
+feature and premise the application is built.
+
+**Technical Issues**
+The API.s of the social media the users selects haven't deprecated, 
+allowing us access to their chats. Importing the data successfully.
+
+**Dependencies**
+Depends on the Social medias API.s.
+
+### <center>3.7 Log into different social media.s</center>
+
+**Description**
+When using the add/remove friends feature of the application, users are 
+required to log into that social media before selecting the chats they 
+want to import to the application.
+
+**Criticality**
+We need this function to access their social medias. It can also be seen 
+as needing the users permission to import their chats to the 
+application.
+
+**Technical Issues**
+Users need to be able to log into their social medias, handling the 
+username and password would not be in our hands. 
+
+**Dependencies**
+ User.s having an existing account for the selected social media, also 
+requires the users remembering their credentials. 
+
+### <center> 3.8  Merge/Break Chats </center>
+
+**Description**
+Another main feature of the application, where users can select existing 
+chats within their application and merge them together. This feature 
+will merge the two or more chats, therefore when the user's friend sends 
+a message on another social media platform, as long as our users 
+selected that chat to import, they will be able to receive that message. 
+On the opposite side of the spectrum, users can also select merged chats 
+and decide to break them up to their original state.
+
+**Criticality**
+This is one of the main features of the application, users have the 
+power to alter how they send and receive messages.
+
+**Technical Issues**
+Combining the chats and how they handle data, will be the major issue.  
+
+**Dependencies**
+On the ionic framework having no bugs when it comes to merging the 
+chats, and the database handling the data properly.
+
+
+### <center> 3.9 Messaging </center>
+
+**Description**
+This main feature will be critical on how we handle the data received 
+and sent from the users. Users merging chats will have an impact on how 
+the messaging works in the application, therefore we need to handle it 
+in an appropriate manner.
+
+**Criticality**
+This is what the application is built on, sending and receiving 
+messages.Its critically important to make sure all the data is going to 
+the right places.
+
+**Technical Issues**
+We could have many issues with this function, since we need to handle 
+the data with our database. Possible solution is to create a script for 
+the database to handle how and where the data is sent and received.
+
+**Dependencies**
+Database handling and API.s working. 
+
+
+
+
+
+### <center> 3.10 Select Platform to Message </center>
+
+**Description**
+When users send a message they have the option of selecting their 
+desired platform destination
+
+**Criticality**
+Make it a feature easy to use and understand.
+
+**Technical Issues**
+Design to make it fluid along with the send button and text bar. Default 
+dropdown menu design for devices like IOS overwrite the existing design 
+we want to implement.
+
+**Dependencies**
+None.
+
+
+## <center>3.10 Log Out</center>
+
+**Description**
+A function to secure a closed session for the user.
+
+**Criticality**
+Not critical for users on their mobile devices, however since this 
+device is cross platform, people using it on their computers/laptops 
+would need to log out to make sure the session is closed.
+
+**Technical Issues**
+Discarding a cookie over multiple devices.
+
+**Dependencies**
+ Users need to be logged in to be able to log out.
+
+
+
+
+
+
+
+
+
+
+
+<center> 4	System Architecture </center>
 ===
-## Shortcut Keys:
-Just like Sublime text, which is pretty quick and convenient.
-> For more infomation, see 
-[here](https://codemirror.net/demo/sublime.html).
-
-## Auto-Complete:
-This editor provides full auto-complete hints in markdown.
-- Emojis: type `:` to show hints.
-- Code blocks: type ` ``` ` and plus a character to show hint. <i 
-hidden>```</i>
-- Headers: type `#` to show hint.
-- Referrals: type `[]` to show hint.
-- Externals: type `{}` to show hint.
-- Images: type `!` to show hint.
-
-## Title:
-This will take the first **level 1 header** as the note title.
-
-## Tags:
-Using tags as follows, the specified tags will show in your **history**.
-###### tags: `features` `cool` `updated`
-
-## [YAML Metadata](./yaml-metadata)
-You can provide advanced note information to set the browser behavior 
-(visit above link for details):
-- robots: set web robots meta
-- lang: set browser language
-- dir: set text direction
-- breaks: set to use line breaks
-- GA: set to use Google Analytics
-- disqus: set to use Disqus
-- slideOptions: setup slide mode options
-
-## ToC:
-Use the syntax `[TOC]` to embed table of content into your note.
-
-[TOC]
-
-## Emoji
-You can type any emoji like this :smile: :smiley: :cry: :wink:
-> See full emoji list [here](http://www.emoji-cheat-sheet.com/).
-
-## ToDo List:
-- [ ] ToDos
-  - [x] Buy some salad
-  - [ ] Brush teeth
-  - [x] Drink some water
-
-## Code Block:
-We support many programming languages, use the auto complete function to 
-see the entire list.
-```javascript=
-var s = "JavaScript syntax highlighting";
-alert(s);
-function $initHighlight(block, cls) {
-  try {
-    if (cls.search(/\bno\-highlight\b/) != -1)
-      return process(block, true, 0x0F) + 
-             ' class=""';
-  } catch (e) {
-    /* handle exception */
-  }
-  for (var i = 0 / 2; i < classes.length; i++) {
-    if (checkCondition(classes[i]) === undefined)
-      return /\d+[\s/]/g;
-  }
-}
-```
-> If you want **line numbers**, type `=` after specifying the code block 
-languagues.
-> Also, you can specify the start line number.
-> Like below, the line number starts from 101:
-```javascript=101
-var s = "JavaScript syntax highlighting";
-alert(s);
-function $initHighlight(block, cls) {
-  try {
-    if (cls.search(/\bno\-highlight\b/) != -1)
-      return process(block, true, 0x0F) + 
-             ' class=""';
-  } catch (e) {
-    /* handle exception */
-  }
-  for (var i = 0 / 2; i < classes.length; i++) {
-    if (checkCondition(classes[i]) === undefined)
-      return /\d+[\s/]/g;
-  }
-}
-```
-
-> Or you might want to continue the previous code block's line number, 
-use `=+`
-
-```javascript=+
-var s = "JavaScript syntax highlighting";
-alert(s);
-```
-
-> Somtimes you have a super long text without breaks. It's time to use 
-`!` to wrap your code.
-
-```!
-When you.re a carpenter making a beautiful chest of drawers, you.re not 
-going to use a piece of plywood on the back.
-```
-
-### Blockquote Tags:
-> Using the syntax below to specifiy your **name, time and color** to 
-vary the blockquotes.
-> [name=ChengHan Wu] [time=Sun, Jun 28, 2015 9:59 PM] [color=#907bf7]
-> > Even support the nest blockquotes!
-> > [name=ChengHan Wu] [time=Sun, Jun 28, 2015 10:00 PM] [color=red]
-
-## Externals
-
-### YouTube
-{%youtube 1G4isv_Fylg %}
-
-### Vimeo
-{%vimeo 124148255 %}
-
-### Gist
-{%gist schacon/4277%}
-
-### SlideShare
-{%slideshare 
-briansolis/26-disruptive-technology-trends-2016-2018-56796196 %}
-
-### Speakerdeck
-{%speakerdeck sugarenia/xxlcss-how-to-scale-css-and-keep-your-sanity %}
-
-### PDF
-**Caution: this might be blocked by your browser if not using an `https` 
-URL.**
-{%pdf 
-https://papers.nips.cc/paper/5346-sequence-to-sequence-learning-with-neural-networks.pdf 
-%}
-
-## MathJax
-
-You can render *LaTeX* mathematical expressions using **MathJax**, as on 
-[math.stackexchange.com](http://math.stackexchange.com/):
-
-The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall 
-n\in\mathbb N$ is via the Euler integral
-
-$$
-x = {-b \pm \sqrt{b^2-4ac} \over 2a}.
-$$
-
-$$
-\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
-$$
-
-> More information about **LaTeX** mathematical expressions 
-[here](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference).
-
-## UML Diagrams
-
-### Sequence Diagrams
-
-You can render sequence diagrams like this:
-
-```sequence
-Alice->Bob: Hello Bob, how are you?
-Note right of Bob: Bob thinks
-Bob-->Alice: I am good thanks!
-Note left of Alice: Alice responds
-Alice->Bob: Where have you been?
-```
-
-### Flow Charts
-
-Flow charts can be specified like this:
-```flow
-st=>start: Start
-e=>end: End
-op=>operation: My Operation
-op2=>operation: lalala
-cond=>condition: Yes or No?
-
-st->op->op2->cond
-cond(yes)->e
-cond(no)->op2
-```
-
-### Graphviz
-```graphviz
-digraph hierarchy {
-
-                nodesep=1.0 // increases the separation between nodes
-                
-                node [color=Red,fontname=Courier,shape=box] //All nodes 
-will this shape and colour
-                edge [color=Blue, style=dashed] //All the lines look 
-like this
 
-                Headteacher->{Deputy1 Deputy2 BusinessManager}
-                Deputy1->{Teacher1 Teacher2}
-                BusinessManager->ITManager
-                {rank=same;ITManager Teacher1 Teacher2}  // Put them on 
-the same level
-}
-```
 
-### Mermaid
-```mermaid
-gantt
-    title A Gantt Diagram
 
-    section Section
-    A task           :a1, 2014-01-01, 30d
-    Another task     :after a1  , 20d
-    section Another
-    Task in sec      :2014-01-12  , 12d
-    anther task      : 24d
-```
+## <center>4.1 System Architecture Diagram</center>
 
-### Abc
-```abc
-X:1
-T:Speed the Plough
-M:4/4
-C:Trad.
-K:G
-|:GABc dedB|dedB dedB|c2ec B2dB|c2A2 A2BA|
-GABc dedB|dedB dedB|c2ec B2dB|A2F2 G4:|
-|:g2gf gdBd|g2f2 e2d2|c2ec B2dB|c2A2 A2df|
-g2gf g2Bd|g2f2 e2d2|c2ec B2dB|A2F2 G4:|
-```
 
-> More information about **sequence diagrams** syntax 
-[here](http://bramp.github.io/js-sequence-diagrams/).
-> More information about **flow charts** syntax 
-[here](http://adrai.github.io/flowchart.js/).
-> More information about **graphviz** syntax 
-[here](http://www.tonyballantyne.com/graphs.html)
-> More information about **mermaid** syntax 
-[here](http://knsv.github.io/mermaid)
-> More information about **abc** syntax 
-[here](http://abcnotation.com/learn)
+# Picture MISSSING!!!
 
-Alert Area
----
-:::success
-Yes :tada:
-:::
 
-:::info
-This is a message :mega:
-:::
 
-:::warning
-Watch out :zap:
-:::
+# <center>4.2 Application</center>
 
-:::danger
-Oh No! :fire:
-:::
+The application itself is what the user will see and interact with, when 
+it comes to the design and building the frontend of the application it 
+will be implemented using our graphical user interface library and will 
+be designed so that the user can use the application fluidly without any 
+difficulty.  
 
-## Typography
 
-### Headers
 
-```
-# h1 Heading
-## h2 Heading
-### h3 Heading
-#### h4 Heading
-##### h5 Heading
-###### h6 Heading
-```
 
-### Horizontal Rules
 
-___
 
----
 
-***
+## <center>4.3 PHP API</center>
 
+A JSON response which is pulled from the database and its requested by 
+the client. The format is generated in PHP and processed by Javascript. 
+Also json response is specific and fits naturally into a javascript 
+class or object, therefore the API has specific format layout. Another 
+way to describe it would be a very detailed dictionary of data. The data 
+can be formatted in two ways. One is using json_encode() built into the 
+PHP language, while the other would be a database response with json 
+format specified.
 
-### Typographic Replacements
 
-Enable typographer option to see result.
 
-(c) (C) (r) (R) (tm) (TM) (p) (P) +-
 
-test.. test... test..... test?..... test!....
 
-!!!!!! ???? ,,
+## <center>4.4 Database</center>
 
-Remarkable -- awesome
+Databases are used to store structured information with specific types 
+and in forms of tables. Tables can be functionally dependant, for 
+example a message tied to an user id, so it.s the best way to store our 
+data. Our database only interacts with PHP API requests, anything else 
+would be considered an intrusion on the system. It will store the 
+information sent to it by the PHP API scripts. The information stored 
+and retrieved in the database is the users data.
 
-"Smartypants, double quotes"
 
-'Smartypants, single quotes'
+<center> 5 High-Level Design</center>
+===
 
-### Emphasis
+### <center>5.1 Design Overview </center>
 
-**This is bold text**
+Here we provide a system model using some drawing tools to illustrate 
+the over system and its external entities.
 
-__This is bold text__
+High Level Diagram: Overview of the functions within the system.
 
-*This is italic text*
+Context diagram: This diagram shows how the system interacts with its 
+external entities to the system, members and staff, to show the follow 
+of information between the system and these entities. 
 
-_This is italic text_
+### <center> 5.2 High Level Description</center>
 
-~~Deleted text~~
+1. Register
+ *Register a username and password to give you the ability to login to 
+the application.*
 
-lu~lala~
+2. Login
+ *Log In to the main chat area using the username and password obtained 
+above.*
 
-Superscript: 19^th^
+3. Chat Lobby
+ *All existing chats are available here.*
 
-Subscript: H~2~O
+4. Profile Edit
+ *Going to the profile section of the application, users can add a bio 
+and upload a picture, if not picture is provided the default picture is 
+used.*
 
-++Inserted text++
+5. Add/Remove chats
+ *Users looking to add their existing chats.*
 
-==Marked text==
 
+6. Log into other social media
+ *User logs into their perspective social medias to select their friends 
+chats to add.*
 
-### Blockquotes
+7. Merge/Break existing chats
+ *After users add their chats to the application, they have the option 
+to merge/break the chats they select, combining all the messages 
+received and sent.*
 
+8. Send Message
+ *Users can send messages within their existing chats.*
 
-> Blockquotes can also be nested...
->> ...by using additional greater-than signs right next to each other...
-> > > ...or with spaces between arrows. 
+9. Log Out
+ *Once users have finished using the various features of the 
+application, there is the option to log out.*
 
 
-### Lists
 
-#### Unordered
 
-+ Create a list by starting a line with `+`, `-`, or `*`
-+ Sub-lists are made by indenting 2 spaces:
-  - Marker character change forces new list start:
-    * Ac tristique libero volutpat at
-    + Facilisis in pretium nisl aliquet
-    - Nulla volutpat aliquam velit
-+ Very easy!
+### <center>5.2.1 High Level Design Diagram</center>
 
-#### Ordered
+# Picture MISSSING!!!
 
-1. Lorem ipsum dolor sit amet
-2. Consectetur adipiscing elit
-3. Integer molestie lorem at massa
+### <center> 5.2.2 High Level Design Diagram (from our perspective) 
+</center>
+# Picture MISSSING!!!
 
+### <center>5.3 Context Diagram </center>
 
-1. You can use sequential numbers...
-1. ...or keep all the numbers as `1.`
-1. feafw
-2. 332
-3. 242
-4. 2552
-1. e2
+# Picture MISSSING!!!
 
-Start numbering with offset:
 
-57. foo
-1. bar
+<center> 6	Schedule</center>
+===
 
-### Code
 
-Inline `code`
 
-Indented code
+### <center> 6.1 Overview of Preliminary Schedule </center>
 
-    // Some comments
-    line 1 of code
-    line 2 of code
-    line 3 of code
 
+The schedule below was designed using Microsoft Excel. **Fig 6.2** shows 
+a full list of tasks and **Fig 6.3** shows the plan of how and when 
+these tasks are to be completed. So on the task list chart/table it 
+shows the task name, duration, start and finish dates and with the team 
+members who are going to complete the specific task. On the Task Tracker 
+there is a more visual display of the information with the percentage 
+showing.
 
-Block code "fences"
 
-```
-Sample text here...
-```
+### <center> 6.2 Task List</center>
 
-Syntax highlighting
+# Picture MISSSING!!!
 
-``` js
-var foo = function (bar) {
-  return bar++;
-};
 
-console.log(foo(5));
-```
 
-### Tables
 
-| Option | Description |
-| ------ | ----------- |
-| data   | path to data files to supply the data that will be passed 
-into templates. |
-| engine | engine to be used for processing templates. Handlebars is the 
-default. |
-| ext    | extension to be used for dest files. |
+### <center> 6.3	Task Tracker </center>
 
-Right aligned columns
+# Picture MISSSING!!!
 
-| Option | Description |
-| ------:| -----------:|
-| data   | path to data files to supply the data that will be passed 
-into templates. |
-| engine | engine to be used for processing templates. Handlebars is the 
-default. |
-| ext    | extension to be used for dest files. |
 
-Left aligned columns
 
-| Option | Description |
-|:------ |:----------- |
-| data   | path to data files to supply the data that will be passed 
-into templates. |
-| engine | engine to be used for processing templates. Handlebars is the 
-default. |
-| ext    | extension to be used for dest files. |
 
-Center aligned columns
 
-| Option | Description |
-|:------:|:-----------:|
-| data   | path to data files to supply the data that will be passed 
-into templates. |
-| engine | engine to be used for processing templates. Handlebars is the 
-default. |
-| ext    | extension to be used for dest files. |
 
 
-### Links
-[link text](http://dev.nodeca.com)
-[link with title](http://nodeca.github.io/pica/demo/ "title text!")
-Autoconverted link https://github.com/nodeca/pica
+<center> 7	Appendix </center>
+===
+	
 
+### <center> 7.1 Resources</center>
 
-### Images
-![Minion](https://octodex.github.com/images/minion.png)
-![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg 
-"The Stormtroopocat")
-Like links, Images also have a footnote style syntax
-![Alt text][id]
-With a reference later in the document defining the URL location:
+www.draw.io
+www.youtube.com
+materializecss.com
+www.mysql.com 
+www.php.net 
+www.w3cschools.com
 
-[id]: https://octodex.github.com/images/dojocat.jpg  "The Dojocat"
+### <center> 7.2 References</center>
 
-![Minion](https://octodex.github.com/images/minion.png =200x200)
-Show the image with given size
-
-### Footnotes
-
-Footnote 1 link[^first].
-Footnote 2 link[^second].
-Inline footnote^[Text of inline footnote] definition.
-Duplicated footnote reference[^second].
-
-[^first]: Footnote **can have markup**
-    and multiple paragraphs.
-[^second]: Footnote text.
-
-### Definition Lists
-
-Term 1
-
-:   Definition 1
-with lazy continuation.
-
-Term 2 with *inline markup*
-
-:   Definition 2
-
-        { some code, part of Definition 2 }
-
-    Third paragraph of definition 2.
-
-_Compact style:_
-
-Term 1
-  ~ Definition 1
-
-Term 2
-  ~ Definition 2a
-  ~ Definition 2b
-
-### Abbreviations
-
-This is an HTML abbreviation example.
-It converts "HTML", but keeps intact partial entries like "xxxHTMLyyy" 
-and so on.
-
-*[HTML]: Hyper Text Markup Language
+www.google.com 
+www.computing.dcu.ie/~davids/CA326/
 
