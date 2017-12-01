@@ -4,6 +4,7 @@ require '../lib/sockets.php';
 class Cubik extends WebSocketServer {
   protected function process($client, $message) {
     echo "Received: ".$client->id.':'.$message.PHP_EOL;	    //print what client has sent to the server
+
         foreach($this->users as $connected_user)
 			$this->send($connected_user,$message);
   }
