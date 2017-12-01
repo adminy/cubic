@@ -552,7 +552,7 @@ Discarding a cookie over multiple devices.
 ## <center>4.1 System Architecture Diagram</center>
 
 
-![System Architecture Diagram](System Architecture Diagram.png "System Architecture Diagram")
+![System Architecture Diagram](system_architecture_diagram.png "System Architecture Diagram")
 
 
 
@@ -653,16 +653,17 @@ application, there is the option to log out.*
 
 ### <center>5.2.1 High Level Design Diagram</center>
 
-![High Level Design Diagram](High Level Design Diagram.png "High Level Design Diagram.png")
+![High Level Design Diagram](high_level_design_diagram.png "High Level Design Diagram.png")
 
 
 ### <center> 5.2.2 High Level Design Diagram (from our perspective) 
 </center>
-![High Level Design Diagram @from our perspective](High Level Design Diagram @from our perspective.png "High Level Design Diagram @from our perspective")
+![High Level Design Diagram from our perspective](high_level_design_diagram_from_our_perspective.png "High Level Design Diagram from our perspective")
+
 
 ### <center>5.3 Context Diagram </center>
 
-![Context Diagram](Context Diagram.png "Context Diagram")
+![Context Diagram](context_diagram.png "Context Diagram")
 
 
 
@@ -685,14 +686,15 @@ showing.
 
 ### <center> 6.2 Task List</center>
 
-![Task List](Task List.png "Task List")
-
-
+![Task List](task_list.png "Task List")
 
 
 ### <center> 6.3	Task Tracker </center>
 
-![Task Tracker](Task Tracker.png "Task Tracker")
+![Task Tracker](task_tracker.png "Task Tracker")
+
+
+
 
 
 
