@@ -35,9 +35,9 @@
 ### [4.4 Database](#44-database-1)
 ## [5. High-Level Design](#-5-high-level-design)
 ### [5.1 Design Overview](#51-design-overview-)
-### [5.2 High Level Description](#-52-high-level-description)
-###	[ &nbsp; &nbsp; &nbsp; 5.2.1 High Level Design Diagram](#521-high-level-design-diagram)
-### [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.2.2 High Level Design Diagram (From our Perspective)](#-522-high-level-design-diagram-from-our-perspective)
+### [5.2 User Flow Description](#-52-user-flow-description)
+###	[ &nbsp; &nbsp; &nbsp; 5.2.1 User Flow Diagram](#521-user-flow-diagram)
+### [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.2.2 High Level Design Diagram](#-522-high-level-design-diagram)
 ### [5.3 Context Diagram](#53-context-diagram-)	
 &nbsp;
 ## [6. Schedule](#-6-schedule)
@@ -56,19 +56,18 @@
 
 ### <center>1.1 Purpose</center>
 
-The product being developed is best described as an Messaging 
+The product being developed is best described as a Messaging 
 Application. It will allow people to link up their various social media 
-chat feature into one application. Members will be able receive and send 
+chat client into one application. Members will be able accept
 messages from various social medias in our application. They can then 
 send one message, to another user that will send to all that users 
 social media selected. The system was developed to serve the needs of 
-people with limited time to check all their messaging social media.s, 
+people with limited time to check all their messaging services, 
 this application helps satisfy that need. Various other functions are 
 available, and these will be listed and explained more in depth later. 
 For now, we have decided to use three social medias as the foundation of 
 this app, however that number might increase depending on the API.s that 
-we find, please note that this is still in the early stage.
-
+we find.
 
 ### <center>1.2 Business Context</center>
 
@@ -99,12 +98,7 @@ platform that we have chosen, therefore the target audience is very
 broad. 
 This document is targeted for computer science majors, developers, 
 computer science lecturers or anyone that has an interest in application 
-development. We suggest people read the document from the beginning to 
-end, however the table of content is there for anyone who has an 
-interest in certain sections of the document.
-The document has several words that are related to the technological 
-aspect of the application and therefore we will provide a glossary for 
-keywords in this document. 
+development.
 
 
 ### <center>1.3.1 Glossary</center>
@@ -135,7 +129,7 @@ authoring language used to create documents on the World Wide Web.
 implications in terms of programming languages is SQL. In SQL, data is 
 stored as tuples (rows) in relations (tables).
 
-* **MYSQL**:MySQL is an open-source relational database management 
+* **MySQL**:MySQL is an open-source relational database management 
 system
 
 * **Session**: The period of time a user interfaces with an application. 
@@ -251,7 +245,7 @@ secure closed session.
 
 Since this is a messaging application data input and output is 
 essential, therefore using a database is crucial and with that memory 
-becomes a problem. Since we are using MYSQL account, we have limited 
+becomes a problem. Since we are using MySQL account, we have limited 
 scalability with our project. For the early stages of the application 
 development it will not be a problem however as we increase social 
 medias and have more users, database management significance will 
@@ -602,13 +596,19 @@ and retrieved in the database is the users data.
 Here we provide a system model using some drawing tools to illustrate 
 the over system and its external entities.
 
-High Level Diagram: Overview of the functions within the system.
+User Flow: Overview of the functions within the system from the users prespective.
 
-Context diagram: This diagram shows how the system interacts with its 
+User Flow Diagram:**Fig 5.2.1** shows the functions users inteact with.
+
+High Level Design Diagram :**Fig 5.2.2** provides an overview
+of an entire system,identifying the main components that would be developed 
+for the product and their interfaces.
+
+Context diagram:**Fig 5.3** shows how the system interacts with its 
 external entities to the system, members and staff, to show the follow 
 of information between the system and these entities. 
 
-### <center> 5.2 High Level Description</center>
+### <center> 5.2 User Flow Description</center>
 
 1. Register
  *Register a username and password to give you the ability to login to 
@@ -649,14 +649,14 @@ application, there is the option to log out.*
 
 
 
-### <center>5.2.1 High Level Design Diagram</center>
+### <center>5.2.1 User Flow Diagram</center>
 
-![High Level Design Diagram](high_level_design_diagram.png "High Level Design Diagram.png")
+![User Flow Diagram](high_level_design_diagram.png "High Level Design Diagram.png")
 
 
-### <center> 5.2.2 High Level Design Diagram (from our perspective) 
+### <center> 5.2.2 High Level Design Diagram 
 </center>
-![High Level Design Diagram from our perspective](high_level_design_diagram_from_our_perspective.png "High Level Design Diagram from our perspective")
+![High Level Design Diagram](high_level_design_diagram_from_our_perspective.png "High Level Design Diagram from our perspective")
 
 
 ### <center>5.3 Context Diagram </center>
