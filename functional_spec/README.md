@@ -695,7 +695,7 @@ showing.
 
 ### <center> 6.4 Gantt Chart </center>
 
-![Gantt Chart](gantt chart.png "Gantt Chart")
+![Gantt Chart](gantt_chart.png "Gantt Chart")
 
 
 
