@@ -44,7 +44,7 @@
 ### [6.1 Overview of Preliminary Schedule](#-61-overview-of-preliminary-schedule-)
 ### [6.2 Task List](#-62-task-list)
 ### [6.3 Task Tracker](#-63-task-tracker-)
-### [6.3 Gantt Chart](#-63-gantt-chart-)
+### [6.4 Gantt Chart](#-64-gantt-chart-)
 &nbsp;
 ## [7. Appendix](#-7-appendix-)
 ### [7.1 Appendix A: Resources](#-71-resources)
@@ -693,7 +693,7 @@ showing.
 ![Task Tracker](task_tracker.png "Task Tracker")
 
 
-### <center> 6.3 Gantt Chart </center>
+### <center> 6.4 Gantt Chart </center>
 
 ![Gantt Chart](gantt chart.png "Gantt Chart")
 
