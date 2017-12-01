@@ -544,7 +544,7 @@ Discarding a cookie over multiple devices.
 ## <center>4.1 System Architecture Diagram</center>
 
 
-![System Architecture Diagram](system_architecture_diagram.png "System Architecture Diagram")
+![System Architecture Diagrams](system_architecture_diagrams.png "System Architecture Diagrams")
 
 
 
