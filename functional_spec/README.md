@@ -598,13 +598,13 @@ the over system and its external entities.
 
 User Flow: Overview of the functions within the system from the users prespective.
 
-User Flow Diagram:**Fig 5.2.1** shows the functions users inteact with.
+User Flow Diagram: **Fig 5.2.1** shows the functions users inteact with.
 
-High Level Design Diagram :**Fig 5.2.2** provides an overview
+High Level Design Diagram : **Fig 5.2.2** provides an overview
 of an entire system,identifying the main components that would be developed 
 for the product and their interfaces.
 
-Context diagram:**Fig 5.3** shows how the system interacts with its 
+Context Diagram: **Fig 5.3** shows how the system interacts with its 
 external entities to the system, members and staff, to show the follow 
 of information between the system and these entities. 
 
