@@ -658,7 +658,7 @@ application, there is the option to log out.*
 
 ### <center> 5.2.2 High Level Design Diagram (from our perspective) 
 </center>
-![High Level Design Diagram #from our perspective](High Level Design Diagram #from our perspective.png "High Level Design Diagram #from our perspective")
+![High Level Design Diagram @from our perspective](High Level Design Diagram @from our perspective.png "High Level Design Diagram @from our perspective")
 
 ### <center>5.3 Context Diagram </center>
 
