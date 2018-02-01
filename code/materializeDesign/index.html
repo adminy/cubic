@@ -4,12 +4,33 @@
       <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="./css/materialize.min.css"  media="screen,projection"/>
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    
+    <script>
+      var ws;
+      window.onload = function() {
+        ws = new WebSocket("ws://anime4life.dyndns.tv");
+
+        ws.onopen = function(e) {
+          console.log("User Connected");
+          console.log(e);
+        }
+
+        ws.onmessage = function(response) {
+          console.log(response.data);
+        }
+
+
+
+      }
+
+
+
+
+    </script>
 
     </head>
       <body>
