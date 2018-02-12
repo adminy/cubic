@@ -7,120 +7,112 @@
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+
       <script>
-           $('.timepicker').pickatime({
-    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-    twelvehour: false, // Use AM/PM or 24-hour format
-    donetext: 'OK', // text for done-button
-    cleartext: 'Clear', // text for clear-button
-    canceltext: 'Cancel', // Text for cancel-button
-    autoclose: false, // automatic close timepicker
-    ampmclickable: true, // make AM PM clickable
-    aftershow: function(){} //Function for after opening timepicker
+        $(document).ready(function(){
+    $('.materialboxed').materialbox();
   });
-        
-      </script>
+</script>
+
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
 
     <body>
 
 
-<!-- <nav class="navbar-material">
-    <div class="nav-wrapper">
-        <div class="col s12">
 
-      <a href="#!"><i class="material-icons">chevron_left</i></a>
-
-    <a href="#!" class="brand-logo">
-      <img src="images/femaleblonde.jpg" class="circle">
-  </a>
-      
-    </div>
-</div>
-
-  </nav>
-
- -->
-
-    <div class="nav-wrapper">
+<div class="container">
+   <nav class="blue lighten-2">
+    <div class="container row left">
         
- <ul class="collection">
-    <a href="#!"><i class="material-icons">chevron_left</i></a>
-    <ul id="nav-mobile">
-    <li class="collection-item avatar">
-     <img src="images/femaleblonde.jpg" alt="" class="circle">
-      Cidny
-  </li>
-</ul>
-</ul>
-</div>
+            <div class="col s1 navbar-material">
+                <a href="#!"><i class="material-icons">chevron_left</i></a>
+            </div>
+            
+            <div class="col s1">
+                    <img src="images/femaleblonde.jpg" width="70" style="padding-top: 10px;" alt="User Avatar" class="materialboxed responsive-img circle">
+                
+                </div><b>Cindy</b>
 
+            </div>
 
-
-                    <ul class="chat">
-                        <li class="left"><span class="chat-img pull-left">
-                            <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="circle">
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
+</nav>
+            <li>
+                <ul class="collection">
+                    <div class="collection-item">
+                            <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class=" left circle">
+                        
                                     <strong class="primary-font">Jack</strong> <small class="pull-right text-muted">
                                         <span class=""></span>12 mins ago</small>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="right clearfix"><span class="chat-img pull-right">
-                            <!-- <img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="circle right"> -->
-                        </span>
-                            <div class="chat-body clearfix">
-                                 <img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="circle">
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                                <div class="right">
-                                    <small class=" text-muted"><span class=""></span>13 mins ago</small>
-                                    <strong class="pull-right primary-font">yum</strong>
-                                </div>
                             
-                            </div>
-                        </li>
-                        <li class="left clearfix"><span class="chat-img pull-left">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                          
+                      </div>
+                          
                             <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="circle">
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Jack</strong> <small class="pull-right text-muted">
-                                        <span class=""></span>14 mins ago</small>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="right clearfix"><span class="chat-img pull-right">
-                            <!-- <img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="circle right"> -->
-                        </span>
-                            <div class="chat-body clearfix">
-                                 <img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="circle">
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                                <div class="right">
-                                    <small class=" text-muted time">13:12</small>
-                                    <strong class="pull-right primary-font">yum</strong>
-                                </div>
+                        
+                                    <strong class="primary-font">Cindy</strong> <small class=" text-muted">
+                                        <span class=""></span>12 mins ago</small>
                             
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="footer">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                         
+                
+                           
+                            <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class=" left circle">
+                        
+                                    <strong class="primary-font">Jack</strong> <small class="pull-right text-muted">
+                                        <span class=""></span>12 mins ago</small>
+                            
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                             
+                          
+                </ul>
+
+     <nav>
+                  <div class="nav-wrapper grey lighten-2">
+
+                    <div class="row">
+                      <div class="col s1">
+                        <a class='dropdown-button btn grey blue-text text-lighten-2' href='#' data-activates='dropdown1'>+</a>
+
+  <!-- Dropdown Structure -->
+  <ul id='dropdown1' class='dropdown-content'>
+    <li><a href="#!">one</a></li>
+    <li><a href="#!">two</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">three</a></li>
+    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+  </ul>
+        </div>
+
+          <div class="col s8 input-group">
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
+                      </div>
+          <div class="col s1">
+            <a href="#!"><i class="material-icons blue lighten-2">photo_camera</i></a>
+          </div>
+          <div class="col s1">
+            <a href="#!"><i class="material-icons blue lighten-2">videocam</i></a>
+          </div>
+          <div class="col s1">
+            <a href="#!"><i class="material-icons blue lighten-2">record_voice_over</i></a>
+            </div>
+        </div>
+
+        <input type="file">
+
+                <!-- <div class="footer">
                     <div class="input-group">
                         <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
                         <span class="input-group-btn">
@@ -129,127 +121,14 @@
                         </span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+              </div>
+            </div> -->
+</li>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
 
       </body>
 
-      <!-- <div class="menu">
-            <div class="back"><i class="fa fa-chevron-left"></i> <img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-            <div class="name">Alex</div>
-            <div class="last">18:09</div>
-        </div>
-    <ol class="chat">
-    <li class="other">
-        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Hola!</p>
-        <p>Te vienes a cenar al centro? <emoji class="pizza"/></p>
-        <time>20:17</time>
-      </div>
-    </li>
-    <li class="self">
-        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Puff...</p>
-        <p>Aún estoy haciendo el contexto de Góngora... <emoji class="books"/></p>
-        <p>Mejor otro día</p>
-        <time>20:18</time>
-      </div>
-    </li>
-    <li class="other">
-        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Qué contexto de Góngora? <emoji class="suffocated"/></p>
-        <time>20:18</time>
-      </div>
-    </li>
-    <li class="self">
-        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <p>El que mandó Marialu</p>
-        <p>Es para mañana...</p>
-        <time>20:18</time>
-      </div>
-    </li>
-    <li class="other">
-        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-        <p><emoji class="scream"/></p>
-        <p>Pásamelo! <emoji class="please"/></p>
-        <time>20:18</time>
-      </div>
-    </li>
-    <li class="self">
-        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <img src="https://i.imgur.com/QAROObc.jpg" draggable="false"/>
-        <time>20:19</time>
-      </div>
-    </li>
-    <li class="other">
-        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Gracias! <emoji class="hearth_blue"/></p>
-        <time>20:20</time>
-      </div>
-    </li>
-        <div class="day">Hoy</div>
-    <li class="self">
-        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Te apetece jugar a Minecraft?</p>
-        <time>18:03</time>
-      </div>
-    </li>
-    <li class="other">
-        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Venga va, hace ya mucho que no juego...</p>
-        <time>18:07</time>
-      </div>
-    </li>
-    <li class="self">
-        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Ehh, me crashea el Launcher... <emoji class="cryalot"/></p>
-        <time>18:08</time>
-      </div>
-    </li>
-    <li class="other">
-        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-        <p><emoji class="lmao"/></p>
-        <time>18:08</time>
-      </div>
-    </li>
-    <li class="self">
-        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Es broma</p>
-        <p>Ataque Moai!</p>
-        <p><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span><span><emoji class="moai"/></span></p>
-        <time>18:09</time>
-      </div>
-    </li>
-    <li class="other">
-        <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-          <p>Copón</p>
-        <p><emoji class="funny"/></p>
-        <time>18:08</time>
-      </div>
-    </li>
-    <li class="self">
-        <div class="avatar"><img src="https://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Hey there's a new update about this chat UI with more responsive elements! Check it now:</p>
-        <p><a href="https://codepen.io/Varo/pen/YPmwpQ" target="parent">Chat UI 2.0</a></p>
-        <time>18:09</time>
-      </div>
-    </li>
-    </ol>
-    <input class="textarea" type="text" placeholder="Type here!"/><div class="emojis"></div> -->
+      
   </html>
