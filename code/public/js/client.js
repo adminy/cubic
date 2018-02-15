@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-var ws;
-
-window.onload = function() {
-  ws = new WebSocket("ws://ie.dyndns.tv")
-  ws.onopen = function(e) { console.log("User Connected") }
-  ws.onmessage = function(response) {
-    console.log(response.data);
-  }
-  ws.onerror = ws.onclose = function() { /* attempt reconnect / recovery */ }
-}
-=======
 var ws, user_token, connected = false, atLogin = false;
 
 window.onload = function() {
@@ -108,4 +96,3 @@ function keepdo(condition, callback) {
   else
     setTimeout(function() { keepdo(condition, callback)}, 100);
 }
->>>>>>> c41b848... Got DB working which Updated lots of Server to Client Communication

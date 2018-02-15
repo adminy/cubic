@@ -1,0 +1,15 @@
+{
+  "name": "Cubik",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js &",
+    "stop": "killall --signal SIGINT Cubik"
+  },
+  "dependencies": {
+    "express": "expressjs/express",
+    "https": "zwlzwt/HTTPS",
+    "mysql": "mysqljs/mysql",
+    "fs": "skpm/fs",
+    "ws": "websockets/ws"
+  }
+}

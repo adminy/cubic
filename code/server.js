@@ -1,22 +1,17 @@
 var express = require('express')(),
     https = require('https'), //var http = require('http');
     fs = require('fs'),
-<<<<<<< HEAD
-    WebSocket = require('ws')
-
-=======
     WebSocket = require('ws'),
     mysql = require('mysql'),
-    cookies = require("cookie-parser"),
     con = mysql.createConnection("mysql://u894154994_cubik:password@sql32.main-hosting.eu:3306/u894154994_cubik"),
     appPort = process.env.PORT;
+    process.title = "Cubik";
 function queryEnd() { con.end(); con = mysql.createConnection("mysql://u894154994_cubik:password@sql32.main-hosting.eu:3306/u894154994_cubik") }
   
->>>>>>> c41b848... Got DB working which Updated lots of Server to Client Communication
 //HTTP Traffic Redirect to HTTPS //http.createServer(server).listen(80); //server.get('*', function(req, res) { res.redirect('https://' + req.headers.host + req.url); })
 var ssl = {
-  key: fs.readFileSync('/etc/letsencrypt/live/ie.dyndns.tv/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/ie.dyndns.tv/cert.pem')
+  key: fs.readFileSync('/etc/letsencrypt/live/ie.dyndns.biz/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/ie.dyndns.biz/cert.pem')
 }
 
 //HTTPS
@@ -28,21 +23,6 @@ var server = https.createServer(ssl, express)
   // });
 //WSS
 var wss = new WebSocket.Server({server:server});
-<<<<<<< HEAD
-    wss.on('connection', function connection(ws) {
-      ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
-      });
-
-      ws.send('something');
-    });
-
-
-
-express.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/index.html') //res.send("Hello World!");
-});
-=======
     wss.on('connection', function connection(ws, req) { //req.connection.remoteAddress, req.url, even cookies and other request url data
 
 
@@ -80,7 +60,7 @@ express.get('/', function (req, res) {
               console.log('\x1b[33m%s\x1b[0m', "Updating database...")
               if(user.name.length != data.name)
                 con.query("UPDATE users SET name = '"+data.name+"' WHERE id = '"+user.id+"'", function (err, result) { if (err) throw err; console.log(result.affectedRows + " record(s) updated"); }); //assert to make sure not more than 1 row affected and no 0 rows affected either ASSERT EXACTLY 1
-              if(data.email && (data.google_id.length > 0 || user.email != "") && user.email != data.email)
+              if(data.email && data.google_id.length > 0 && user.email != data.email)
                 con.query("UPDATE users SET email = '"+data.email+"' WHERE id = '"+user.id+"'", function (err, result) { if (err) throw err; console.log(result.affectedRows + " record(s) updated"); }); //assert to make sure not more than 1 row affected and no 0 rows affected either ASSERT EXACTLY 1
               if(user.avatar != data.avatar && data.facebook_id.length > 0) //prioritise facebook avatar
                 con.query("UPDATE users SET avatar = '"+data.avatar+"' WHERE id = '"+user.id+"'", function (err, result) { if (err) throw err; console.log(result.affectedRows + " record(s) updated"); }); //assert to make sure not more than 1 row affected and no 0 rows affected either ASSERT EXACTLY 1
@@ -129,14 +109,14 @@ express.get('/', function (req, res) { //if already logged in, perhaps this will
 
 express.get('/login', function (req, res) { res.sendFile(__dirname + '/public/login.html') });
 
->>>>>>> c41b848... Got DB working which Updated lots of Server to Client Communication
 express.get('/main', function (req, res) { res.sendFile(__dirname + '/public/main.html') });
-express.get('/personal', function (req, res) { res.sendFile(__dirname + '/public/persona.html') });
-express.get('/resister', function (req, res) { res.sendFile(__dirname + '/public/Register.html') });
-express.get('/settings', function (req, res) { res.sendFile(__dirname + '/public/setting.html') });
+express.get('/personal', function (req, res) { res.sendFile(__dirname + '/public/personal.html') });
+express.get('/settings', function (req, res) { res.sendFile(__dirname + '/public/settings.html') });
 
 express.get('/css/materialize.min.css', function (req, res) { res.sendFile(__dirname + '/public/css/materialize.min.css') });
+express.get('/css/materialize.css', function (req, res) { res.sendFile(__dirname + '/public/css/materialize.css') });
 express.get('/js/materialize.min.js', function (req, res) { res.sendFile(__dirname + '/public/js/materialize.min.js') });
+express.get('/js/client.js', function (req, res) { res.sendFile(__dirname + '/public/js/client.js') });
 
 express.get('/images/Cubik.png', function (req, res) { res.sendFile(__dirname + '/public/images/Cubik.png') });
 express.get('/images/male.jpg', function (req, res) { res.sendFile(__dirname + '/public/images/male.jpg') });
@@ -144,32 +124,17 @@ express.get('/images/mom.jpg', function (req, res) { res.sendFile(__dirname + '/
 express.get('/images/femaleblonde.jpg', function (req, res) { res.sendFile(__dirname + '/public/images/femaleblonde.jpg') });
 express.get('/images/asian.jpg', function (req, res) { res.sendFile(__dirname + '/public/images/asian.jpg') });
 
-<<<<<<< HEAD
-//express.use(function(req, res, next) {
-//    res.status(404).send("404 Route does not exist, what you doing here?<br> Have a nice day ^_^");
-//});
-=======
 express.get('/fonts/roboto/Roboto-Regular.woff2', function (req, res) { res.sendFile(__dirname + '/public/fonts/roboto/Roboto-Regular.woff2') });
 express.get('/fonts/roboto/Roboto-Medium.woff2', function (req, res) { res.sendFile(__dirname + '/public/fonts/roboto/Roboto-Medium.woff2') });
 express.get('/fonts/roboto/Roboto-Bold.woff2', function (req, res) { res.sendFile(__dirname + '/public/fonts/roboto/Roboto-Bold.woff2') });
+
+express.get('/privacy', function (req, res) { res.sendFile(__dirname + '/public/privacy.html') });
+express.get('/tos', function (req, res) { res.sendFile(__dirname + '/public/privacy.html') });
 
 
 express.use(function(req, res, next) {
     res.status(404).send("404 Route does not exist, what you doing here?<br> Have a nice day ^_^");
 });
->>>>>>> c41b848... Got DB working which Updated lots of Server to Client Communication
-
-
-      // con.connect(function(err) {
-      //   if (err) throw err;
-      // });
-      // con.query("SELECT * FROM users", function (err, result, fields) {
-      //   if (err) throw err;
-        
-      //   console.log(result);
-      //   console.log(fields);
-      // });
-// Close NODEJS
 
 
 
@@ -184,3 +149,6 @@ process.on('SIGINT', function() {
 
 
 //another test is maybe DB connection?
+      // con.connect(function(err) {
+      //   if (err) throw err;
+      // });

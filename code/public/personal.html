@@ -1,289 +1,115 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-  <html>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="./css/materialize.min.css"  media="screen,projection"/>
-
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <body>
-      <nav>
-    <div class="nav-wrapper white">
-      <a href="#!" class="brand-logo blue-text text-darken-2">Chat</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="sass.html"><span class="blue-text text-darken-2"><i class="material-icons">search</span></i></a></li>
-        <li><a href="badges.html"><span class="blue-text text-darken-2"><i class="material-icons">person_add</span></i></a></li>
-        <li><a href="collapsible.html"><span class="blue-text text-darken-2"><i class="material-icons">refresh</span></i></a></li>
-        <li><a href="mobile.html"><span class="blue-text text-darken-2"><i class="material-icons">more_vert</i></span></a></li>
-      </ul>
-    </div>
-  </nav>
-    <div class="container">
-                    <ul class="chat">
-                        <li class="left"><span class="chat-img pull-left">
-                            <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="circle">
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Jack</strong> <small class="pull-right text-muted">
-                                        <span class=""></span>12 mins ago</small>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="right clearfix"><span class="chat-img pull-right">
-                            <img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="circle">
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <small class=" text-muted"><span class=""></span>13 mins ago</small>
-                                    <strong class="pull-right primary-font">yum</strong>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="circle">
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Jack</strong> <small class="pull-right text-muted">
-                                        <span class=""></span>14 mins ago</small>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                        <li class="right clearfix"><span class="chat-img pull-right">
-                            <img src="http://placehold.it/50/FA6F57/fff&amp;text=ME" alt="User Avatar" class="circle">
-                        </span>
-                            <div class="chat-body clearfix">
-                                <div class="header">
-                                    <small class=" text-muted"><span class=""></span>15 mins ago</small>
-                                    <strong class="pull-right primary-font">yum</strong>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="panel-footer">
-                    <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat">
-                                Send</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-      </body>
-  </html>
-=======
 <!DOCTYPE html>
 <html>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!--Import materialize.css-->
-<link type="text/css" rel="stylesheet" href="./css/materialize.min.css" media="screen,projection" />
-
-<!--Let browser know website is optimized for mobile-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
-<script>
-  $(document).ready(function () {
-    $('.materialboxed').materialbox();
-  });
-</script>
 
 <head>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="./css/materialize.min.css" media="screen,projection" />
+  <!-- Let browser know website is optimized for mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://html.nkdev.info/_con/assets/_con/css/con-base.min.css" rel="stylesheet">
+  <link href="https://html.nkdev.info/_con/bower_components/nanoscroller/bin/css/nanoscroller.css" rel="stylesheet">
 </head>
 
+
+
 <body>
-
-
-
-  <div class="container">
-    <nav class="white">
-      <div class="container row left">
-
-        <div class="col s1 navbar-material">
-          <a href="#!">
-            <i class="material-icons">
-              <span class="blue-text lighten-2">chevron_left</span>
-            </i>
+  <div class="chat layer-opened open-messages" style="visibility: visible; display: block;width:100%">
+    <div class="layer-overlay" style="position: absolute; width: 100%; height: 100%; background: none; z-index: 0; transform: scale(1);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <g transform="translate(259, 103)">
+          <circle cx="0" cy="0" r="995.2894051480705" fill="rgb(53, 56, 76)" class="" style="transform: scale(1);"></circle>
+        </g>
+      </svg>
+    </div>
+    <div class="layer-content" style="background: none; z-index: 2; display: block; opacity: 1;">
+      <!-- Contacts -->
+      <div class="contacts">
+        <!-- Top Bar -->
+        <div class="topbar">
+          <a href="#!" class="text">Chat</a>
+          <a href="#!" class="chat-toggle">
+            <i class="mdi-navigation-close"></i>
           </a>
         </div>
-
-        <div class="col s1">
-          <img src="images/femaleblonde.jpg" width="70" style="padding-top: 10px;" alt="User Avatar" class="materialboxed responsive-img circle">
-
-        </div>
-        <span class="black-text">
-          <b>Cindy</span>
-        </b>
-
       </div>
-
-    </nav>
-
-
-
-
-
-
-
-
-
-
-
-
-    <div style='display: block;text-align: -webkit-match-parent; min-height:70vh;' class='grey lighten-3'>
-
-
-      <div class="container light-green accent-1 card-panel chat-bubble">
-        <div class="left">
-          <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class=" left circle">
+      <!-- /Contacts -->
+      <!-- Messages -->
+      <div class="messages">
+        <!-- Top Bar with back link -->
+        <div class="topbar">
+          <a href="#!" class="chat-toggle">
+            <i class="mdi-navigation-close"></i>
+          </a>
+          <a href="#!" class="chat-back">
+            <i class="mdi-hardware-keyboard-arrow-left"></i> Back</a>
         </div>
-
-        <strong class="primary-font">Jack</strong>
-
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-        </p>
-        <small class="pull-right text-muted right">
-          <span class=""></span>12 mins ago</small>
-      </div>
-
-
-      <div class="container card-panel chat-bubble right">
-        <div class="left">
-          <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="circle">
-        </div>
-
-        <strong class="primary-font">Cindy</strong>
-
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-        </p>
-        <small class=" text-muted right">
-          <span class=""></span>12 mins ago</small>
-      </div>
-
-      <div class="container card-panel light-green accent-1 chat-bubble left">
-        <div class="left">
-
-          <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class=" left circle">
-        </div>
-
-        <strong class="primary-font">Jack</strong>
-
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-        </p>
-        <small class=" text-muted pull-right right">
-          <span class=""></span>12 mins ago</small>
-
-      </div>
-
-    </div>
-
-    <br>
-    <br>
-    <br>
-
-
-    <nav>
-      <div class="nav-wrapper grey lighten-3">
-
-        <div class="row">
-          <div class="col s1">
-            <a class='dropdown-button blue-text text-lighten-2' href='#' data-activates='dropdown1' type="file">
-              <i class="material-icons">add</a>
-            </i>
-
-            <!-- Dropdown Structure -->
-            <ul id='dropdown1' class='dropdown-content'>
-              <li>
-                <a href="#!">
-                  <i class="material-icons blue-text text-lighten-2">photo_camera</i>
-                </a>
-              </li>
-              <li>
-                <a href="#!">
-                  <i class="material-icons blue-text text-lighten-2">videocam</i>
-                </a>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a href="#!">three</a>
-              </li>
-              <li>
-                <a href="#!">
-                  <i class="material-icons">view_module</i>four</a>
-              </li>
-              <li>
-                <a href="#!">
-                  <i class="material-icons">cloud</i>five</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="col s8 input-group">
-            <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
-          </div>
-          <div class="col s1">
-            <a href="#!">
-              <i class="material-icons blue-text text-lighten-2">photo_camera</i>
-            </a>
-          </div>
-          <div class="col s1">
-            <a href="#!">
-              <i class="material-icons blue-text text-lighten-2">videocam</i>
-            </a>
-          </div>
-          <div class="col s1">
-            <a href="#!">
-              <i class="material-icons blue-text text-lighten-2">record_voice_over</i>
-            </a>
-          </div>
-        </div>
-
-        <!-- <div class="footer">
-                    <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm right" id="btn-chat">
-                                Send</button>
-                        </span>
-                    </div>
-                </div>
+        <!-- /Top Bar with back link -->
+        <!-- All messages list -->
+        <div class="list">
+          <div class="nano scroll-bottom has-scrollbar">
+            <div class="nano-content" tabindex="0" style="right: -17px;">
+              <div class="date">Monday, Feb 23, 8:23 pm</div>
+              <div class="from-me">Hi, Felicia.
+                <br>How are you?</div>
+              <div class="clear"></div>
+              <div class="from-them">
+                <img src="images/femaleblonde.jpg" alt="John Doe" class="circle photo"> Hi! I am good!</div>
+              <div class="clear"></div>
+              <div class="from-me">Glad to see you :)
+                <br>This long text is intended to show how the chat will display it.</div>
+              <div class="clear"></div>
+              <div class="from-them">
+                <img src="images/femaleblonde.jpg" alt="John Doe" class="circle photo"> Also, we will send the longest word to show how it will fit in the chat window:
+                <strong>Pneumonoultramicroscopicsilicovolcanoconiosis</strong>
               </div>
-            </div> -->
+              <div class="date">Friday, Mar 10, 5:07 pm</div>
+              <div class="from-me">Hi again!</div>
+              <div class="clear"></div>
+              <div class="from-them">
+                <img src="images/femaleblonde.jpg" alt="John Doe" class="circle photo"> Hi! Glad to see you.</div>
+              <div class="clear"></div>
+              <div class="from-me">I want to add you in my Facebook.</div>
+              <div class="clear"></div>
+              <div class="from-me">Can you give me your page?</div>
+              <div class="clear"></div>
+              <div class="from-them">
+                <img src="images/femaleblonde.jpg" alt="John Doe" class="circle photo"> I do not use Facebook. But you can follow me in Twitter.</div>
+              <div class="clear"></div>
+              <div class="from-me">It's good idea!</div>
+              <div class="clear"></div>
+              <div class="from-them">
+                <img src="images/femaleblonde.jpg" alt="John Doe" class="circle photo"> You can find me here -
+                <a href="https://twitter.com/nkdevv">https://twitter.com/nkdevv</a>
+              </div>
+            </div>
+            <div class="nano-pane" style="display: block;">
+              <div class="nano-slider" style="height: 302px; transform: translate(0px, 0px);"></div>
+            </div>
+          </div>
+        </div>
+        <!-- /All messages list -->
+        <!-- Send message -->
+        <div class="send">
+          <form action="#!">
+            <div class="input-field">
+              <input id="chat-message" type="text" name="chat-message">
+            </div>
+            <button class="btn waves-effect z-depth-0">
+              <i class="material-icons">send</i>
+            </button>
+          </form>
+        </div>
+        <!-- /Send message -->
+      </div>
+      <!-- /Messages -->
+    </div>
+  </div>
 
 
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="js/materialize.min.js"></script>
-
+  <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+  <!-- <script type="text/javascript" src="js/materialize.min.js"></script> -->
+  <!-- https://bootsnipp.com/snippets/xNKZz -->
 </body>
 
 
 </html>
->>>>>>> c41b848... Got DB working which Updated lots of Server to Client Communication
