@@ -115,6 +115,7 @@ express.get('/settings', function (req, res) { res.sendFile(__dirname + '/public
 
 express.get('/css/materialize.min.css', function (req, res) { res.sendFile(__dirname + '/public/css/materialize.min.css') });
 express.get('/css/materialize.css', function (req, res) { res.sendFile(__dirname + '/public/css/materialize.css') });
+express.get('/css/style.css', function (req, res) { res.sendFile(__dirname + '/public/css/style.css') });
 express.get('/js/materialize.min.js', function (req, res) { res.sendFile(__dirname + '/public/js/materialize.min.js') });
 express.get('/js/client.js', function (req, res) { res.sendFile(__dirname + '/public/js/client.js') });
 
