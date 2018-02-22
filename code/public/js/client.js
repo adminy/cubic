@@ -32,10 +32,18 @@ window.onload = function() {
     }
     if('verified' in data && atLogin)
       post('/main', {}, "GET") 
-  } //on message
+
+
+      if('fb_message' in data) {
+        console.log(data.fb_message);
+        document.getElementById('messages').innerHTML += '<div class="from-them card"><img src="images/femaleblonde.jpg" alt="John Doe" class="circle photo">'+data.fb_message+'</div><div class="clear"></div>';
+      
+      }  
+
+
+    } //on message
   ws.onerror = ws.onclose = function() { /* attempt reconnect / recovery */ }
 }
-
 
 
 

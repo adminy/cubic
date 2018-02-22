@@ -1,5 +1,7 @@
 /** initial setup **/
-
+body {
+      touch-action: none;
+}
 .nano {
   position: relative;
   width: 100%;
@@ -85,7 +87,7 @@
 
 .chat .layer-content, .chat .layer-overlay {
   position: absolute; width: 100%; height: 100%; background: none; z-index: 0; transform: scale(1);
-  background: #35384C
+  background: #f2f2f2
 }
 
 .chat .contacts, .chat .messages {
@@ -106,7 +108,6 @@
   left: 0;
   right: 0;
   height: 65px;
-  background: #2d2f40
 }
 
 .chat .topbar>.sp-cancel, .chat .topbar>a {
@@ -213,14 +214,15 @@
 
 .chat .messages .list .nano-content {
   padding: 2rem 2rem 2rem 56px;
-  padding-left: calc(30px + 2rem)
+  padding-left: calc(30px + 2rem);
+  background:#f2f2f2;
 }
 
 .chat .messages .list .nano-content .date {
   font-size: .8rem;
   padding: 1rem 0;
   margin-left: -30px;
-  color: #fff;
+  color: rgba(0, 0, 0, .40);
   text-align: center;
   clear: both
 }
@@ -237,30 +239,18 @@
   max-width: 100%
 }
 
+.chat .messages .list .from-them, .chat .messages .list .from-me {
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  /* box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28); */
+}
+
 .chat .messages .list .from-them {
   color: #000;
   background: #FFF;
   float: left;
   -ms-transform-origin: 0 100%;
   transform-origin: 0 100%
-}
-
-/* .chat .messages .list .from-them:before {
-  z-index: 2;
-  left: -15px;
-  border-left: 20px solid #FFF;
-  -ms-transform: translate(0, -2px);
-  transform: translate(0, -2px)
-} */
-
-.chat .messages .list .from-them:after {
-  z-index: 3;
-  left: 4px;
-  width: 26px;
-  background: #35384C;
-  border-bottom-right-radius: 10px;
-  -ms-transform: translate(-30px, -2px);
-  transform: translate(-30px, -2px)
 }
 
 .chat .messages .list .from-them .date {
@@ -272,18 +262,11 @@
 
 .chat .messages .list .from-them .photo {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: -35px;
   max-width: 30px;
   z-index: 4
 }
-
-/* .chat .messages .list .from-me:after, .chat .messages .list .from-me:before {
-  content: "";
-  bottom: -2px;
-  height: 20px;
-  position: absolute
-} */
 
 .chat .messages .list .from-me {
   color: #fff;
@@ -293,28 +276,11 @@
   transform-origin: 100% 100%
 }
 
-/* .chat .messages .list .from-me:before {
-  z-index: 2;
-  right: -15px;
-  border-right: 20px solid #42A5F5;
-  -ms-transform: translate(0, -2px);
-  transform: translate(0, -2px)
-} */
-
-.chat .messages .list .from-me:after {
-  z-index: 3;
-  right: 4px;
-  width: 26px;
-  background: #35384C;
-  border-bottom-left-radius: 10px;
-  -ms-transform: translate(30px, -2px);
-  transform: translate(30px, -2px)
-}
-
 .chat .messages .list .from-me .date {
   font-size: .8rem;
   margin-top: .5rem;
   margin-bottom: 0;
+  color: rgba(0, 0, 0, .40);
   text-align: right
 }
 
@@ -390,7 +356,6 @@
   background:rgba(0, 0, 0, .25)
 }
 
-
 .chat .messages .send .sendy {
   position: absolute;
   top: 8px;
@@ -399,7 +364,3 @@
   z-index: 4;
   background:rgba(0, 0, 0, .25)
 }
-
-
-
-
