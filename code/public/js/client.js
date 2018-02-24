@@ -7,8 +7,11 @@ window.onload = function() {
   ws.onopen = function(e) { 
     console.log("User Connected")
     ws.send(JSON.stringify({token: user_token || ''}))
+    if(location.hash.slice(1))
+      ws.send(JSON.stringify({fb_get_msg: location.hash.slice(1)}))
+
   }
-  
+
   ws.onmessage = function(response) {
     var data = JSON.parse(response.data)
     //if server requests indentification or user already was connected (already posseses a key)?
@@ -40,9 +43,26 @@ window.onload = function() {
       
       }  
 
+      if('fb_res_msg' in data) {
+        for(let i = data.fb_res_msg.length - 1; i > -1; i--) {
+          // console.log(data.fb_res_msg[i])
+          //show time
+          document.getElementById('messages').innerHTML += '<div class="date">'+new Date( data.fb_res_msg[i].timestamp ).toUTCString()+'</div>';      
+          //is this not you?
+          if(data.fb_res_msg[i].senderID == location.hash.slice(1))
+            document.getElementById('messages').innerHTML += '<div class="from-them"><img src="images/femaleblonde.jpg" alt="name" class="circle photo">'+data.fb_res_msg[i].text+'</div><div class="clear"></div>';
+          else //you
+            document.getElementById('messages').innerHTML += '<div class="from-me">'+data.fb_res_msg[i].text+'</div><div class="clear"></div>';          
+          //scroll bottom
+          document.getElementById("messages").scrollTo(0,document.getElementById("messages").scrollHeight);
+        }
+      }
 
     } //on message
   ws.onerror = ws.onclose = function() { /* attempt reconnect / recovery */ }
+  $(window).on('hashchange',function(){
+    ws.send(JSON.stringify({fb_get_msg: location.hash.slice(1)}))
+  });
 }
 
 

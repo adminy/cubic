@@ -31,9 +31,9 @@
         <!-- /header -->
         <!-- All messages list -->
         <div class="list">
-          <div class="nano scroll-bottom has-scrollbar">
+          <div class="nano scroll-bottom has-scrollbar" id='scroller'>
             <div class="nano-content" id='messages' tabindex="0" style="right: -17px;">
-              <div class="date">Monday, Feb 23, 8:23 pm</div>
+              <!-- <div class="date">Monday, Feb 23, 8:23 pm</div>
               <div class="from-me">Hi, Felicia.<br>How are you?</div><div class="clear"></div>
               <div class="from-them"><img src="/images/femaleblonde.jpg" alt="John Doe" class="circle photo"> Hi! I am good!</div><div class="clear"></div>
               <div class="from-me">Glad to see you :)<br>This long text is intended to show how the chat will display it.</div><div class="clear"></div>
@@ -45,7 +45,7 @@
               <div class="from-me">Can you give me your page?</div><div class="clear"></div>
               <div class="from-them"><img src="/images/femaleblonde.jpg" alt="John Doe" class="circle photo"> I do not use Facebook. But you can follow me in Twitter.</div><div class="clear"></div>
               <div class="from-me">It's good idea!</div><div class="clear"></div>
-              <div class="from-them"><img src="/images/femaleblonde.jpg" alt="John Doe" class="circle photo"> You can find me here -<a href="https://twitter.com/tekme8">https://twitter.com/tekme8</a></div><div class="clear"></div>
+              <div class="from-them"><img src="/images/femaleblonde.jpg" alt="John Doe" class="circle photo"> You can find me here -<a href="https://twitter.com/tekme8">https://twitter.com/tekme8</a></div><div class="clear"></div> -->
             </div>
             <div class="nano-pane" style="display: block;">
               <div class="nano-slider" style="height: 302px; transform: translate(0px, 0px);"></div>
@@ -76,7 +76,17 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/js/materialize.min.js"></script>
     <script src='/js/client.js'></script>
-  <!-- https://bootsnipp.com/snippets/xNKZz -->
+  <!-- 
+    RIGHT NOW
+      - Chats work of #tags, very insecure, in future it will all be controlled by the server.
+
+      - Server can store user session like in PHP, basically it'll store what buttons it pressed in main
+        - to know what to show in this page, if server session tells the user surfing that it's not true,
+          -then we can redirect the user to main menu immediately.
+        
+
+
+   -->
 </body>
 
 

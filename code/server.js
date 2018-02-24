@@ -3,9 +3,17 @@ var express = require('express')(),
   fs = require('fs'),
   WebSocket = require('ws'),
   mysql = require('mysql'), // "mysql://u894154994_cubik:password@sql32.main-hosting.eu:3306/u894154994_cubik"
-  con = mysql.createConnection({host: 'sql32.main-hosting.eu', user: 'u894154994_cubik', password: 'password', port: 3306, database: 'u894154994_cubik', multipleStatements: true}),
+  con = mysql.createConnection({
+      host: 'sql32.main-hosting.eu',
+      user: 'u894154994_cubik',
+      password: 'password',
+      port: 3306,
+      database: 'u894154994_cubik',
+      charset : 'utf8mb4',
+      multipleStatements: true
+    }),
   appPort = process.env.PORT;
-process.title = "Cubik",
+  process.title = "Cubik",
   args = process.argv.slice(2),
   login = require("facebook-chat-api"),
   messenger_api = null,
@@ -13,7 +21,15 @@ process.title = "Cubik",
   connectFB = require('./fb'),
   fbUser = null;
 
-function queryEnd() { con.end(); con = mysql.createConnection({host: 'sql32.main-hosting.eu', user: 'u894154994_cubik', password: 'password', port: 3306, database: 'u894154994_cubik', multipleStatements: true}) }
+function queryEnd() { con.end(); con = mysql.createConnection({
+  host: 'sql32.main-hosting.eu',
+  user: 'u894154994_cubik',
+  password: 'password',
+  port: 3306,
+  database: 'u894154994_cubik',
+  charset : 'utf8mb4',
+  multipleStatements: true
+}) }
 
 //HTTP Traffic Redirect to HTTPS //http.createServer(server).listen(80); //server.get('*', function(req, res) { res.redirect('https://' + req.headers.host + req.url); })
 var ssl = {
@@ -46,20 +62,35 @@ wss.on('connection', function connection(ws, req) { //req.connection.remoteAddre
       connectFB('valid_cookie_path/credentials JSON', function (fb_user) { fbUser = fb_user; })
     //as well as log in to facebook as a service, do a background database update of the data!
     if('messenger_msg' in data) {
-        fbUser.pullHistory(778695889, 100000000, undefined, function(data) { //hopefully 100kk is all you're ever gonna have
+        var threadID = 778695889; //Hassan //100003833543544; //Victor
+        fbUser.pullHistory(threadID, 100000000, undefined, function(data) { //hopefully 100kk is all you're ever gonna have
          var data_msg = data['messages'];
-          var sql = "";
+          var sql = "SET NAMES utf8mb4;";
           for (let mk in data_msg)
-              sql += "INSERT INTO fb_message (id, type, senderID, senderEmail, unread, timestamp, text, reactions, filePath) VALUES ('"+ data_msg[mk].id+"', '"+data_msg[mk].type + "', '"+data_msg[mk].senderID+"', '"+data_msg[mk].senderEmail+"', "+ ((data_msg[mk].unread)?1:0)+", "+data_msg[mk].timestamp +", '"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "") + "', '"+data_msg[mk].reactions +"', '') ON DUPLICATE KEY UPDATE type='"+data_msg[mk].type+"', senderID="+data_msg[mk].senderID+", senderEmail='"+data_msg[mk].senderEmail+"', unread="+((data_msg[mk].unread)?1:0) +", timestamp="+data_msg[mk].timestamp+", text='"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "")+"', reactions='"+ data_msg[mk].reactions + "';";
+              sql += "INSERT INTO fb_message (threadID, id, type, senderID, senderEmail, unread, timestamp, text, reactions, filePath) VALUES ("+threadID+", '"+ data_msg[mk].id+"', '"+data_msg[mk].type + "', '"+data_msg[mk].senderID+"', '"+data_msg[mk].senderEmail+"', "+ ((data_msg[mk].unread)?1:0)+", "+data_msg[mk].timestamp +", '"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "") + "', '"+data_msg[mk].reactions +"', '') ON DUPLICATE KEY UPDATE type='"+data_msg[mk].type+"', senderID="+data_msg[mk].senderID+", senderEmail='"+data_msg[mk].senderEmail+"', unread="+((data_msg[mk].unread)?1:0) +", timestamp="+data_msg[mk].timestamp+", text='"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "")+"', reactions='"+ data_msg[mk].reactions + "', threadID="+threadID+";"; //👍
             
             // console.log(sql)
            con.query(sql, function (err, res) {
              if (err) throw err;
-             console.log('\x1b[35m%s\x1b[0m', 'Updated FB Messages (Hassan) in DB')
+             console.log('\x1b[35m%s\x1b[0m', 'Updated FB Messages (Victor) in DB')
              queryEnd()
            });
         })
 
+
+    }
+
+    if('fb_get_msg' in data) {
+      //listen for messages on this ID
+      //...
+      //load last 50 from DB
+      var sql = "SELECT * FROM fb_message WHERE threadID="+data.fb_get_msg+" ORDER BY timestamp DESC LIMIT 50";
+      con.query(sql, function (err, res) {
+        if (err) throw err;
+        ws.send(JSON.stringify({'fb_res_msg': res}))
+        console.log('\x1b[35m%s\x1b[0m', 'Loaded Last 50 FB Messages ('+data.fb_get_msg+') in DB')
+        queryEnd()
+      });
 
     }
     if ('messenger_send' in data) //'auth_token' in data &&, user is LOGGED_IN
