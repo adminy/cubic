@@ -1,5 +1,17 @@
 var ws, user_token, connected = false, atLogin = false;
 
+function keysPress(textarea) {
+  var key = window.event.keyCode;
+    if (key === 13) { // If the user has pressed enter
+      ws.send(JSON.stringify({fb_send: textarea.value, toUser: location.hash.slice(1)}))
+      document.getElementById('messages').innerHTML += '<div class="from-me">'+textarea.value+'</div><div class="clear"></div>';
+      document.getElementById("messages").scrollTo(0,document.getElementById("messages").scrollHeight);
+      textarea.value = '';
+      return false;
+    }
+    else return true;
+}
+
 window.onload = function() {
   user_token = getCookie('wss');
   
@@ -46,13 +58,17 @@ window.onload = function() {
       if('fb_res_msg' in data) {
         for(let i = data.fb_res_msg.length - 1; i > -1; i--) {
           // console.log(data.fb_res_msg[i])
+          
+          //sent from listener
+          //{ type: 'message', senderID: '100009664880073', body: '😂', threadID: '100009664880073', messageID: 'mid.$cAAAAA2qGIv5n-wPT1Vhyb6GtKY8O', attachments: [], timestamp: '1519508163541', isGroup: false }
+        
           //show time
-          document.getElementById('messages').innerHTML += '<div class="date">'+new Date( data.fb_res_msg[i].timestamp ).toUTCString()+'</div>';      
+          document.getElementById('messages').innerHTML += '<div class="date">'+new Date( parseInt(data.fb_res_msg[i].timestamp) ).toUTCString()+'</div>';      
           //is this not you?
           if(data.fb_res_msg[i].senderID == location.hash.slice(1))
-            document.getElementById('messages').innerHTML += '<div class="from-them"><img src="images/femaleblonde.jpg" alt="name" class="circle photo">'+data.fb_res_msg[i].text+'</div><div class="clear"></div>';
+            document.getElementById('messages').innerHTML += '<div class="from-them">'+(data.fb_res_msg[i].body || data.fb_res_msg[i].text)+'</div><div class="clear"></div>'; //<img src="images/femaleblonde.jpg" alt="name" class="circle photo">
           else //you
-            document.getElementById('messages').innerHTML += '<div class="from-me">'+data.fb_res_msg[i].text+'</div><div class="clear"></div>';          
+            document.getElementById('messages').innerHTML += '<div class="from-me">'+(data.fb_res_msg[i].body || data.fb_res_msg[i].text)+'</div><div class="clear"></div>';          
           //scroll bottom
           document.getElementById("messages").scrollTo(0,document.getElementById("messages").scrollHeight);
         }

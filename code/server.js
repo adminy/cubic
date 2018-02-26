@@ -44,10 +44,39 @@ server.listen(443)
 // con.connect(function(err) {
 //   if (err) throw err;
 // });
+
+//LOG IN TO ALL (Service Registered && Logged IN) ACCOUNTS UPON SERVER START LISTENING TO ALL, for notifications and other things
+
+  //AUTHENTICATE services
+  con.query("SELECT * FROM services", function (err, res) {
+    if (err) throw err; //query error
+
+    for(let i = 0; i < res.length; i++) {
+      let path = __dirname + '/user_data/' + res[i].authFilePath;
+      if(fs.existsSync(path) && res[i].active) {
+        if(res[i].service == 'facebook')
+          connectFB({appState: JSON.parse(fs.readFileSync(path, 'utf8'))}, addFB)
+        //add same for skype and other apis
+        //...
+
+      } //end valid path and active service
+    } //end for each service
+    queryEnd()
+ });
+
+function addFB(user, error) {
+  //listen for new messages right away! (for notifications)
+  fbUser = user; //deprecated ...
+  //if(!(user in users)) users.push(user);
+ 
+  if(error)
+    console.log('Service Needs Reauthentication OR Service is Down!')
+    //update in DB as well
+}
+
 //WSS
 var wss = new WebSocket.Server({ server: server });
 wss.on('connection', function connection(ws, req) { //req.connection.remoteAddress, req.url, even cookies and other request url data
-
 
   //ws is an active connection, but not a user in our case
   //so instead check in message for the token we give to our users,
@@ -58,31 +87,32 @@ wss.on('connection', function connection(ws, req) { //req.connection.remoteAddre
   ws.on('message', function incoming(message) {
     var data = JSON.parse(message)
 
-    if ('messenger_login' in data) //'auth_token' in data && 
-      connectFB('valid_cookie_path/credentials JSON', function (fb_user) { fbUser = fb_user; })
+    // if ('messenger_login' in data) //'auth_token' in data && 
+    //   connectFB('valid_cookie_path/credentials JSON', function (fb_user) { fbUser = fb_user; })
     //as well as log in to facebook as a service, do a background database update of the data!
-    if('messenger_msg' in data) {
-        var threadID = 778695889; //Hassan //100003833543544; //Victor
-        fbUser.pullHistory(threadID, 100000000, undefined, function(data) { //hopefully 100kk is all you're ever gonna have
+    if('fb_get_msg' in data) {
+      //pull old messages from FB to DB
+      var threadID = data.fb_get_msg;//778695889 Hassan //100003833543544; //Victor
+      if(fbUser && 'myID' in fbUser) {
+        fbUser.pullHistory(threadID, 50, undefined, function(data) { //hopefully 100kk is all you're ever gonna have, also perhaps stick a number which represents reasonable after some time of pulling over and over, old messages should no longer be updated
          var data_msg = data['messages'];
           var sql = "SET NAMES utf8mb4;";
           for (let mk in data_msg)
-              sql += "INSERT INTO fb_message (threadID, id, type, senderID, senderEmail, unread, timestamp, text, reactions, filePath) VALUES ("+threadID+", '"+ data_msg[mk].id+"', '"+data_msg[mk].type + "', '"+data_msg[mk].senderID+"', '"+data_msg[mk].senderEmail+"', "+ ((data_msg[mk].unread)?1:0)+", "+data_msg[mk].timestamp +", '"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "") + "', '"+data_msg[mk].reactions +"', '') ON DUPLICATE KEY UPDATE type='"+data_msg[mk].type+"', senderID="+data_msg[mk].senderID+", senderEmail='"+data_msg[mk].senderEmail+"', unread="+((data_msg[mk].unread)?1:0) +", timestamp="+data_msg[mk].timestamp+", text='"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "")+"', reactions='"+ data_msg[mk].reactions + "', threadID="+threadID+";"; //👍
-            
-            // console.log(sql)
+            sql += "INSERT INTO fb_message (threadID, id, type, senderID, senderEmail, unread, timestamp, text, reactions, filePath) VALUES ("+threadID+", '"+ data_msg[mk].id+"', '"+data_msg[mk].type + "', '"+data_msg[mk].senderID+"', '"+data_msg[mk].senderEmail+"', "+ ((data_msg[mk].unread)?1:0)+", "+data_msg[mk].timestamp +", '"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "") + "', '"+data_msg[mk].reactions +"', '') ON DUPLICATE KEY UPDATE unread="+((data_msg[mk].unread)?1:0) +", reactions='"+ data_msg[mk].reactions + "';"; //👍  type='"+data_msg[mk].type+"', senderID="+data_msg[mk].senderID+", senderEmail='"+data_msg[mk].senderEmail+"' , threadID="+threadID+", timestamp="+data_msg[mk].timestamp+", text='"+((data_msg[mk].text) ? data_msg[mk].text.replace(/(['"])/g, "\\$1") : "")+"', 
+          // console.log(sql)
            con.query(sql, function (err, res) {
              if (err) throw err;
-             console.log('\x1b[35m%s\x1b[0m', 'Updated FB Messages (Victor) in DB')
-             queryEnd()
-           });
+            console.log('\x1b[35m%s\x1b[0m', 'Updated FB Messages ('+threadID+') in DB')
+            queryEnd()
+          });
         })
 
-
-    }
-
-    if('fb_get_msg' in data) {
       //listen for messages on this ID
-      //...
+        fbUser.receive(function(message) {
+          ws.send(JSON.stringify({'fb_res_msg': [message]}))
+          console.log('\x1b[35m%s\x1b[0m', 'New Message for ('+fbUser.myID+')')
+        })
+      }
       //load last 50 from DB
       var sql = "SELECT * FROM fb_message WHERE threadID="+data.fb_get_msg+" ORDER BY timestamp DESC LIMIT 50";
       con.query(sql, function (err, res) {
@@ -93,19 +123,28 @@ wss.on('connection', function connection(ws, req) { //req.connection.remoteAddre
       });
 
     }
-    if ('messenger_send' in data) //'auth_token' in data &&, user is LOGGED_IN
-      fbUser.send(778695889, data.messenger_send);
+    if (fbUser && 'myID' in fbUser && 'fb_send' in data && 'toUser' in data) //'auth_token' in data &&, user is LOGGED_IN
+      fbUser.send(data.toUser, data.fb_send);
 
 
     if ('messenger_list' in data) //'auth_token' in data &&, user is LOGGED_IN
       fbUser.list(function (data_users) {
-        var sql = "";
-        for (let uk in data_users)
-          sql += "INSERT INTO fb_users (userID, name, avatar, type, gender, profile, dob) VALUES ("+data_users[uk].userID+", '"+data_users[uk].fullName.replace(/(['"])/g, "\\$1") + "','"+data_users[uk].profilePicture+"', '"+data_users[uk].type+"', '"+data_users[uk].gender+"', '"+data_users[uk].profileUrl+"', "+((data_users[uk].isBirthday) ? 'CURRENT_TIMESTAMP' : '0000000000') +") ON DUPLICATE KEY UPDATE name='"+data_users[uk].fullName.replace(/(['"])/g, "\\$1")+"', avatar='"+data_users[uk].profilePicture+"', type='"+data_users[uk].type+"', gender='"+data_users[uk].gender +"', profile='"+data_users[uk].profileUrl+"', dob="+((data_users[uk].isBirthday) ? 'CURRENT_TIMESTAMP' : '0000000000')+";";
-          // console.log(sql)
+        var sql = ""; //fb_users table
+        var sql2 = ""; //fb_relation table
+        for (let uk in data_users) {
+          sql += "INSERT INTO fb_users (userID, name, avatar, gender, profile, dob) VALUES ("+data_users[uk].userID+", '"+data_users[uk].fullName.replace(/(['"])/g, "\\$1") + "','"+data_users[uk].profilePicture+"', '"+data_users[uk].gender+"', '"+data_users[uk].profileUrl+"', "+((data_users[uk].isBirthday) ? 'CURRENT_TIMESTAMP' : '0000000000') +") ON DUPLICATE KEY UPDATE name='"+data_users[uk].fullName.replace(/(['"])/g, "\\$1")+"', avatar='"+data_users[uk].profilePicture+"', gender='"+data_users[uk].gender +"', profile='"+data_users[uk].profileUrl+"', dob="+((data_users[uk].isBirthday) ? 'CURRENT_TIMESTAMP' : '0000000000')+";";
+          sql2 += "INSERT INTO fb_relation (yourID, theirID, type) VALUES ('"+fbUser.myID+"','"+data_users[uk].userID+"','"+data_users[uk].type+"') ON DUPLICATE KEY UPDATE type='"+data_users[uk].type+"';"
+        }
+        // console.log(sql)
         con.query(sql, function (err, res) {
           if (err) throw err;
           console.log('\x1b[35m%s\x1b[0m', 'Updated FB Users in DB')
+          queryEnd()
+        });
+        // console.log(sql2)
+        con.query(sql2, function (err, res) {
+          if (err) throw err;
+          console.log('\x1b[35m%s\x1b[0m', 'Updated FB Relations in DB')
           queryEnd()
         });
       })
