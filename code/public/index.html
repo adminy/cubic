@@ -19,7 +19,12 @@
 
 
 
-<body>
+<body class="loaded">
+  <div id="loader-wrapper">
+        <div id="loader"></div>        
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
   <div class='container' id='main'>
     <nav class="white collection">
       <b>
@@ -416,19 +421,24 @@
       console.log('delete button pressed')
       deleteButton.onclick = function () {
         delet = !delet;
-        var items = document.getElementsByClassName('collection-item');
-        for (var i = 0; i < items.length; i++) {
-          if (delet) {
-            items[i].style.background = '#bdbdbd'; //selective color
-            items[i].onclick = function () {
-              this.parentNode.removeChild(this);
-            }
-          } else {
-            items[i].style.background = 'white'; //back to original color
+      }
+
+      var items = document.getElementsByClassName('collection-item');
+      for (var i = 0; i < items.length; i++) {
+        if (delet) {
+          items[i].style.background = '#bdbdbd'; //selective color
+          items[i].onclick = function () {
+            this.parentNode.removeChild(this);
           }
+        } else {
+          items[i].style.background = 'white'; //back to original color
+        }
+        items[i].onclick = function() {
+          //enable other page
         }
       }
     }
+    
     $(document).ready(function () {
       // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
       $('.modal').modal();
