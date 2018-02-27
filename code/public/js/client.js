@@ -1,4 +1,4 @@
-var ws, user_token, connected = false, atLogin = false;
+var ws, user_token, connected = false, atLogin = false, users;
 
 function keysPress(textarea) {
   var key = window.event.keyCode;
@@ -12,20 +12,33 @@ function keysPress(textarea) {
     else return true;
 }
 
+
 window.onload = function() {
+  startup()
   user_token = getCookie('wss');
   
   ws = new WebSocket("wss://ie.dyndns.biz")
   ws.onopen = function(e) { 
     console.log("User Connected")
+    //send client token to server
     ws.send(JSON.stringify({token: user_token || ''}))
-    if(location.hash.slice(1))
-      ws.send(JSON.stringify({fb_get_msg: location.hash.slice(1)}))
+
+    //hardcoded PLEASE REMOVE ME
+    ws.send(JSON.stringify({get_fb_threads: 100013582237495}))
+
+    // if(location.hash.slice(1))
+    //   ws.send(JSON.stringify({fb_get_msg: location.hash.slice(1)}))
 
   }
 
   ws.onmessage = function(response) {
     var data = JSON.parse(response.data)
+    
+    if('fb_threads' in data) {
+      users = data.fb_threads;
+      for(let i = 0; i < users.length; i++)
+        document.getElementById('biz').innerHTML += '<li class=" chat collection-item avatar chat-unread waves-effect" id="test"><i class="mdi-social-group icon blue-text"></i><img src="'+users[i].avatar+'" alt="'+users[i].userID+'" class="circle"><span class="chat-title">'+users[i].name+'</span><p class="truncate grey-text">'+users[i].text+'</p><a href="#thread-'+users[i].userID+'" class="secondary-content"><i class="material-icons">chevron_right</i></a><a href="#!" class="chat-time bottom-right"><span class="blue-text ultra-small">'+new Date(parseInt(users[i].timestamp)).toUTCString()+'</span></a></li>';
+    }  
     //if server requests indentification or user already was connected (already posseses a key)?
     if('token' in data) {
       if (user_token != null) {
