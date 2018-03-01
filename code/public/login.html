@@ -1,117 +1,16 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="./css/materialize.min.css"  media="screen,projection"/>
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <!-- Google Login -->
-    <meta name="google-signin-client_id" content="793614116860-rm2eirtp38u1c82m39dfc3uggr5b02nj.apps.googleusercontent.com">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script>
-      function onSignIn(googleUser) {
-        atLogin = true;
-        var profile = googleUser.getBasicProfile();
-        function send_to_server() { 
-          if(connected) {
-            atLogin = true;
-            ws.send(JSON.stringify({
-              google_id: profile.getId(),
-              facebook_id: "",
-              name: profile.getName(),
-              email: profile.getEmail(),
-              avatar: profile.getImageUrl(),
-              user_token: user_token
-            }))
-          } else {
-            setTimeout(send_to_server, 100)
-          }
-        }
-        send_to_server() //attempt send to server google has successfully logged in
-
-        //post('/login', {}, "GET")
-        //console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        //console.log('Name: ' + profile.getName());
-        //console.log('Image URL: ' + profile.getImageUrl());
-        //console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      }
-
-      function checkLoginState() {
-        atLogin = true;
-        FB.getLoginStatus(function(response) {
-          if (response.status === 'connected')
-            FB.api('/me',{fields: 'id,name,email,picture'}, function(response) {   
-              var res = response;     
-              function send_to_server() { 
-                if(connected) {
-                  ws.send(JSON.stringify({
-                    google_id: "",
-                    facebook_id: res.id,
-                    name: res.name,
-                    email: res.email,
-                    avatar: res.picture.data.url,
-                    user_token: user_token
-                  }));
-                } else {
-                  setTimeout(send_to_server, 100)
-                }
-              }
-              send_to_server() //attempt send to server google has successfully logged in
-      
-            });
-          else
-            FB.login();
-        });
-      }
-    </script>
-  </head>
-  <body>
-    <script>
-      window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '153121222067085',
-    cookie     : true,
-    xfbml      : true,
-    version    : 'v2.12'
-  });
-    
-  FB.AppEvents.logPageView();   
-    
-};
-
-(function(d, s, id){
-   var js, fjs = d.getElementsByTagName(s)[0];
-   if (d.getElementById(id)) {return;}
-   js = d.createElement(s); js.id = id;
-   js.src = "https://connect.facebook.net/en_US/sdk.js";
-   fjs.parentNode.insertBefore(js, fjs);
- }(document, 'script', 'facebook-jssdk'));
-
-      </script>
-    <center>
-      <a href="/" class="brand-logo"><img src="images/Cubik.png" alt="logo"></a><br><br><br>
-      <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button><br><br>
-      <!-- Log in with Google -->
-      <div class="google-button-guide-line g-signin2" data-onsuccess="onSignIn"></div>
-    </center>
-    <!--<div class="container">
-
-        <label><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
-
-        <label><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-
-        <p><input type="checkbox" id="test5"/><label for="test5">Remember me</label></p>
-        <a href="/main" class="blue lighten-2 btn">Sign In</a>
-        
-      </div>
-
-      <div class="container center-align">
-        <a href="#"> <span class="psw">Forgot password?</a></span>
-      </div>-->
-      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-      <script type="text/javascript" src="js/materialize.min.js"></script>
-      <script src='/js/client.js'></script>
-    </body>
-  </html>
+<center>
+  <a href='/' class='brand-logo'>
+    <img src='images/Cubik.png' alt='Cubik'>
+  </a>
+  <br>
+  <br>
+  <br>
+  <fb:login-button scope='public_profile,email' onlogin='checkLoginState();'></fb:login-button>
+  <br>
+  <br>
+  <!-- Log in with Google -->
+  <div class='google-button-guide-line g-signin2' data-onsuccess='onSignIn'></div>
+  <script>
+  atLogin = true;
+  </script>
+</center>

@@ -392,6 +392,9 @@ body {
 }
 
 
+.search_active:focus {
+  border-bottom:1px solid blue!important; -webkit-box-shadow: 0 1px 0 0 blue!important; box-shadow: 0 1px 0 0 blue!important;
+}
 
 .back_button {
   cursor:pointer;

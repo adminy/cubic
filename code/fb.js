@@ -1,5 +1,14 @@
 //make an interface/manager (connectFB, FB) USING imported library (facebook-chat-api)
 var login = require("facebook-chat-api");
+
+function IsJsonString(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
 /**
 * Generate A `FB` object given Correct Credentials
 * @param {JSON} credentials - can be either and appState (cookie) OR email and password for initial authentication
@@ -7,7 +16,7 @@ var login = require("facebook-chat-api");
 */
 function connectFB(credentials, callback) { //credentials = {email: X, password: Y} || {appState: Z}
   login(credentials, (error, api) => {
-    callback(new FB({cookie:('appState' in credentials), api: api}), error)
+    callback(new FB({ cookie: ('appState' in credentials), api: api }), error)
   })
 }
 
@@ -22,6 +31,7 @@ function connectFB(credentials, callback) { //credentials = {email: X, password:
 class FB {
   /** 
    * This constructor can only instanciate an instance if facebook has successfully logged in
+   * @param {string} name - Service name
    * @param {JSON} config - stores the {facebook-chat-api} "api" and {boolean} "cookie"
    * @property {boolean} cookie - logged in from a file OR had to use credentials first timer?
    * @property {facebook-chat-api} api - the facebook API which we can query facebook with, without this it's not much point in having an instance of `FB` class
@@ -30,10 +40,11 @@ class FB {
    * @log - Show LoggedIn Instance && cookie or actual credentials
   */
   constructor(config) {
-    this.cookie = config.cookie || false;
-    this.api = config.api;
-    this.myID = config.api.getCurrentUserID();
-    this.debug = true;
+    this.name = 'facebook'
+    this.cookie = config.cookie || false
+    this.api = config.api
+    this.myID = config.api.getCurrentUserID()
+    this.debug = true
     this.log('login_type')
   } //constructor FB end
   /** 
@@ -47,29 +58,35 @@ class FB {
     //@none is also accepted and we keep pulling 50 messages until we get to the bottom of the well,
     //but that seems better than telling how many messages to pull
     //to do that we may need to have an itterator over time so this function may have to run in background for a while
-    this.api.getThreadHistoryGraphQL(threadID, count, timestamp, 
-      function(messages_data) {
+    this.api.getThreadHistoryGraphQL(threadID, count, timestamp,
+      function (messages_data) {
         //perhaps rename messages to thread
-        var messages = JSON.parse(messages_data['res'].substring(0, messages_data['res'].indexOf("]}}}}}")+7))['o0']['data']['message_thread'];
-        let ThreadHistory = {
-          id: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
-          threadUsers: [],
-          messages: [],
-          messages_count: messages.messages_count,
-          unread_count: messages.unread_count,
-          name: messages.name,
-          image: messages.image,
-          last_mesage: messages.last_message.nodes[0]
-        }
-        for(let participant in messages['all_participants']['nodes'])
-          ThreadHistory.threadUsers.push({
+        //check if it's possible to parse the json, then parse it...
+        let toParse = messages_data['res'].substring(0, messages_data['res'].indexOf("]}}}}}") + 7)
+
+        if (IsJsonString(toParse)) {
+
+          var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
+          
+          let ThreadHistory = {
+            id: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
+            threadUsers: [],
+            messages: [],
+            messages_count: messages.messages_count,
+            unread_count: messages.unread_count,
+            name: messages.name,
+            image: messages.image,
+            last_mesage: messages.last_message.nodes[0]
+          }
+          for (let participant in messages['all_participants']['nodes'])
+            ThreadHistory.threadUsers.push({
               id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
               type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
-          })
-        
-        for(let message in messages['messages']['nodes'])
-          if('message' in messages['messages']['nodes'][message] && 'text' in messages['messages']['nodes'][message]['message'])
-            ThreadHistory.messages.push({ //message_source_data, message_reply_data ?! maybe later on
+            })
+
+          for (let message in messages['messages']['nodes'])
+            if ('message' in messages['messages']['nodes'][message] && 'text' in messages['messages']['nodes'][message]['message'])
+              ThreadHistory.messages.push({ //message_source_data, message_reply_data ?! maybe later on
                 type: messages['messages']['nodes'][message]['__typename'],
                 id: messages['messages']['nodes'][message]['message_id'],
                 senderID: messages['messages']['nodes'][message]['message_sender']['id'],
@@ -77,69 +94,71 @@ class FB {
                 unread: messages['messages']['nodes'][message]['unread'],
                 timestamp: messages['messages']['nodes'][message]['timestamp_precise'],
                 text: messages['messages']['nodes'][message]['message']['text'],
-                reactions: JSON.stringify(messages['messages']['nodes'][message]['message_reactions'])
+                reactions: JSON.stringify(messages['messages']['nodes'][message]['message_reactions']),
+                files: JSON.stringify(messages['messages']['nodes'][message]['blob_attachments'])
               })
 
-        if(ThreadHistory.messages.length > 0)
-          ThreadHistory.prev = ThreadHistory.messages[0].timestamp;
-          
-        callback(ThreadHistory)
-        // console.log(ThreadHistory)
+          if (ThreadHistory.messages.length > 0)
+            ThreadHistory.prev = ThreadHistory.messages[0].timestamp;
+
+          callback(ThreadHistory)
+          // console.log(ThreadHistory)
+        }
       })
   }
-/**
-  * send a message to facebook Thread via text OR file + text
-  * @param {number} threadID - conversation room unique indentifier
-  * @param {string} text - message content
-  * @param {binary} file - (optional) image/video/audio
-  * @log - show that message has been sent (debug)
- */
+  /**
+    * send a message to facebook Thread via text OR file + text
+    * @param {number} threadID - conversation room unique indentifier
+    * @param {string} text - message content
+    * @param {binary} file - (optional) image/video/audio
+    * @log - show that message has been sent (debug)
+   */
   send(threadID, text, file) { //file = fs.createReadStream(filePath)
-    if(!file) //ordinary text message
+    if (!file) //ordinary text message
       this.api.sendMessage(text, threadID)
     else //text message with FILE
-      this.api.sendMessage({body: text, attachment: file}, threadID)
-    this.log('msg_sent', "("+this.myID +" -> "+threadID+'): '+(file?'[FILE]':'')+text)
+      this.api.sendMessage({ body: text, attachment: file }, threadID)
+    this.log('msg_sent', "(" + this.myID + " -> " + threadID + '): ' + (file ? '[FILE]' : '') + text)
   }
-/**
-  * Listen for incomming messages
-  * @param {function} callback - function which takes in new messages as argument
-  * @log - show user is listening (debug)
- */
+  /**
+    * Listen for incomming messages
+    * @param {function} callback - function which takes in new messages as argument
+    * @log - show user is listening (debug)
+   */
   receive(callback) {
     this.log('listening')
     this.api.listen((err, message) => {
-      if(err) return console.error(err);
+      if (err) return console.error(err);
       callback(message)
     })
   }
 
-/**
-  * Listen for incomming messages
-  * @param {function} callback - function which takes in a list of `Single Users (Threads)` as argument
- */
+  /**
+    * Listen for incomming messages
+    * @param {function} callback - function which takes in a list of `Single Users (Threads)` as argument
+   */
   list(callback) {
     this.api.getFriendsList((err, data) => {
-      if(err) return console.error(err);
+      if (err) return console.error(err);
       callback(data)
     });
   }
-  
-/**
-  * Log Phases for debug
-  * @param {function} callback - function which takes in a list of `Single Users (Threads)` as argument
- */
+
+  /**
+    * Log Phases for debug
+    * @param {function} callback - function which takes in a list of `Single Users (Threads)` as argument
+   */
   log(type, info) {
-    if(this.debug)
-      switch(type) {
+    if (this.debug)
+      switch (type) {
         case 'login_type':
-          console.log('\x1b[32m%s\x1b[0m', 'facebook Client Logged in using '+(this.cookie? 'Cookie-File' : 'Credentials') + ' ID: ' + this.myID)
+          console.log('\x1b[32m%s\x1b[0m', 'facebook Client Logged in using ' + (this.cookie ? 'Cookie-File' : 'Credentials') + ' ID: ' + this.myID)
           break
         case 'msg_sent':
           console.log('\x1b[32m%s\x1b[0m', "Message Sent! - " + info)
           break
         case 'listening':
-          console.log('\x1b[33m%s\x1b[0m', "ID: ("+this.myID+") is Listening ...")
+          console.log('\x1b[33m%s\x1b[0m', "ID: (" + this.myID + ") is Listening ...")
           break
         default:
           console.error('...')
