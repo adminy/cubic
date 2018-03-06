@@ -1,14 +1,16 @@
 <div class='container' id='main'>
-    <nav class="white collection">
-      <b><span style="color: black; font-size:30px;">Cubik</span></b>
-      <div class="nav-wrapper white container collection-item right" style='position:absolute;top:0;right:0;width:auto;padding:0;text-align:center;'>
-            <a class="waves-effect modal-trigger dropdown-button blue-text text-darken-2" href="#menu">
-              <i class="material-icons right">more_vert</i>
-            </a>
-      </div>
-    </nav>
+  <nav class="white collection">
+    <b>
+      <span style="color: black; font-size:30px;">Cubik</span>
+    </b>
+    <div class="nav-wrapper white container collection-item right" style='position:absolute;top:0;right:0;width:auto;padding:0;text-align:center;'>
+      <button class="waves-effect modal-trigger waves-light dropdown-button blue-text text-darken-2 meniu" onclick='show_menu()'>
+        <i class="material-icons right">more_vert</i>
+      </button>
+    </div>
+  </nav>
 
-    <!-- <nav class="white center">
+  <!-- <nav class="white center">
         <div class="center row">
             <div class="col s12">
               <div class="row" id="topbarsearch">
@@ -21,79 +23,120 @@
           </div>
     </nav> -->
 
-
-    <style>
-      body {
-        overflow:hidden;
-      }
-      .chat:hover {
-        background: #86c6e6;
-        border-left: 4px solid #29b6f6
-      }
-    </style>
-    <div id='threads' style='height:85vh;'>
-      <h5 style='text-align:center;color:#767CA0;'>GROUPS</h5>
-      <!-- Show ALL Groups -->
-      <ul class="collection" style='height:auto;max-height:40%;overflow:scroll;overflow-x:hidden;'>
-          <p>No groups created yet ...</p>
-      </ul>
-      <h5 style='text-align:center;color:#767CA0;'>PEOPLE</h5>
-      <!-- only partially show people -->
-      <ul class="collection" id="biz" style='height:auto;max-height:80%;overflow:scroll;overflow-x:hidden;'><h2 style='text-align:center'>Loading ...</h2></ul>
-      <!-- Load More People -->
-      <!-- <h5 style='text-align:center'><a href='#page2' class='waves-effect waves-light btn-large blue'>Load More</a></h5> -->
-   </div>
+  <div id='threads' style='height:85vh;'>
+    <h5 style='text-align:center;color:#767CA0;'>GROUPS</h5>
+    <!-- Show ALL Groups -->
+    <ul class="collection" style='height:auto;max-height:40%;overflow:scroll;overflow-x:hidden;'>
+      <p>No groups created yet ...</p>
+    </ul>
+    <h5 style='text-align:center;color:#767CA0;'>PEOPLE</h5>
+    <!-- only partially show people -->
+    <ul class="collection" id="biz" style='height:auto;max-height:80%;overflow:scroll;overflow-x:hidden;'>
+      <h2 style='text-align:center'>Loading ...</h2>
+    </ul>
+    <!-- Load More People -->
+    <!-- <h5 style='text-align:center'><a href='#page2' class='waves-effect waves-light btn-large blue'>Load More</a></h5> -->
   </div>
+</div>
 
 
-  <div class="chat layer-opened open-messages" style='display:none' id='msgdiv'>
-    <!-- Messages -->
-    <div class="messages">
-      <!-- header -->
-      <div class="topbar card blue-text" style='margin:0'>
-        <a class="chat-name blue-text">Group Name</a>
-        <a class="chat-back blue-text back_button" onclick='back_to_menu()'>Back</a>
-      </div>
-      <!-- /header -->
-      <!-- All messages list -->
-      <div class="list">
-        <div class="nano scroll-bottom has-scrollbar" id='scroller'>
-          <div class="nano-content" id='messages' tabindex="0" style="right: -17px;"></div>
-          <div class="nano-pane" style="display: block;">
-            <div class="nano-slider"></div>
-          </div>
-        </div>
-      </div>
-      <!-- /All messages list -->
-      <!-- Send message -->
-      <div class="send file-field input-field card">
-        <button class="feature1 btn-floating waves-effect waves-light" onclick="$('.scale-transition').toggleClass('scale-out'); $('.tgb').html(($('.tgb').html() == 'add' ? 'keyboard' : 'add'));">
-          <i class="material-icons tgb">add</i>
-        </button>
-        <button class="feature2 btn waves-effect waves-light scale-transition scale-out" onclick="$(this).toggleClass('red'); $('.mcf').html(($('.mcf').html() == 'mic_none' ? 'timer_3' : 'mic'));">
-          <i class="material-icons mcf">mic_none</i>
-        </button>
-        <button class="feature3 btn waves-effect waves-light scale-transition scale-out">
-          <i class="material-icons">brush</i>
-        </button>
-        <button class="feature4 btn waves-effect waves-light scale-transition scale-out file-path-wrapper">
-          <input type='file' onchange="console.log($('.feature4').html()+= 'test')" multiple>
-          <input type='text' class='file-path validate' style='width:0;'>
-          <i class="material-icons">perm_media</i>
-          <span class="new badge green" style='min-width:2rem;border-radius:2rem;float:right;margin:0;padding:0' data-badge-caption="1"></span>
-        </button>
-        <div class="input-field scale-transition">
-          <textarea name="comments" class='materialize-textarea' id="message_textbox" onkeypress="keysPress(this);"></textarea>
-        </div>
-        <button class="smily btn-floating waves-effect waves-light scale-transition">
-          <i class="material-icons">insert_emoticon</i>
-        </button>
-        <button class="sendy btn">
-          <i class="material-icons">send</i>
-        </button>
-      </div>
-      <!-- /Send message -->
+<div class="chat layer-opened open-messages" style='display:none' id='msgdiv'>
+  <!-- Messages -->
+  <div class="messages">
+    <!-- header -->
+    <div class="topbar card blue-text" style='margin:0'>
+      <a class="chat-name blue-text">Group Name</a>
+      <a class="chat-back blue-text back_button" onclick='back_to_menu()'>Back</a>
     </div>
-    <!-- /Messages -->
+    <!-- /header -->
+    <!-- All messages list -->
+    <div class="list">
+      <div class="nano scroll-bottom has-scrollbar" id='scroller'>
+        <div class="nano-content" id='messages' tabindex="0"></div>
+        <!-- style="right: -17px;" -->
+        <div class="nano-pane" style="display: block;">
+          <div class="nano-slider"></div>
+        </div>
+      </div>
+    </div>
+    <!-- /All messages list -->
+    <!-- Send message -->
+    <div class="send file-field input-field card" style='padding: 0;margin: 0;'>
+      <button class="feature1 btn-floating waves-effect waves-light" onclick="$('.scale-transition').toggleClass('scale-out'); $('.tgb').html(($('.tgb').html() == 'add' ? 'keyboard' : 'add'));">
+        <i class="material-icons tgb">add</i>
+      </button>
+      <button class="feature2 btn waves-effect waves-light scale-transition scale-out" onclick="$(this).toggleClass('red'); $('.mcf').html(($('.mcf').html() == 'mic_none' ? 'timer_3' : 'mic'));">
+        <i class="material-icons mcf">mic_none</i>
+      </button>
+      <button class="feature3 btn waves-effect waves-light scale-transition scale-out">
+        <i class="material-icons">brush</i>
+      </button>
+      <button class="feature4 btn waves-effect waves-light scale-transition scale-out file-path-wrapper">
+        <input type='file' onchange="console.log($('.feature4').html()+= 'test')" multiple>
+        <input type='text' class='file-path validate' style='width:0;'>
+        <i class="material-icons">perm_media</i>
+        <span class="new badge green" style='min-width:2rem;border-radius:2rem;float:right;margin:0;padding:0' data-badge-caption="1"></span>
+      </button>
+      <div class="input-field scale-transition">
+        <textarea name="comments" class='materialize-textarea' id="message_textbox" onkeypress="keysPress(this);"></textarea>
+      </div>
+      <button class="smily btn-floating waves-effect waves-light scale-transition">
+        <i class="material-icons">insert_emoticon</i>
+      </button>
+      <button class="sendy btn">
+        <i class="material-icons">send</i>
+      </button>
+    </div>
+    <!-- /Send message -->
   </div>
+  <!-- /Messages -->
+</div>
+
+
+
+<div id='menu' style='position:absolute;top:0;left:0;display:none'>
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal modal-fixed-footer" style='display:block;z-index:1003;'>
+    <div class="modal-content">
+      <h4>Services</h4>
+      <div id='services_list'></div>
+      <!-- 
+            https://st3.depositphotos.com/11117316/15013/i/1600/depositphotos_150134336-stock-photo-thailand-bangkok-april-18-2017.jpg
+             https://i.imgur.com/WAXIaq2.jpg
+              http://lifebeyondthesea.com/wp-content/uploads/facetime-skype02.jpg
+               https://cdn.zmescience.com/wp-content/uploads/2011/07/facebook-skype.jpg 
+                https://cdn.iconscout.com/public/images/icon-pack/small/logos-1-facebook-instagram-icons8-twitter-skype-3dcf16188e6a603b-2018-01-03-082937-360x240.png-->
+        <!-- <p style='padding:0;margin:0;text-align:center'><img src='https://cdn.zmescience.com/wp-content/uploads/2011/07/facebook-skype.jpg' style='width:256px; height:96px;'alt='650 × 456'></p> -->
+
+      <div id='add_services'>
+        <h5 style='text-align:center'>Log in With</h5>
+        <p>
+          <input type='text' id='user' placeholder='Email or Phone or Skype'>
+        </p>
+        <p>
+          <input type='password' id='pass' placeholder='Password'>
+        </p>
+        <div style='text-align:center'>
+          <button class='btn waves-effect waves-light indigo' style='float:left' onclick="service_registration('facebook')">Facebook</button>
+          <button class='btn waves-effect waves-light green' onclick="service_registration('hangouts')">Hangouts</button>
+          <button class='btn waves-effect waves-light blue' style='float:right' onclick="service_registration('skype')">Skype</button>
+          <!-- <button class='btn waves-effect waves-light purple' style='float:right'>Viber</button> -->
+        </div>
+
+      </div>
+      <hr>
+    </div>
+    <div class="modal-footer">
+      <button class="btn green waves-effect waves-light" style='float:left'>(+) Combine</button>
+      <button class="btn red waves-effect waves-light">(-) Break</button>
+    </div>
   </div>
+  <div class="modal-overlay" style="z-index: 1002; display: block; opacity: 0.8;" onclick='hide_menu()'></div>
+
+</div>
+
+
+</div>
+<!-- Compiled and minified JavaScript -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/js/materialize.min.js"></script> -->
+  <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->

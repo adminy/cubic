@@ -13,22 +13,21 @@ var mysql = require('mysql'),
         database: 'u894154994_cubik',
         charset : 'utf8mb4',
         multipleStatements: true
-      }, con;
+      }, con = mysql.createConnection(db);
 
+con.on('error', function(err){ console.log(err.code); });
+    
 /**
  * @param {string} sql - any sql query [CREATE, DROP, SELECT, INSERT, UPDATE, DELETE] 
  * @param {*} callback - function which takes the result
  */
 function query(sql, callback) {
-    con = mysql.createConnection(db)
-    con.on('error', function(err){
-        console.log(err.code);
-    });
     con.query(sql, function (err, data, fields) {
         if(err) throw console.error(err);
         callback(data, fields)
     })
     con.end();
+    con = mysql.createConnection(db);
 }
 
 //this file is required by `server.js`

@@ -1,6 +1,7 @@
 /** initial setup **/
 body {
       touch-action: none;
+      overflow:hidden;
 }
 .nano {
   position: relative;
@@ -18,7 +19,7 @@ body {
   bottom: 0;
   left: 0;
 }
-
+/* 
 .nano>.nano-content:focus {
   outline: thin dotted;
 }
@@ -29,8 +30,8 @@ body {
 
 .has-scrollbar>.nano-content::-webkit-scrollbar {
   display: block;
-}
-
+} */
+/* 
 .nano>.nano-pane {
   background: rgba(0, 0, 0, .25);
   position: absolute;
@@ -39,7 +40,7 @@ body {
   top: 0;
   bottom: 0;
   visibility: hidden;
-  /* Target only IE7 and IE8 with this hack */
+  /* Target only IE7 and IE8 with this hack *
   opacity: .01;
   -webkit-transition: .2s;
   -moz-transition: .2s;
@@ -48,15 +49,15 @@ body {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-}
+} */
 
 
 
-.nano:hover>.nano-pane, .nano-pane.active, .nano-pane.flashed {
+/* .nano:hover>.nano-pane, .nano-pane.active, .nano-pane.flashed {
   visibility: visible;
-  /* Target only IE7 and IE8 with this hack */
+  /* Target only IE7 and IE8 with this hack *
   opacity: 0.99;
-}
+} */
 
 /* .chat .messages .list .from-them:after, .chat .messages .list .from-them:before {
   content: "";
@@ -68,7 +69,7 @@ body {
 
 
 .chat {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -84,6 +85,12 @@ body {
   right: 0;
   bottom: 0
 }
+
+/* .chat:hover {
+  background: #86c6e6;
+  border-left: 4px solid #29b6f6
+} */
+
 
 .chat .layer-content, .chat .layer-overlay {
   position: absolute; width: 100%; height: 100%; background: none; z-index: 0; transform: scale(1);
@@ -380,15 +387,15 @@ body {
   animation-duration: 200ms;
 }
 @keyframes opening {
-  0%   {transform:scale(0);border-radius:50%;}
-  99%   {transform:scale(1);border-radius:50%;}   
-  100% {border-radius:0;}
+  0%   {transform:scale(0);} /* border-radius:50 */
+  /* 99%   { border-radius:50%;} */
+  100% {transform:scale(1);}   /* border-radius:0; */
 }
 
 @keyframes closing {
-  0%   {transform:scale(1);border-radius:0; opacity: 1;}
-  1%   {border-radius:50%;}
-  100% {border-radius:50%;transform:scale(0); opacity: 0.1;}
+  0%   {transform:scale(1);opacity: 1;} /* border-radius:0;  */
+  /* 1%   {border-radius:50%;} */
+  100% {transform:scale(0); opacity: 0.1;} /* border-radius:50%; */
 }
 
 
@@ -399,3 +406,23 @@ body {
 .back_button {
   cursor:pointer;
 }
+
+.meniu {
+  height:100%;
+  text-align:center;
+  border: 2px solid white;
+}
+
+.meniu:focus, .meniu:hover {
+  border:4px solid white;
+  background:rgba(0,0,0,0.2);
+}
+
+.glass{ background: inherit; }
+.glass:before{ content: ‘’; background: inherit; box-shadow: inset 0 0 0 200px rgba(255,255,255,0.3); filter: blur(10px); }
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: grey!important;
+  opacity: 1; /* Firefox */
+}
+

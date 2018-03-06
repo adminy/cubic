@@ -47,12 +47,48 @@ class FB {
     this.debug = true
     this.log('login_type')
   } //constructor FB end
+ 
+  pullThreadInfo(threadID, callback) {
+    this.api.getThreadInfoGraphQL(threadID, function(th_data) {
+      if(th_data && 'res' in th_data && th_data['res'].indexOf("]}}}}}") != -1) {
+        let toParse = th_data['res'].substring(0, th_data['res'].indexOf("]}}}}}") + 7)
+        if (IsJsonString(toParse)) {
+        
+          var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
+            
+          let ThreadInfo = {
+            threadID: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
+            threadUsers: [],
+            total_msg: messages.messages_count,
+            unread_count: messages.unread_count,
+            name: messages.name,
+            image: messages.image,
+            last_message: messages.last_message.nodes[0]
+          }
+          for (let participant in messages['all_participants']['nodes'])
+            ThreadInfo.threadUsers.push({
+              id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
+              type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
+            })
+
+          callback(ThreadInfo)
+
+          
+        } else
+            console.log('\x1b[31m%s\x1b[0m', 'Problem Parsing Facebook Thread Info')
+      } else
+          console.log('\x1b[31m%s\x1b[0m', 'FB Thread INFO DERICATED!')
+    })
+  }
+ 
+ 
   /** 
    * get Thread History
    * @param {number} threadID - conversation room unique indentifier
    * @param {string} lastMessageID - last message ID that our server has
    * @param {function} callback - function which to call so it receives a list of all the new messages
   */
+ 
   pullHistory(threadID, count, timestamp, callback) {
     //So the idea is to introduce which was the last message we do have from facebook 
     //@none is also accepted and we keep pulling 50 messages until we get to the bottom of the well,
@@ -62,47 +98,53 @@ class FB {
       function (messages_data) {
         //perhaps rename messages to thread
         //check if it's possible to parse the json, then parse it...
-        let toParse = messages_data['res'].substring(0, messages_data['res'].indexOf("]}}}}}") + 7)
+        if(messages_data && 'res' in messages_data && messages_data['res'].indexOf("]}}}}}") != -1) {
+          let toParse = messages_data['res'].substring(0, messages_data['res'].indexOf("]}}}}}") + 7)
 
-        if (IsJsonString(toParse)) {
+          if (IsJsonString(toParse)) {
 
-          var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
-          
-          let ThreadHistory = {
-            id: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
-            threadUsers: [],
-            messages: [],
-            messages_count: messages.messages_count,
-            unread_count: messages.unread_count,
-            name: messages.name,
-            image: messages.image,
-            last_mesage: messages.last_message.nodes[0]
-          }
-          for (let participant in messages['all_participants']['nodes'])
-            ThreadHistory.threadUsers.push({
-              id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
-              type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
-            })
-
-          for (let message in messages['messages']['nodes'])
-            if ('message' in messages['messages']['nodes'][message] && 'text' in messages['messages']['nodes'][message]['message'])
-              ThreadHistory.messages.push({ //message_source_data, message_reply_data ?! maybe later on
-                type: messages['messages']['nodes'][message]['__typename'],
-                id: messages['messages']['nodes'][message]['message_id'],
-                senderID: messages['messages']['nodes'][message]['message_sender']['id'],
-                senderEmail: messages['messages']['nodes'][message]['message_sender']['email'],
-                unread: messages['messages']['nodes'][message]['unread'],
-                timestamp: messages['messages']['nodes'][message]['timestamp_precise'],
-                text: messages['messages']['nodes'][message]['message']['text'],
-                reactions: JSON.stringify(messages['messages']['nodes'][message]['message_reactions']),
-                files: JSON.stringify(messages['messages']['nodes'][message]['blob_attachments'])
+            var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
+            
+            let ThreadHistory = {
+              id: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
+              threadUsers: [],
+              messages: [],
+              messages_count: messages.messages_count,
+              unread_count: messages.unread_count,
+              name: messages.name,
+              image: messages.image,
+              last_mesage: messages.last_message.nodes[0]
+            }
+            for (let participant in messages['all_participants']['nodes'])
+              ThreadHistory.threadUsers.push({
+                id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
+                type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
               })
 
-          if (ThreadHistory.messages.length > 0)
-            ThreadHistory.prev = ThreadHistory.messages[0].timestamp;
+            for (let message in messages['messages']['nodes'])
+              if ('message' in messages['messages']['nodes'][message] && 'text' in messages['messages']['nodes'][message]['message'])
+                ThreadHistory.messages.push({ //message_source_data, message_reply_data ?! maybe later on
+                  type: messages['messages']['nodes'][message]['__typename'],
+                  id: messages['messages']['nodes'][message]['message_id'],
+                  senderID: messages['messages']['nodes'][message]['message_sender']['id'],
+                  senderEmail: messages['messages']['nodes'][message]['message_sender']['email'],
+                  unread: messages['messages']['nodes'][message]['unread'],
+                  timestamp: messages['messages']['nodes'][message]['timestamp_precise'],
+                  text: messages['messages']['nodes'][message]['message']['text'],
+                  reactions: JSON.stringify(messages['messages']['nodes'][message]['message_reactions']),
+                  files: JSON.stringify(messages['messages']['nodes'][message]['blob_attachments'])
+                })
 
-          callback(ThreadHistory)
-          // console.log(ThreadHistory)
+            if (ThreadHistory.messages.length > 0) //useful getting the last message timestamp for requesting previous messages of this thread
+              ThreadHistory.prev = ThreadHistory.messages[0].timestamp;
+
+            callback(ThreadHistory)
+            // console.log(ThreadHistory)
+          } else {
+            console.log('\x1b[31m%s\x1b[0m', 'Problem Parsing Facebook Thread')
+          }
+        } else {
+          console.log('\x1b[31m%s\x1b[0m', 'FB Thread History DERICATED!')
         }
       })
   }
@@ -126,6 +168,7 @@ class FB {
     * @log - show user is listening (debug)
    */
   receive(callback) {
+    this.api.setOptions({listenEvents: true});
     this.log('listening')
     this.api.listen((err, message) => {
       if (err) return console.error(err);

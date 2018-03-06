@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html>
-
-<head>
+<html><head>
+  <title>Cubik</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/css/materialize.min.css">
@@ -13,42 +12,12 @@
   <link href="/css/style.css" rel="stylesheet">
   <script src='/js/social.js'></script>
   <script src='/js/functions.js'></script>
-  <script>
-    //- Substract previous message time from the next, if difference wise is impactful enough, eg: more than 1h difference, then show time, else don't, also make this custom within settings ;)
-    //RIGHT NOW
-    //    - Chats work of #tags, very insecure, in future it will all be controlled by the server.
+  <script src='/js/client.js'></script>
+   <!-- Compiled and minified CSS -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
 
-    //    - Server can store user session like in PHP, basically it'll store what buttons it pressed in main
-    //      - to know what to show in this page, if server session tells the user surfing that it's not true,
-    //        -then we can redirect the user to main menu immediately.
-
-    //hide chat, back to menu
-    function back_to_menu() {
-      window.location.hash = "";
-      let msgdiv = document.getElementById('msgdiv')
-      removeClass(msgdiv, "loader")
-      addClass(msgdiv, "unloader")
-
-      setTimeout(function () {
-        document.getElementById('msgdiv').style.display = 'none';
-      }, 200)
-
-    }
-
-    function menu_to_message() {
-      var items = document.getElementsByClassName('list_item');
-      for (var i = 0; i < items.length; i++) {
-        items[i].onclick = function (event) {
-          let msgdiv = document.getElementById('msgdiv')
-          removeClass(msgdiv, "unloader")
-          addClass(msgdiv, "loader")
-          document.getElementById('msgdiv').style.display = 'block';
-        }
-      }
-    }
-  </script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/js/materialize.min.js"></script>
-    <script src='/js/client.js'></script>
-</head><body></body></html>
+   <!-- Compiled and minified JavaScript -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
+           
+</head><body></body>
+</html>
