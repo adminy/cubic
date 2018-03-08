@@ -33,7 +33,33 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     }
 }
 
- //____________________________________________Post/Get Method
+    
+    function sortByKey(array, key) {
+        return array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+    }
+// var people = [
+//     {
+//         name: 'a75',
+//         item1: false,
+//         item2: false
+//     },
+//     {
+//         name: 'z32',
+//         item1: true,
+//         item2: false
+//     },
+//     {
+//         name: 'e77',
+//         item1: false,
+//         item2: false
+//     }];    
+// people = sortByKey(people, 'name');
+
+
+//____________________________________________Post/Get Method
  function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
   
@@ -90,3 +116,6 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
       setTimeout(function() { keepdo(condition, callback)}, 100);
   }
   
+//these are supposed to be in page.js but no good sitting there as there is almost nothing page related other than it belongs to main.html, maybe move them to main.html
+function show_menu() { document.getElementById('menu').style.display = 'block'; }
+function hide_menu() { document.getElementById('menu').style.display = 'none'; }

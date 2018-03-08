@@ -19,6 +19,45 @@ body {
   bottom: 0;
   left: 0;
 }
+
+
+.dropup {
+    position: relative;
+    display: inline-block;
+}
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+.dropup-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    bottom:50px;
+    z-index: 1;
+}
+
+.dropup-content a {
+    color: black;
+    padding: 10px 14px;
+    display: block;
+}
+
+.dropup-content a:hover {background-color: #ccc}
+
+.dropup:hover .dropup-content {
+    display: block;
+}
+
+.dropup:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
 /* 
 .nano>.nano-content:focus {
   outline: thin dotted;

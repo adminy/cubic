@@ -14,9 +14,9 @@ function IsJsonString(str) {
 * @param {JSON} credentials - can be either and appState (cookie) OR email and password for initial authentication
 * @param {function} callback - function which to give FB manager object and error (if any)
 */
-function connectFB(credentials, callback) { //credentials = {email: X, password: Y} || {appState: Z}
+function connectFB(f, user, credentials, callback) { //credentials = {email: X, password: Y} || {appState: Z}
   login(credentials, (error, api) => {
-    callback(new FB({ cookie: ('appState' in credentials), api: api }), error)
+    callback(new FB({ f: f, user: user, cookie: ('appState' in credentials), api: api }), error)
   })
 }
 
@@ -42,112 +42,139 @@ class FB {
   constructor(config) {
     this.name = 'facebook'
     this.cookie = config.cookie || false
+    this.f = config.f //should always be provided
+    this.user = config.user //should always be provided, this is helpful to indentify the user in services so it can send `listen()` events/messages if user is online
     this.api = config.api
     this.myID = config.api.getCurrentUserID()
     this.debug = true
     this.log('login_type')
-  } //constructor FB end
- 
-  pullThreadInfo(threadID, callback) {
-    this.api.getThreadInfoGraphQL(threadID, function(th_data) {
-      if(th_data && 'res' in th_data && th_data['res'].indexOf("]}}}}}") != -1) {
-        let toParse = th_data['res'].substring(0, th_data['res'].indexOf("]}}}}}") + 7)
-        if (IsJsonString(toParse)) {
-        
-          var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
-            
-          let ThreadInfo = {
-            threadID: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
-            threadUsers: [],
-            total_msg: messages.messages_count,
-            unread_count: messages.unread_count,
-            name: messages.name,
-            image: messages.image,
-            last_message: messages.last_message.nodes[0]
-          }
-          for (let participant in messages['all_participants']['nodes'])
-            ThreadInfo.threadUsers.push({
-              id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
-              type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
-            })
 
-          callback(ThreadInfo)
+    if(!this.cookie) this.cookie_setup()
+    this.listen()
+    this.update()
 
-          
-        } else
-            console.log('\x1b[31m%s\x1b[0m', 'Problem Parsing Facebook Thread Info')
-      } else
-          console.log('\x1b[31m%s\x1b[0m', 'FB Thread INFO DERICATED!')
+    var user = this.user
+    var ff = this.f
+    var sql = "SET NAMES utf8mb4;"
+    this.list(function (contacts) {
+      for (let i = 0; i < contacts.length; i++)
+        sql += "INSERT INTO relations(yourID, theirID, type, service) VALUES (" + ff.con.escape(user) + "," + ff.con.escape(contacts[i].userID) + "," + ff.con.escape(contacts[i].type) + ",'facebook') ON DUPLICATE KEY UPDATE service=service;" +
+          "INSERT INTO profiles (userID, name, avatar, type) VALUES (" + ff.con.escape(contacts[i].userID) + "," + ff.con.escape(contacts[i].fullName) + "," + ff.con.escape(contacts[i].profilePicture) + ",'facebook') ON DUPLICATE KEY UPDATE type=type;"
+      ff.query(sql, function (res) { ff.log('Updated DB relations and profiles for FaceBook [' + user + ']') })
+
+
     })
+  } //constructor FB end
+
+  cookie_setup() {
+    var user = this.user, ff = this.f, cookie_file = this.myID + '.json'
+    ff.fs.writeFileSync(__dirname + '/user_data/' + cookie_file, JSON.stringify(this.api.getAppState()))
+    ff.query("UPDATE services SET authFilePath=" + ff.con.escape(cookie_file) + " WHERE user=" + ff.con.escape(user) + " AND service='facebook'" , function(res) {
+      ff.log(res.affectedRows + ' row(s) Updated [FB Cookie File]')
+    })
+
   }
- 
- 
-  /** 
-   * get Thread History
-   * @param {number} threadID - conversation room unique indentifier
-   * @param {string} lastMessageID - last message ID that our server has
-   * @param {function} callback - function which to call so it receives a list of all the new messages
-  */
- 
-  pullHistory(threadID, count, timestamp, callback) {
-    //So the idea is to introduce which was the last message we do have from facebook 
-    //@none is also accepted and we keep pulling 50 messages until we get to the bottom of the well,
-    //but that seems better than telling how many messages to pull
-    //to do that we may need to have an itterator over time so this function may have to run in background for a while
-    this.api.getThreadHistoryGraphQL(threadID, count, timestamp,
-      function (messages_data) {
-        //perhaps rename messages to thread
-        //check if it's possible to parse the json, then parse it...
-        if(messages_data && 'res' in messages_data && messages_data['res'].indexOf("]}}}}}") != -1) {
-          let toParse = messages_data['res'].substring(0, messages_data['res'].indexOf("]}}}}}") + 7)
 
-          if (IsJsonString(toParse)) {
+  // pullThreadInfo(threadID, callback) {
+  //   this.api.getThreadInfoGraphQL(threadID, function(th_data) {
+  //     if(th_data && 'res' in th_data && th_data['res'].indexOf("]}}}}}") != -1) {
+  //       let toParse = th_data['res'].substring(0, th_data['res'].indexOf("]}}}}}") + 7)
+  //       if (this.f.isJSON(toParse)) {
 
-            var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
-            
-            let ThreadHistory = {
-              id: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
-              threadUsers: [],
-              messages: [],
-              messages_count: messages.messages_count,
-              unread_count: messages.unread_count,
-              name: messages.name,
-              image: messages.image,
-              last_mesage: messages.last_message.nodes[0]
-            }
-            for (let participant in messages['all_participants']['nodes'])
-              ThreadHistory.threadUsers.push({
-                id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
-                type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
-              })
+  //         var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
 
-            for (let message in messages['messages']['nodes'])
-              if ('message' in messages['messages']['nodes'][message] && 'text' in messages['messages']['nodes'][message]['message'])
-                ThreadHistory.messages.push({ //message_source_data, message_reply_data ?! maybe later on
-                  type: messages['messages']['nodes'][message]['__typename'],
-                  id: messages['messages']['nodes'][message]['message_id'],
-                  senderID: messages['messages']['nodes'][message]['message_sender']['id'],
-                  senderEmail: messages['messages']['nodes'][message]['message_sender']['email'],
-                  unread: messages['messages']['nodes'][message]['unread'],
-                  timestamp: messages['messages']['nodes'][message]['timestamp_precise'],
-                  text: messages['messages']['nodes'][message]['message']['text'],
-                  reactions: JSON.stringify(messages['messages']['nodes'][message]['message_reactions']),
-                  files: JSON.stringify(messages['messages']['nodes'][message]['blob_attachments'])
-                })
+  //         let ThreadInfo = {
+  //           threadID: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
+  //           threadUsers: [],
+  //           total_msg: messages.messages_count,
+  //           unread_count: messages.unread_count,
+  //           name: messages.name,
+  //           image: messages.image,
+  //           last_message: messages.last_message.nodes[0]
+  //         }
+  //         for (let participant in messages['all_participants']['nodes'])
+  //           ThreadInfo.threadUsers.push({
+  //             id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
+  //             type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
+  //           })
 
-            if (ThreadHistory.messages.length > 0) //useful getting the last message timestamp for requesting previous messages of this thread
-              ThreadHistory.prev = ThreadHistory.messages[0].timestamp;
+  //         callback(ThreadInfo)
 
-            callback(ThreadHistory)
-            // console.log(ThreadHistory)
-          } else {
-            console.log('\x1b[31m%s\x1b[0m', 'Problem Parsing Facebook Thread')
-          }
-        } else {
-          console.log('\x1b[31m%s\x1b[0m', 'FB Thread History DERICATED!')
-        }
-      })
-  }
+
+  //       } else
+  //           console.log('\x1b[31m%s\x1b[0m', 'Problem Parsing Facebook Thread Info')
+  //     } else
+  //         console.log('\x1b[31m%s\x1b[0m', 'FB Thread INFO DERICATED!')
+  //   })
+  // }
+
+
+  // /** 
+  //  * get Thread History
+  //  * @param {number} threadID - conversation room unique indentifier
+  //  * @param {string} lastMessageID - last message ID that our server has
+  //  * @param {function} callback - function which to call so it receives a list of all the new messages
+  // */
+
+  // pullHistory(threadID, count, timestamp, callback) {
+  //   //So the idea is to introduce which was the last message we do have from facebook 
+  //   //@none is also accepted and we keep pulling 50 messages until we get to the bottom of the well,
+  //   //but that seems better than telling how many messages to pull
+  //   //to do that we may need to have an itterator over time so this function may have to run in background for a while
+  //   this.api.getThreadHistoryGraphQL(threadID, count, timestamp,
+  //     function (messages_data) {
+  //       //perhaps rename messages to thread
+  //       //check if it's possible to parse the json, then parse it...
+  //       if(messages_data && 'res' in messages_data && messages_data['res'].indexOf("]}}}}}") != -1) {
+  //         let toParse = messages_data['res'].substring(0, messages_data['res'].indexOf("]}}}}}") + 7)
+
+  //         if (IsJsonString(toParse)) {
+
+  //           var messages = JSON.parse(toParse)['o0']['data']['message_thread'];
+
+  //           let ThreadHistory = {
+  //             id: messages.thread_key.thread_fbid || messages.thread_key.other_user_id,
+  //             threadUsers: [],
+  //             messages: [],
+  //             messages_count: messages.messages_count,
+  //             unread_count: messages.unread_count,
+  //             name: messages.name,
+  //             image: messages.image,
+  //             last_mesage: messages.last_message.nodes[0]
+  //           }
+  //           for (let participant in messages['all_participants']['nodes'])
+  //             ThreadHistory.threadUsers.push({
+  //               id: messages['all_participants']['nodes'][participant]['messaging_actor']['id'],
+  //               type: messages['all_participants']['nodes'][participant]['messaging_actor']['__typename']
+  //             })
+
+  //           for (let message in messages['messages']['nodes'])
+  //             if ('message' in messages['messages']['nodes'][message] && 'text' in messages['messages']['nodes'][message]['message'])
+  //               ThreadHistory.messages.push({ //message_source_data, message_reply_data ?! maybe later on
+  //                 type: messages['messages']['nodes'][message]['__typename'],
+  //                 id: messages['messages']['nodes'][message]['message_id'],
+  //                 senderID: messages['messages']['nodes'][message]['message_sender']['id'],
+  //                 senderEmail: messages['messages']['nodes'][message]['message_sender']['email'],
+  //                 unread: messages['messages']['nodes'][message]['unread'],
+  //                 timestamp: messages['messages']['nodes'][message]['timestamp_precise'],
+  //                 text: messages['messages']['nodes'][message]['message']['text'],
+  //                 reactions: JSON.stringify(messages['messages']['nodes'][message]['message_reactions']),
+  //                 files: JSON.stringify(messages['messages']['nodes'][message]['blob_attachments'])
+  //               })
+
+  //           if (ThreadHistory.messages.length > 0) //useful getting the last message timestamp for requesting previous messages of this thread
+  //             ThreadHistory.prev = ThreadHistory.messages[0].timestamp;
+
+  //           callback(ThreadHistory)
+  //           // console.log(ThreadHistory)
+  //         } else {
+  //           console.log('\x1b[31m%s\x1b[0m', 'Problem Parsing Facebook Thread')
+  //         }
+  //       } else {
+  //         console.log('\x1b[31m%s\x1b[0m', 'FB Thread History DERICATED!')
+  //       }
+  //     })
+  // }
   /**
     * send a message to facebook Thread via text OR file + text
     * @param {number} threadID - conversation room unique indentifier
@@ -159,7 +186,7 @@ class FB {
     if (!file) //ordinary text message
       this.api.sendMessage(text, threadID)
     else //text message with FILE
-      this.api.sendMessage({ body: text, attachment: file }, threadID)
+      this.api.sendMessage({ body: text, attachment: file }, threadID)     
     this.log('msg_sent', "(" + this.myID + " -> " + threadID + '): ' + (file ? '[FILE]' : '') + text)
   }
   /**
@@ -167,12 +194,40 @@ class FB {
     * @param {function} callback - function which takes in new messages as argument
     * @log - show user is listening (debug)
    */
-  receive(callback) {
-    this.api.setOptions({listenEvents: true});
+  listen() {
+    this.api.setOptions({ listenEvents: true, selfListen: true });
     this.log('listening')
+    var ff = this.f
+    var user = this.user
+
     this.api.listen((err, message) => {
-      if (err) return console.error(err);
-      callback(message)
+      if (err) return console.error(err)
+      ff.query("SELECT userID FROM services WHERE user=" + ff.con.escape(this.user), function (userIDs) { //support multiquery in this query to insert the message 
+        for (let i = 0; i < userIDs.length; i++) {
+
+          ff.send_if_online(ff.wss, userIDs[i].userID, function(ws) { ws.send(JSON.stringify({message: message})) })
+
+
+
+          if('messageID' in message && 'senderID' in message)
+            ff.query("INSERT INTO messages(message_owner, service, threadID, id, type, senderID, timestamp, content) VALUES ("+
+                    ff.con.escape(user)+",'facebook',"+
+                    ff.con.escape(message.threadID)+","+
+                    ff.con.escape(message.messageID)+","+
+                    ff.con.escape((message.body ? 'text' : 'other'))+","+
+                    ff.con.escape(message.senderID)+","+
+                    ff.con.escape(message.timestamp)+","+
+                    ff.con.escape((message.body ? message.body : JSON.stringify(message.attachments))) + ")  ON DUPLICATE KEY UPDATE timestamp=timestamp", function(res) {  // console.log(message.resource.imdisplayname + ": " + message.resource.content + " (" +  + ")")
+                        ff.log(res.affectedRows + ' row(s) updated [New DB Message Facebook]')
+                    })
+        }
+
+      })
+      //save to DB if it's a message
+      //Send it to all web socket users which we can relate to this
+
+
+
     })
   }
 
@@ -206,6 +261,24 @@ class FB {
         default:
           console.error('...')
       }
+  }
+  update() {
+    var myID = this.myID
+    var user = this.user
+    var ff = this.f
+    //this.list(function (contacts) {
+      ff.query("SELECT userID FROM services WHERE user=" + ff.con.escape(user), function (userIDs) { //support multiquery in this query to insert the message 
+        for (let i = 0; i < userIDs.length; i++)
+          ff.send_if_online(ff.wss, userIDs[i].userID, function (ws) {
+            // ff.query("SELECT COUNT(*) as len FROM relations INNER JOIN profiles ON relations.theirID=profiles.userID WHERE yourID=" + ff.con.escape(user) + " AND (SELECT timestamp FROM messages WHERE threadID=relations.theirID ORDER BY timestamp DESC LIMIT 1) IS NOT NULL", function (dtl) {
+              // if (dtl.length > 0)
+                ff.query("SELECT service, userID, name, avatar, (SELECT timestamp FROM messages WHERE threadID=relations.theirID ORDER BY timestamp DESC LIMIT 1) as timestamp, (SELECT content FROM messages WHERE threadID=relations.theirID ORDER BY timestamp DESC LIMIT 1) as text FROM relations INNER JOIN profiles ON relations.theirID=profiles.userID WHERE yourID=" + ff.con.escape(user) + " ORDER BY timestamp DESC", function (contacts) { // LIMIT " + ((parseInt(dtl[0].len) > 10) ? parseInt(dtl[0].len) : 10), function (contacts) {
+                  ws.send(JSON.stringify({contacts: contacts}))
+                })
+            // })
+          }, 'sent_fb_contacts')
+      })
+    //})
   }
 } //end of FB class
 

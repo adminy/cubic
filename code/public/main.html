@@ -1,5 +1,5 @@
 <div class='container' id='main'>
-  <nav class="white collection">
+  <nav class="white collection" id='top_bar'>
     <b>
       <span style="color: black; font-size:30px;">Cubik</span>
     </b>
@@ -10,23 +10,23 @@
     </div>
   </nav>
 
-  <!-- <nav class="white center">
+  <nav class="white center">
         <div class="center row">
             <div class="col s12">
               <div class="row" id="topbarsearch">
                 <div class="input-field col s6 s12 black-text">
                   <i class="blue-text text-darken-2 material-icons prefix">search</i>
-                  <input type="text" placeholder="search" id="autocomplete-input" class="autocomplete black-text search_active">
+                  <input type="text" placeholder="search" id="autocomplete-input" class="autocomplete black-text search_active" onkeyup="searching(this)">
                 </div>
               </div>
             </div>
           </div>
-    </nav> -->
+    </nav>
 
   <div id='threads' style='height:85vh;'>
     <h5 style='text-align:center;color:#767CA0;'>GROUPS</h5>
     <!-- Show ALL Groups -->
-    <ul class="collection" style='height:auto;max-height:40%;overflow:scroll;overflow-x:hidden;'>
+    <ul class="collection" style='height:auto;max-height:40%;overflow:scroll;overflow-x:hidden;' id="buz">
       <p>No groups created yet ...</p>
     </ul>
     <h5 style='text-align:center;color:#767CA0;'>PEOPLE</h5>
@@ -45,7 +45,7 @@
   <div class="messages">
     <!-- header -->
     <div class="topbar card blue-text" style='margin:0'>
-      <a class="chat-name blue-text">Group Name</a>
+      <a class="chat-name blue-text" id="threadName"></a>
       <a class="chat-back blue-text back_button" onclick='back_to_menu()'>Back</a>
     </div>
     <!-- /header -->
@@ -62,27 +62,39 @@
     <!-- /All messages list -->
     <!-- Send message -->
     <div class="send file-field input-field card" style='padding: 0;margin: 0;'>
-      <button class="feature1 btn-floating waves-effect waves-light" onclick="$('.scale-transition').toggleClass('scale-out'); $('.tgb').html(($('.tgb').html() == 'add' ? 'keyboard' : 'add'));">
-        <i class="material-icons tgb">add</i>
-      </button>
-      <button class="feature2 btn waves-effect waves-light scale-transition scale-out" onclick="$(this).toggleClass('red'); $('.mcf').html(($('.mcf').html() == 'mic_none' ? 'timer_3' : 'mic'));">
-        <i class="material-icons mcf">mic_none</i>
-      </button>
-      <button class="feature3 btn waves-effect waves-light scale-transition scale-out">
-        <i class="material-icons">brush</i>
-      </button>
-      <button class="feature4 btn waves-effect waves-light scale-transition scale-out file-path-wrapper">
-        <input type='file' onchange="console.log($('.feature4').html()+= 'test')" multiple>
-        <input type='text' class='file-path validate' style='width:0;'>
-        <i class="material-icons">perm_media</i>
-        <span class="new badge green" style='min-width:2rem;border-radius:2rem;float:right;margin:0;padding:0' data-badge-caption="1"></span>
-      </button>
+      <!--<button class="feature1 btn-floating waves-effect waves-light" onclick="$('.scale-transition').toggleClass('scale-out'); $('.tgb').html(($('.tgb').html() == 'add' ? 'keyboard' : 'add'));">-->
+      <!--  <i class="material-icons tgb">add</i>-->
+      <!--</button>-->
+      <!--<button class="feature2 btn waves-effect waves-light scale-transition scale-out" onclick="$(this).toggleClass('red'); $('.mcf').html(($('.mcf').html() == 'mic_none' ? 'timer_3' : 'mic'));">-->
+      <!--  <i class="material-icons mcf">mic_none</i>-->
+      <!--</button>-->
+      <!--<button class="feature3 btn waves-effect waves-light scale-transition scale-out">-->
+      <!--  <i class="material-icons">brush</i>-->
+      <!--</button>-->
+      <!--<button class="feature4 btn waves-effect waves-light scale-transition scale-out file-path-wrapper">-->
+      <!--  <input type='file' onchange="console.log($('.feature4').html()+= 'test')" multiple>-->
+      <!--  <input type='text' class='file-path validate' style='width:0;'>-->
+      <!--  <i class="material-icons">perm_media</i>-->
+      <!--  <span class="new badge green" style='min-width:2rem;border-radius:2rem;float:right;margin:0;padding:0' data-badge-caption="1"></span>-->
+      <!--</button>-->
+      <div class="dropup">
+        
+      <button class="dropbtn align-right">Fb/Skype</button>
+          <div class="dropup-content">
+            
+     <a href="#!"> <img src="https://i.imgur.com/bOl3IOa.png"></a>
+    <a href="#!">  <img src="https://i.imgur.com/edQkxse.png"></a>
+            
+      </div>
+      
+      </div>
+      
       <div class="input-field scale-transition">
         <textarea name="comments" class='materialize-textarea' id="message_textbox" onkeypress="keysPress(this);"></textarea>
       </div>
-      <button class="smily btn-floating waves-effect waves-light scale-transition">
-        <i class="material-icons">insert_emoticon</i>
-      </button>
+      <!--<button class="smily btn-floating waves-effect waves-light scale-transition">-->
+      <!--  <i class="material-icons">insert_emoticon</i>-->
+      <!--</button>-->
       <button class="sendy btn">
         <i class="material-icons">send</i>
       </button>
@@ -98,8 +110,12 @@
   <!-- Modal Structure -->
   <div id="modal1" class="modal modal-fixed-footer" style='display:block;z-index:1003;'>
     <div class="modal-content">
+s
+      <button class="right" onlick="signOut()"> Logout </button>
+
       <h4>Services</h4>
       <div id='services_list'></div>
+
       <!-- 
             https://st3.depositphotos.com/11117316/15013/i/1600/depositphotos_150134336-stock-photo-thailand-bangkok-april-18-2017.jpg
              https://i.imgur.com/WAXIaq2.jpg
@@ -118,7 +134,7 @@
         </p>
         <div style='text-align:center'>
           <button class='btn waves-effect waves-light indigo' style='float:left' onclick="service_registration('facebook')">Facebook</button>
-          <button class='btn waves-effect waves-light green' onclick="service_registration('hangouts')">Hangouts</button>
+          <!--<button class='btn waves-effect waves-light green' onclick="service_registration('hangouts')">Hangouts</button>-->
           <button class='btn waves-effect waves-light blue' style='float:right' onclick="service_registration('skype')">Skype</button>
           <!-- <button class='btn waves-effect waves-light purple' style='float:right'>Viber</button> -->
         </div>
@@ -127,8 +143,8 @@
       <hr>
     </div>
     <div class="modal-footer">
-      <button class="btn green waves-effect waves-light" style='float:left'>(+) Combine</button>
-      <button class="btn red waves-effect waves-light">(-) Break</button>
+      <button class="btn green waves-effect waves-light" style='float:left' onclick='makeGroup()'>(+) Combine</button>
+      <button class="btn red waves-effect waves-light"  onclick='breakGroup()'>(-) Break</button>
     </div>
   </div>
   <div class="modal-overlay" style="z-index: 1002; display: block; opacity: 0.8;" onclick='hide_menu()'></div>

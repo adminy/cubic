@@ -22,7 +22,7 @@
 ### [3.3 Architecture](#33-)
 ### [3.4 Use Cases](#-34-)
 ###  [3.4.1 Login](#-341-login)
-###  [3.4.2 Add User](#-342-add-user)
+###  [3.4.2 Add Friend Chat](#-342-add-user)
 ###  [3.4.3 Combine](#-343-combine)
 ###  [3.4.4 Break](#-344-break)
 ###  [3.4.5 Delete](#-345-delete)
@@ -167,18 +167,18 @@ and finishes when the user logs out.
 <center>2	System Architecture</center>
 ===
 
-### <center>2.1 </center>
+### <center>2.1 User</center>
 
 
 
 
-### <center>2.2 </center>
+### <center>2.2 System </center>
 
 
 
 
 
-### <center>2.3 </center>
+### <center>2.3 System Architecture Diagram</center>
 
 
 
@@ -233,17 +233,347 @@ Once users are logged in, they will be given a certain token that identifies the
 
 ## 3.4.1 Login
 
-## 3.4.2 Add User
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 3px solid #aaa;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background: rgb(146, 76, 76);
+}
+</style>
+
+<table>
+  
+  <tr>
+    <td>Description</td>
+    <td>User Logs into the system using either facebook or google</td>
+  
+  </tr>
+  <tr>
+    <td>Goal</td>
+    <td>User logs into the system successfully</td>
+
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td>User has a facebook or google account</td>
+  
+  </tr>
+  <tr>
+    <td>Success</td>
+    <td>User successfully enters the chat lobby</td>
+  
+  </tr>
+  <tr>
+    <td>Fail</td>
+    <td>Incorrect facebook email/password, incorrect google email/password
+  </td>
+
+  </tr>
+  <tr>
+    <td>Primry</td>
+    <td>New or regular users</td>
+   
+  </tr>
+  <tr>
+    <td>Main Scenarios</td>
+    <td>1. User logs into the system using his facebook account.<br>
+    2.User logs into the system using his google account.<br>
+    3.User creates a facebook account and logs into |the system using his new facebook account.<br>
+    4.User creates a google account and logs into the system using his new google account.
+
+</td>
+
+  </tr>
+</table>
+
+
+
+## 3.4.2 Add Friend Chat
+
+<table>
+  
+  <tr>
+    <td>Description</td>
+    <td>User Logs into the facebook/skype and imports their various chats</td>
+  
+  </tr>
+  <tr>
+    <td>Goal</td>
+    <td>User successfully imports their chats into the system</td>
+
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td>User has a facebook or skype account with exisiting chat conversations</td>
+  
+  </tr>
+  <tr>
+    <td>Success</td>
+    <td>User can use their prespective social media chats in Cubik application</td>
+  
+  </tr>
+  <tr>
+    <td>Fail</td>
+    <td>Incorrect facebook/skype email/password, chats are not imported successfully.
+  </td>
+
+  </tr>
+  <tr>
+    <td>Primry</td>
+    <td>Users with Facebook/skype accounts</td>
+   
+  </tr>
+  <tr>
+    <td>Main Scenarios</td>
+    <td>1. User presses the add button and sees the two options of facebook and skype.<br>
+    2. User inputs his facebook/google information and logs into their prespective chats.<br>
+    3. User picks their existing chats to import to Cubik's System.
+
+</td>
+
+  </tr>
+</table>
+
 
 ## 3.4.3 Combine
 
+<table>
+  
+  <tr>
+    <td>Description</td>
+    <td>User clicks the combine button and combines selected chats into a group chat</td>
+  
+  </tr>
+  <tr>
+    <td>Goal</td>
+    <td>Successfully combine various chats into a single group chat.</td>
+
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td>User has more than 1 chat exisiting in his account</td>
+  
+  </tr>
+  <tr>
+    <td>Success</td>
+    <td>User can send and receive messages from the group chat from different sources./td>
+  
+  </tr>
+  <tr>
+    <td>Fail</td>
+    <td>Chats didnt combine successfully, group chat doesnt receive and send messages properly.
+  </td>
+
+  </tr>
+  <tr>
+    <td>Primry</td>
+    <td>Users with various existing chats</td>
+   
+  </tr>
+  <tr>
+    <td>Main Scenarios</td>
+    <td>1. User clicks the combine button and combines his chats with a friend facebook and skype account.<br>
+    2.The combined chat will have his friends skype and facebook account, showing the messages sent from the different social medias.<br>
+    3.Automatically changes where the user sends the message, depending on the last messages source.  
+
+
+</td>
+
+  </tr>
+</table>
+
+
 ## 3.4.4 Break
+
+<table>
+  
+  <tr>
+    <td>Description</td>
+    <td>User breaks a previously combined chat into its various singular chats</td>
+  
+  </tr>
+  <tr>
+    <td>Goal</td>
+    <td>User successfully gets back single user chats</td>
+
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td>User has a previously combined chats that was made from the Cubik interface</td>
+  
+  </tr>
+  <tr>
+    <td>Success</td>
+    <td>User breaks the group chats into the his desired singular chats</td>
+  
+  </tr>
+  <tr>
+    <td>Fail</td>
+    <td>User grouped chat stays combined
+  </td>
+
+  </tr>
+  <tr>
+    <td>Primry</td>
+    <td>User with exisitng grouped chats in the Cubik interface.</td>
+   
+  </tr>
+  <tr>
+    <td>Main Scenarios</td>
+    <td>1. User clicks the break button and dismantles his existing group chats, into their original singular chats.
+
+</td>
+
+  </tr>
+</table>
+
 
 ## 3.4.5 Delete
 
+<table>
+  
+  <tr>
+    <td>Description</td>
+    <td>User deletes his selected exisiting chats. </td>
+  
+  </tr>
+  <tr>
+    <td>Goal</td>
+    <td>Successfully deletes the chat from the application</td>
+
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td>User has at least 1 chat conversation in the application</td>
+  
+  </tr>
+  <tr>
+    <td>Success</td>
+    <td>User successfully deletes the selected chats from the application</td>
+  
+  </tr>
+  <tr>
+    <td>Fail</td>
+    <td>User chat does not get deleted from the application
+  </td>
+
+  </tr>
+  <tr>
+    <td>Primry</td>
+    <td>Users with existing chats</td>
+   
+  </tr>
+  <tr>
+    <td>Main Scenarios</td>
+    <td>1. User clicks the delete button and highlights the chats he/she wants deleted.<br>
+
+</td>
+
+  </tr>
+</table>
+
+
 ## 3.4.6 User Profile
 
+<table>
+  
+  <tr>
+    <td>Description</td>
+    <td></td>
+  
+  </tr>
+  <tr>
+    <td>Goal</td>
+    <td></td>
+
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td></td>
+  
+  </tr>
+  <tr>
+    <td>Success</td>
+    <td></td>
+  
+  </tr>
+  <tr>
+    <td>Fail</td>
+    <td>
+  </td>
+
+  </tr>
+  <tr>
+    <td>Primry</td>
+    <td></td>
+   
+  </tr>
+  <tr>
+    <td>Main Scenarios</td>
+    <td>
+
+</td>
+
+  </tr>
+</table>
+
+
 ## 3.4.7 Logout
+
+<table>
+  
+  <tr>
+    <td>Description</td>
+    <td>User Logs out of the application</td>
+  
+  </tr>
+  <tr>
+    <td>Goal</td>
+    <td>User successfully logs out of the application</td>
+
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td>User has logged in the application previously</td>
+  
+  </tr>
+  <tr>
+    <td>Success</td>
+    <td>User would need to relog into the application to access it</td>
+  
+  </tr>
+  <tr>
+    <td>Fail</td>
+    <td>User can still access the application even after logging out
+  </td>
+
+  </tr>
+  <tr>
+    <td>Primry</td>
+    <td>Users logged in</td>
+   
+  </tr>
+  <tr>
+    <td>Main Scenarios</td>
+    <td>1. User clicks the logout button and is directed back to the login page.<br>
+    2. User clicks the logout button but is still able to access the application without logging back in.
+
+
+</td>
+
+  </tr>
+</table>
+
 
 ### <center>3.5 User Flow Diagram</center>
 
@@ -322,20 +652,20 @@ Application Hardware Specification:
 
 ### <center>5.1.2 Software</center>
 
+The libraries that we used during the project
 
 ### <center>5.1.3 Versions</center>
 
-
+Would need to update all the libraries to the latest version, 
 
 ### <center> 5.2 Facebook/Google Login </center>
 
-
+Users of the application would need at the very least a facebook or a google account to log into the application.
 
 
 
 
 ### <center>5.2.1 FaceBook</center>
-
 
 
 
@@ -351,17 +681,18 @@ Application Hardware Specification:
 
 ### <center> 6.1  API</center>
 
+Make sure facebook/skype dont disable their API, check API doesnt deprecate over time.
 
 
+### <center> 6.2 Server</center>
 
-### <center> 6.2 Server/Client</center>
-
-
+Server is currently fragile and would need to be restarted incase an error occured. In the future the hope is to improve the currents system error handling.
+From the server prespective all server side code over time degrades, cause a problem with security. 
 
 
 ### <center> 6.3 Database</center>
 
-
+Database would need to get vaccumed over time.
 
 
 
@@ -372,9 +703,11 @@ Application Hardware Specification:
 ### <center> 7.1 Resources</center>
 
 www.draw.io
+www.stackoverflow.com
 www.materializecss.com
 www.mysql.com 
 www.w3cschools.com
+www.github.com
 
 ### <center> 7.2 References</center>
 
