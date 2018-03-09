@@ -94,11 +94,11 @@ class Skype {
 
     send(threadID, message, file) {    //person_id == conversation_id
         this.skyweb.sendMessage(threadID, message)
-        //     // send message here
-        //var conversationLink = "https://db4-client-s.gateway.messenger.live.com/v1/users/ME/conversations/" + person_id; //8:life4anime8
-        // var conversationLink = message.resource.conversationLink;
-        //var conversationId = conversationLink.substring(conversationLink.lastIndexOf('/') + 1)
-//     //console.log(">>>>>>>>>>" + conversationId)
+    }
+
+    markAsRead(threadID) {
+        this.f.log("Marking Conversation " + threadID + " as Read is not available for this API.", 33) 
+        // this.api.markAsRead(threadID)
     }
 
 

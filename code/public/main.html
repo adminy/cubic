@@ -11,28 +11,28 @@
   </nav>
 
   <nav class="white center">
-        <div class="center row">
-            <div class="col s12">
-              <div class="row" id="topbarsearch">
-                <div class="input-field col s6 s12 black-text">
-                  <i class="blue-text text-darken-2 material-icons prefix">search</i>
-                  <input type="text" placeholder="search" id="autocomplete-input" class="autocomplete black-text search_active" onkeyup="searching(this)">
-                </div>
-              </div>
-            </div>
+    <div class="center row">
+      <div class="col s12">
+        <div class="row" id="topbarsearch">
+          <div class="input-field col s6 s12 black-text">
+            <i class="blue-text text-darken-2 material-icons prefix">search</i>
+            <input type="text" placeholder="search" id="autocomplete-input" class="autocomplete black-text search_active" onkeyup="searching(this)">
           </div>
-    </nav>
+        </div>
+      </div>
+    </div>
+  </nav>
 
   <div id='threads' style='height:85vh;'>
-    <h5 style='text-align:center;color:#767CA0;'>GROUPS</h5>
+    <h6 style='text-align:center;color:#767CA0;'>GROUPS</h6>
     <!-- Show ALL Groups -->
-    <ul class="collection" style='height:auto;max-height:40%;overflow:scroll;overflow-x:hidden;' id="buz">
+    <ul class="collection" style='height:auto;max-height:28%;overflow:scroll;overflow-x:hidden;' id="groups">
       <p>No groups created yet ...</p>
     </ul>
-    <h5 style='text-align:center;color:#767CA0;'>PEOPLE</h5>
+    <h6 style='text-align:center;color:#767CA0;'>PEOPLE</h6>
     <!-- only partially show people -->
-    <ul class="collection" id="biz" style='height:auto;max-height:80%;overflow:scroll;overflow-x:hidden;'>
-      <h2 style='text-align:center'>Loading ...</h2>
+    <ul class="collection" id="contacts" style='height:auto;max-height:44%;overflow:scroll;overflow-x:hidden;'>
+      <h3 style='text-align:center'>Loading ...</h3>
     </ul>
     <!-- Load More People -->
     <!-- <h5 style='text-align:center'><a href='#page2' class='waves-effect waves-light btn-large blue'>Load More</a></h5> -->
@@ -77,25 +77,24 @@
       <!--  <i class="material-icons">perm_media</i>-->
       <!--  <span class="new badge green" style='min-width:2rem;border-radius:2rem;float:right;margin:0;padding:0' data-badge-caption="1"></span>-->
       <!--</button>-->
-      <div class="dropup">
-        
-      <button class="dropbtn align-right">Fb/Skype</button>
-          <div class="dropup-content">
-            
-     <a href="#!"> <img src="https://i.imgur.com/bOl3IOa.png"></a>
-    <a href="#!">  <img src="https://i.imgur.com/edQkxse.png"></a>
-            
-      </div>
-      
-      </div>
-      
-      <div class="input-field scale-transition">
+      <!-- <div class="dropup">
+
+        <button class="dropbtn">FaceBook/Skype</button>
+        <div class="dropup-content">
+            <div style="cursor:pointer"><img src="https://i.imgur.com/bOl3IOa.png" style="height:29px;width:29px">Facebook</div>
+            <div style="cursor:pointer"><img src="https://i.imgur.com/edQkxse.png"style="height:29px;width:29px" >Skype</div>
+        </div>
+
+      </div> -->
+      <div id='option_selectors'></div>
+
+      <div class="input-field scale-transition" id='message_container'>
         <textarea name="comments" class='materialize-textarea' id="message_textbox" onkeypress="keysPress(this);"></textarea>
       </div>
       <!--<button class="smily btn-floating waves-effect waves-light scale-transition">-->
       <!--  <i class="material-icons">insert_emoticon</i>-->
       <!--</button>-->
-      <button class="sendy btn">
+      <button class="sendy btn" onclick='send_message_to_server()'>
         <i class="material-icons">send</i>
       </button>
     </div>
@@ -110,7 +109,6 @@
   <!-- Modal Structure -->
   <div id="modal1" class="modal modal-fixed-footer" style='display:block;z-index:1003;'>
     <div class="modal-content">
-s
       <button class="right" onlick="signOut()"> Logout </button>
 
       <h4>Services</h4>
@@ -122,7 +120,7 @@ s
               http://lifebeyondthesea.com/wp-content/uploads/facetime-skype02.jpg
                https://cdn.zmescience.com/wp-content/uploads/2011/07/facebook-skype.jpg 
                 https://cdn.iconscout.com/public/images/icon-pack/small/logos-1-facebook-instagram-icons8-twitter-skype-3dcf16188e6a603b-2018-01-03-082937-360x240.png-->
-        <!-- <p style='padding:0;margin:0;text-align:center'><img src='https://cdn.zmescience.com/wp-content/uploads/2011/07/facebook-skype.jpg' style='width:256px; height:96px;'alt='650 × 456'></p> -->
+      <!-- <p style='padding:0;margin:0;text-align:center'><img src='https://cdn.zmescience.com/wp-content/uploads/2011/07/facebook-skype.jpg' style='width:256px; height:96px;'alt='650 × 456'></p> -->
 
       <div id='add_services'>
         <h5 style='text-align:center'>Log in With</h5>
@@ -144,7 +142,7 @@ s
     </div>
     <div class="modal-footer">
       <button class="btn green waves-effect waves-light" style='float:left' onclick='makeGroup()'>(+) Combine</button>
-      <button class="btn red waves-effect waves-light"  onclick='breakGroup()'>(-) Break</button>
+      <button class="btn red waves-effect waves-light" onclick='breakGroup()'>(-) Break</button>
     </div>
   </div>
   <div class="modal-overlay" style="z-index: 1002; display: block; opacity: 0.8;" onclick='hide_menu()'></div>
@@ -155,4 +153,4 @@ s
 </div>
 <!-- Compiled and minified JavaScript -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.3/js/materialize.min.js"></script> -->
-  <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->

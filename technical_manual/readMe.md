@@ -1,20 +1,20 @@
 <center>Table of Contents</center>
 ===
 &nbsp;
+
 ## [1.Introduction](#1-introduction)
 ### [1.1 Overview](#11-overview-1)	
 ### [1.2 Business Context](#12-business-context-1)	
 ### [1.3 Intended Audience and Reading Suggestions](#13-intended-audience-and-reading-suggestions-1)
 ### [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.3.1 Glossary](#131-glossary)
 &nbsp;
+
 ## [2.System Architecture](#2-system-architecture)
-### [2.1 ](#21-)	
-### [2.2 ](#22-)						
-### [2.3 ](#23-)
-### [2.4 ](#24-)						
-### [2.5 ](#25-)
-### [2.6 ](#26-)
-### [2.7 ](#27-)
+### [2.1 User](#21-user)	
+### [2.2 Server](#22-server)						
+### [2.3 Client](#23-client)
+### [2.4 Materialize Design](#24-materialize-design)						
+
 &nbsp;
 ## [3. High-Level Design](#3-high-level-design-1)
 ### [3.1 Introduction](#-31-introduction)
@@ -26,19 +26,18 @@
 ###  [3.4.3 Combine](#-343-combine)
 ###  [3.4.4 Break](#-344-break)
 ###  [3.4.5 Delete](#-345-delete)
-###  [3.4.6 User Profile](#-346-user-profile)
-###  [3.4.7 Logout](#-347-logout)
+###  [3.4.6 Logout](#-347-logout)
 ### [3.5 User Flow Diagram](#-34-user-flow-diagram)
-### [3.6 High Level Design Diagram](#-34-high-level-design-diagram)
-### [3.7 Context Diagram](#-34-context-diagram)
-### [3.8 Implementation Design](#-35-implementation-design)
+### [3.6 Context Diagram](#-34-context-diagram)
+### [3.7 Class Diagram](#-35-class-diagram)
 
 &nbsp;
 ## [4. Problems and Resolution](#-4-problems-and-resolution)
 ### [4.1 Social Media API](#41-)
 ### [4.2 Design Decisions](#42-)
 ### [4.3 Server Client Communication](#43-)
-### [4.4 Learing different coding languges](#44-)
+### [4.4 Code Readability](#44-)
+### [4.5 Learning different coding languages](#45-)
 ## [5. Installation Guide](#-5-installation-guide)
 ### [5.1 Cross-Platform](#51-)
 ###	[ &nbsp; &nbsp; &nbsp; 5.1.1 Hardware](#511-)
@@ -72,13 +71,13 @@ send one message, to another user that will send to all that users
 social media selected. The system was developed to serve the needs of 
 people with limited time to check all their messaging services, 
 this application helps satisfy that need. Various other functions are 
-available, and these will be listed and explained more in depth later. 
-For now, we have decided to use three social medias as the foundation of 
-this app, however that number might increase depending on the API.s that 
-we find.
+available, and these will be listed and explained more in depth later on in this manual. 
+For now, we have decided to use two social medias as the foundation of 
+this app, however for the future beyond the scope of the time limit of this project, we hope to add more Social medias.
+<br>
 
-Users will log into the our application using either facebook or google. when the user is logged in, they will face an empty chat lobby, where the user will be required to log into their prespective social media application. After logging into the application, they can select the chats that they want to import to our application.
-This will be true too two social media platforms. facebook and Skype. Where the user has the control to merge and break group chats of the different social medias. An example would be where, i would add my friend Marin facebook and skype chat conversation into one, where the user will recieve messages from both platform in our application. Sending messages, the applicaton will defaultly respond with the same platform the message recieved was from.
+Users will log into the our application using either facebook or google. when the user is logged in, they will face an empty chat lobby, where the user will be required to log into their perspective social media application. After logging into the application, the latest 20 chats of the social media selected will be imported, however using the search bar users can import any user in their list.
+This will be true for two social media platforms. Facebook and Skype. Where the user has the control to merge and break group chats. An example would be where, i would add my friend Marin facebook and skype chat conversation into one, where the user will receive messages from both platform in our application. Sending messages, the application will respond with the same platform the message received was from.
 
 
 
@@ -100,7 +99,7 @@ like facebook and instagram would want to collaborate with our
 application.*
 
 * *Features: Application can have special features within, that can only 
-be accessed through a subscription or a fee. *
+be accessed through a subscription or a fee.*
 
 
 
@@ -108,10 +107,9 @@ be accessed through a subscription or a fee. *
 
 The Application is targeting anyone who has more than one social media 
 platform that we have chosen, therefore the target audience is very 
-broad. 
+broad.<br> 
 This document is targeted for computer science majors, developers, 
-computer science lecturers or anyone that has an interest in application 
-development.
+computer science lecturers or anyone that has an interest in the application development process.
 
 
 ### <center>1.3.1 Glossary</center>
@@ -127,7 +125,7 @@ dynamic Web pages.
 building application software. In general terms, it is a set of clearly 
 defined methods of communication between various software components.
 
-* **Material Design Framework**: It is a complete open-source SDK. A 
+* **Materialize Design Framework**: It is a complete open-source SDK. A 
 modern responsive front-end framework based on Material Design  Concept 
 designed by Google. 
 
@@ -169,39 +167,26 @@ and finishes when the user logs out.
 
 ### <center>2.1 User</center>
 
+User will have to log in with either Google or Facebook, where we will then store their token for the next time they log in, where we can identify them
 
 
 
-### <center>2.2 System </center>
-
-
-
-
-
-### <center>2.3 System Architecture Diagram</center>
+### <center>2.2 Server </center>
 
 
 
 
 
-### <center>2.4 /center>
-
-
- 
-
-### <center>2.5 </center>
+### <center>2.3 Client</center>
 
 
 
 
 
+### <center>2.4 Materialize Design</center>
 
-
-### <center>2.6 </center>
-
-
-
-### <center>2.7 </center>
+This applications design was made with the help of Google's Materialize Library, however the design of the application does not depend on it since we created our own css when we found difficulties dealing with the library, however some components do use the materialize library.
+We picked this library since it was made with the intention of minimalizing the design and making it fluid. 
 
 
 
@@ -212,21 +197,22 @@ and finishes when the user logs out.
 
 ### <center>3.1 Introduction </center>
 
-This part of the manual will explain the proposed design concepts of our messaging application "Cubik", diving into the goals and the different user cases we will explain how the application funtions with the many different diagrams. At the end of this section, readers will understand the different dynamics this application produces.
+This part of the manual will explain the proposed design concepts of our messaging application "Cubik", diving into the goals of our application.The different user cases we will explain how the application functions with the many different functionality. At the end of this section, readers will understand the different dynamics this application has.
 
 
 ### <center>3.2 Design Goal </center>
 
-The main features of this application is to combine the different social media messaging platform into one, where users can select their existing accounts, sending and recieveing messages from their various accounts into our application. Our goals can be identified as:
+The main features of this application is to combine the different social media messaging platform into one, where users can select their existing accounts, sending and receiving messages from their various accounts into our application. Our goals can be identified as:
 1.Add users chats from their favourite social medias into our platform.
 2.Option to merge various social medias chats into one chat window.
-3.Users have full control to combine or break their chat groups consisiting of different friends social medias.
+3.Users have full control to combine or break their chat groups consisting of different friends social medias.
 
 ### <center>3.3 Architecture </center>
 
 The model of our application can be summarized with the diagram below, the server is in charge of authenticating users, and will only allow users logged in to use the application.
 Once users are logged in, they will be given a certain token that identifies them, further into the application the users will be required to log into the various social medias, where certain tokens pertaining to that social media will allow the user to import their personal chats into our application.
-![System Architecture Diagrams](SystemArchitectureDiagram.png "System Architecture Diagrams")
+
+![System Architecture](SystemArchitecture.png "System Architecture Diagram")
 
 ### <center>3.4 Use Cases </center>
 
@@ -280,7 +266,7 @@ tr:nth-child(even) {
 
   </tr>
   <tr>
-    <td>Primry</td>
+    <td>Primary</td>
     <td>New or regular users</td>
    
   </tr>
@@ -371,7 +357,7 @@ tr:nth-child(even) {
   </tr>
   <tr>
     <td>Fail</td>
-    <td>Chats didnt combine successfully, group chat doesnt receive and send messages properly.
+    <td>Chats didnt combine successfully, group chat doesn't receive and send messages properly.
   </td>
 
   </tr>
@@ -483,52 +469,10 @@ tr:nth-child(even) {
 </table>
 
 
-## 3.4.6 User Profile
-
-<table>
-  
-  <tr>
-    <td>Description</td>
-    <td></td>
-  
-  </tr>
-  <tr>
-    <td>Goal</td>
-    <td></td>
-
-  </tr>
-  <tr>
-    <td>Assumptions</td>
-    <td></td>
-  
-  </tr>
-  <tr>
-    <td>Success</td>
-    <td></td>
-  
-  </tr>
-  <tr>
-    <td>Fail</td>
-    <td>
-  </td>
-
-  </tr>
-  <tr>
-    <td>Primry</td>
-    <td></td>
-   
-  </tr>
-  <tr>
-    <td>Main Scenarios</td>
-    <td>
-
-</td>
-
-  </tr>
-</table>
 
 
-## 3.4.7 Logout
+
+## 3.4.6 Logout
 
 <table>
   
@@ -577,19 +521,15 @@ tr:nth-child(even) {
 
 ### <center>3.5 User Flow Diagram</center>
 
-![User Flow Diagram](highleveldesigndiagram.png "High Level Design Diagram.png")
+![User Flow Diagram](userflow.png "UserFlow.png") 
 
 
-### <center> 3.6 High Level Design Diagram </center>
-![High Level Design Diagram](highleveldesigndiagramp.png "High Level Design Diagram from our perspective")
-
-
-### <center>3.7 Context Diagram </center>
+### <center>3.6 Context Diagram </center>
 
 ![Context Diagram](contextdiagram.png "Context Diagram")
 
 
-### <center>3.8 Implementation Design </center>
+### <center>3.7 Class Diagram </center>
 
 
 ![Class Diagram](classdiagram.png "Class Diagram")
@@ -603,18 +543,19 @@ tr:nth-child(even) {
 
 ### <center>4.1 Social Media API</center>
 
-Social medias all have different API's, where initially the project was designed to include the most popular social media platforms like Facebook,Twitter,Instagram and Whatsupp. However after investigating the different platforms, we found each application had a different diffcult to use API's. Some API's didnt exist anymore, some were too decrecated to be used, others were not what our project covered and couldnt be used. Therefore we had to limit our scope to social media's that have working API's, that we could use in out project. After investigating the different API's we decided to use Facebook and Skype, since they were our best options. Even after using and coding the API's to work, problems still arised, especially when facebook changes something related to their features, the result is us changing the code to make it work again. 
-There arnt alot of resources online to help develop and use API's, therefore we had to use our teamwork to continue building the necessary functionality.
-If some problems arised with issues we didnt know how to deal with, we would ask our supervisor, Stephen Blotts, to help us make a decision.
+Social medias all have different API's, where initially the project was designed to include the most popular social media platforms like Facebook,Twitter,Instagram and Whatsupp. However after investigating the different platforms, we found each application had a different difficult to use API's. Some API's didn't exist anymore, some were too deprecated to be used, others were not what our project covered and couldnt be used. Therefore we had to limit our scope to social media's that have working API's, that we could use in out project. After investigating the different API's we decided to use Facebook and Skype, since they were our best options. Even after using and coding the API's to work, problems still arised, especially when facebook changes something related to their features, the result is us changing the code to make it work again. 
+There are not a lot of resources online to help develop and use API's, therefore we had to use our teamwork to continue building the necessary functionality.
+If some problems arised with issues we didn't know how to deal with, we would ask our supervisor, Stephen Blotts, to help us make a decision.
+Facebook API also had a hidden function which by default was no where to be found, we spent some time looking for alternatives. Eventually we solved the problem by discovering it from reading the API source code. 
 
 
 ### <center>4.2 Design Decisions</center>
 
-Since the application was bulit using HTML/CSS and javascript, there were alot of libraries aviliable online to help design the application. 
-After disccussing the possabilities with each other, we found using the new Materialze Library would be perfect, since its designed to be streamlined with efficiency and fluidity being the concepts behind the library.
-However after encountering the different problems arising from a new library, and the small amount of documentation, we had to improvise with our own CSS, and javascript. Our design is aimed to reduce the dependancy of the library in our design, preferring to code our own design.
-When it comes to difference of opinion in terms of design, we would usually discuess the pros and cons of each design, thinking about the user and the different hardware limitations and how it would affect the user experience. This method usually helped decide any differences we had, another solution we found was seeing how the well known social medias designed their chat application. Comparing the different designs and what we liked, we designed the chat application.
-Our final phase of design, we asked different people to give use their experience using the application, and discuess how they felt about the design, changing a few things to depending on the feedback. 
+Since the application was built using HTML/CSS and javascript, there were a lot of libraries available online to help design the application. 
+After discussing the possibilities with each other, we found using the new Materialize Library would be perfect, since its designed to be streamlined with efficiency and fluidity being the concepts behind the library.
+However after encountering the different problems arising from a new library, and the small amount of documentation, we had to improvise with our own CSS, and javascript. Our design is aimed to reduce the dependency of the library in our design, preferring to code our own design.
+When it comes to difference of opinion in terms of design, we would usually discuss the pros and cons of each design, thinking about the user and the different hardware limitations and how it would affect the user experience. This method usually helped decide any differences we had, another solution we found was seeing how the well known social medias designed their chat application. Comparing the different designs and what we liked, we designed the chat application.
+Our final phase of design, we asked different people to give use their experience using the application, and discuss how they felt about the design, changing a few things to depending on the feedback. 
 
 
 
@@ -630,11 +571,17 @@ Setting up the server client communication, required some research on how it is 
 then our system sends them that we don't have a valid token, it's because we don't have the services which actually define the tokens
 Therefore it can crash both ends if user tries to use the app immediately after the server is up, after services auth, it's safe to do so.
 what else we can do to solve this problem is to give the client an user database ID so that token is not the only way they can authenticate.
-However on one side of the coin this fixes the problem while leaving it more vunerable on the other as tokens are relatively harder to guess than users IDs but I suppose if we ignore security for now, we can make this run with less errors.
+However on one side of the coin this fixes the problem while leaving it more vulnerable on the other as tokens are relatively harder to guess than users IDs but I suppose if we ignore security for now, we can make this run with less errors.
 
 
 
-## <center>4.4 Learning different Coding Languages</center>
+## <center>4.4 Code Readability</center>
+
+After implementing the two API's the client and server code consists of a lot of code thats very hard to read, figuring out what everything does takes time and a lot of thought process.
+Therefore we decided to refactor the code by splitting up the different client and server functionality into separate files, although it temporarily broke the application, it made the code easier to read and navigate.
+
+
+## <center>4.5 Learning different Coding Languages</center>
 
 Since this project was mostly made with javascript, learning the new language and implementing advanced technologies was hard to learn. Using online resources helped resolve some problems, while some gave us enough guidance to get the code to work. 
 
@@ -642,7 +589,7 @@ Since this project was mostly made with javascript, learning the new language an
 ===
 
 ### <center>5.1 Cross-Platform</center>
-Our application will be crossplatformed, we will use electron to make our web based application into a multiplatform application.
+Our application will be cross-platform, any device with a internet connection and a web browser can access the application.
 
 ### <center>5.1.1 Hardware</center>
 Application Hardware Specification: 
@@ -656,7 +603,7 @@ The libraries that we used during the project
 
 ### <center>5.1.3 Versions</center>
 
-Would need to update all the libraries to the latest version, 
+Would need to update all the libraries to the latest version. 
 
 ### <center> 5.2 Facebook/Google Login </center>
 
@@ -666,50 +613,65 @@ Users of the application would need at the very least a facebook or a google acc
 
 
 ### <center>5.2.1 FaceBook</center>
+Users logged in the application will need a facebook account to import their facebook chats to our application, making full use of our applications functionality.
+
+
+### <center> 5.2.2 Skype</center>
+Users logged in the application will need a skype account to import their skype chats to our application, making full use of our applications functionality.
 
 
 
-### <center> 5.2.2 Google</center>
-
-
-
-
-<center> 6	Maintanince</center>
+<center> 6	Maintenance</center>
 ===
 
 
 
 ### <center> 6.1  API</center>
 
-Make sure facebook/skype dont disable their API, check API doesnt deprecate over time.
+Make sure facebook/skype dont disable their API, need to constantly check that the API doesnt deprecate over time.
 
 
 ### <center> 6.2 Server</center>
 
-Server is currently fragile and would need to be restarted incase an error occured. In the future the hope is to improve the currents system error handling.
-From the server prespective all server side code over time degrades, cause a problem with security. 
+Server is currently fragile and would need to be restarted incase an error occurs. In the future the hope is to improve the currents system error handling.
+From the server perspective all server side code over time will degrade, which can cause a problem with security. 
 
 
 ### <center> 6.3 Database</center>
 
-Database would need to get vaccumed over time.
+Database would need to get vacuumed over time.
 
-
-
-<center> 7	Appendix </center>
+<center> 7	Testing </center>
 ===
 	
 
-### <center> 7.1 Resources</center>
+### <center> 7.1 Unit testing</center>
 
-www.draw.io
-www.stackoverflow.com
-www.materializecss.com
-www.mysql.com 
-www.w3cschools.com
-www.github.com
 
-### <center> 7.2 References</center>
 
-www.google.com 
+### <center> 8.2 Black-box Testing</center>
+
+
+### <center> 8.3 White-box Testing</center>
+
+
+### <center> 8.4 User Design Test</center>
+
+
+<center> 8	Appendix </center>
+===
+	
+
+### <center> 8.1 Resources</center>
+
+www.draw.io<br>
+www.stackoverflow.com<br>
+www.materializecss.com<br>
+www.mysql.com <br>
+www.w3cschools.com<br>
+www.github.com<br>
+
+### <center> 8.2 References</center>
+
+www.google.com <br>
 www.computing.dcu.ie/~davids/CA326/

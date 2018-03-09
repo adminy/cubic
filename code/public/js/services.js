@@ -1,3 +1,7 @@
+//MAKE A DELETE BUTTON !!!
+//SHOW ACTIVE/INACTIVE SERVICES !
+
+
 function list_services(services_list) {
     var sl = document.getElementById('services_list');
     if (services_list.length > 0) {

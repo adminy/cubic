@@ -3,7 +3,7 @@ function breakGroup() {
     // console.log('break group clicked')
     hide_menu()
     document.getElementById('top_bar').innerHTML = "<div style='text-align:center'><button style='float:left; height:60px;color: black' class='waves-effect waves-light btn yellow' onclick='cancelActions()'> Cancel</button>"+
-                                                   "<b><span style='color: black; font-size:30px'>Cubik</span></b><button style='float:right;height:60px' class='waves-effect waves-light btn red'>Delete Group</button></div>"
+                                                   "<b><span style='color: black; font-size:30px'>Cubik</span></b><button style='float:right;height:60px' class='waves-effect waves-light btn red' onclick='deleteGroup()'>Delete Group</button></div>"
       
     page.breakGroup = true
   }
@@ -37,8 +37,16 @@ function createGroup() {
   
   function deleteGroup() {
       if(ws)
-        ws.send(JSON.stringify({deleteGroup: page.selectedGroups, token: getCookie('wss')}))
-    
+        ws.send(JSON.stringify({destroyGroup: page.selectedGroups, token: getCookie('wss')}))
+       var newGroups = []
+        for(var i = 0; i < page.groups.length; i++)
+            for(var j = 0; j < page.selectedGroups.length; j++)
+                if(page.groups[i].groupID != page.selectedGroups[j].groupID)
+                    newGroups.push(page.groups[i])
+        page.groups = newGroups
+        list_groups(page.groups, true)
+        M.toast({ html: 'Group(s) Successfully Deleted!', classes: 'green' })
+        cancelActions()
   }
 
 
@@ -53,7 +61,7 @@ function group_successfully_created(group) {
     }
     
     
-    document.getElementById('buz').innerHTML += '\
+    document.getElementById('groups').innerHTML += '\
        <li class="chat collection-item avatar chat-unread waves-effect list_item" title="'+group.groupID+'" alt="'+group.services+'" name="'+group.name+'" data="group">\
            <img src="'+group.avatar+'" alt="'+group.groupID+'" class="circle">\
            <span class="chat-title">'+group.name + services_html + '</span>\
@@ -62,28 +70,29 @@ function group_successfully_created(group) {
        </li>';
     
     //: avatar: "https://i.imgur.com/gKCrzGD.png"groupID: 1, name: "Petrică Duhlicher, Petru Duhlicher"
+    cancelActions()
     
   }
   
-  function list_groups(groups) {
-    document.getElementById('buz').innerHTML = ''
+  function list_groups(groups, local) {
+    if(!local) //local function means we don't restore the groups that are already stored in groups, it's not a server copy, it's local
+      Array.prototype.push.apply(page.groups, groups)   // Store the groups in page.groups    
+    document.getElementById('groups').innerHTML = ''
+    var services_html, group_services
     for(let i = 0; i < groups.length; i++) {
-  
-      var services_html = ""
-        var group_services = groups[i].services.split(',')
-        for(let j = 0; j < group_services.length; j++) {
-            services_html += (group_services[j]=='facebook'? '<img src="https://i.imgur.com/bOl3IOa.png" style="width:29px; height:29px">' : '<img src="https://i.imgur.com/edQkxse.png" style="width:29px; height:29px">')
-        }
-        
-    
-      
-      document.getElementById('buz').innerHTML += '\
-       <li class="chat collection-item avatar chat-unread waves-effect list_item" title="'+groups[i].id+'" alt="'+groups[i].services+'" name="'+groups[i].name+'">\
-           <img src="'+groups[i].avatar+'" alt="'+groups[i].id+'" class="circle">\
+      services_html = ""
+      group_services = groups[i].services.split(',')
+      for(let j = 0; j < group_services.length; j++)
+        services_html += (group_services[j]=='facebook'? '<img src="https://i.imgur.com/bOl3IOa.png" style="width:29px; height:29px">' : '<img src="https://i.imgur.com/edQkxse.png" style="width:29px; height:29px">')
+
+      document.getElementById('groups').innerHTML += '\
+       <li class="chat collection-item avatar chat-unread waves-effect list_item" title="'+groups[i].groupID+'" alt="'+groups[i].services+'" name="'+groups[i].name+'">\
+           <img src="'+groups[i].avatar+'" alt="'+groups[i].groupID+'" class="circle">\
            <span class="chat-title">'+groups[i].name + services_html + '</span>\
            <p class="truncate grey-text">...</p>\
            <span class="blue-text ultra-small">'+groups[i].creation_timestamp+'</span>\
        </li>';
     }
+    menu_to_message()
     
   }

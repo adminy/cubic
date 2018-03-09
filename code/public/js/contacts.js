@@ -1,33 +1,30 @@
-//show list of users you last talked to, 
-function list_contacts(contacts, local) {
-    // console.log(contacts)
+function list_contacts(contacts, local) { //show list of users you last talked to, 
     if(!local)
       Array.prototype.push.apply(page.contacts, contacts)   // Store the contacts in page.contacts
     if (!('list_contacts' in page))
-      document.getElementById('biz').innerHTML = ""
+      document.getElementById('contacts').innerHTML = ""
     page.list_contacts = true
   
-  
-    //DON'T FORGET THE UNDERLINING ;)
+    var len = ((contacts.length > 20) ? 20 : contacts.length)
     var foundAt, name, text
-    for(let i = 0; i < contacts.length; i++) {    
+    for(let i = 0; i < len; i++) {    
       if(contacts[i].name_search) {
-        foundAt = contacts[i].name.indexOf(contacts[i].name_search);
-        name = contacts[i].name.substring(0, foundAt) + '<span style="color:orange">' + contacts[i].name_search + '</span>' +
+        foundAt = contacts[i].name.toLowerCase().indexOf(contacts[i].name_search.toLowerCase());
+        name = contacts[i].name.substring(0, foundAt) + '<span style="color:orange">' +  contacts[i].name.substr(foundAt, contacts[i].name_search.length) + '</span>' +
                    contacts[i].name.substring(foundAt + contacts[i].name_search.length, contacts[i].name.length)
   
       } else {
         name = contacts[i].name
       }
       if(contacts[i].text_search) {
-        foundAt = contacts[i].text.indexOf(contacts[i].text_search);
-        text = contacts[i].text.substring(0, foundAt) + '<span style="color:orange">' + contacts[i].text_search + '</span>' +
+        foundAt = contacts[i].text.toLowerCase().indexOf(contacts[i].text_search.toLowerCase());
+        text = contacts[i].text.substring(0, foundAt) + '<span style="color:orange">' + contacts[i].text.substr(foundAt, contacts[i].text_search.length) + '</span>' +
                    contacts[i].text.substring(foundAt + contacts[i].text_search.length, contacts[i].text.length)
   
       } else {
         text = contacts[i].text
       }
-       document.getElementById('biz').innerHTML += '\
+       document.getElementById('contacts').innerHTML += '\
        <li class="chat collection-item avatar chat-unread waves-effect list_item" title="'+contacts[i].userID+'" alt="'+contacts[i].service+'" name="'+contacts[i].name+'" data="contact">\
            <img src="'+contacts[i].avatar+'" alt="'+contacts[i].userID+'" class="circle">\
            <span class="chat-title">'+name+ (contacts[i].service == 'skype' ? '<img src="https://i.imgur.com/edQkxse.png" style="width:29px; height:29px">' : 

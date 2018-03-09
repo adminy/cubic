@@ -117,5 +117,4 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
   }
   
 //these are supposed to be in page.js but no good sitting there as there is almost nothing page related other than it belongs to main.html, maybe move them to main.html
-function show_menu() { document.getElementById('menu').style.display = 'block'; }
-function hide_menu() { document.getElementById('menu').style.display = 'none'; }
+

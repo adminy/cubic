@@ -30,7 +30,7 @@ var express = require('express')(),
     load_services = require('./load_services'),
     services = [],
     register_service = require('./reg_service')
-load_routes = require('./routes'),
+    load_routes = require('./routes'),
     log = require('./log'),
     auth = require('./auth'), //login/register
     check_token = require('./check_token'),  //do we already know you?  
@@ -82,7 +82,8 @@ wss.on('connection', function connection(ws, req) {
                     con.escape(data.my_services) + " GROUP BY user, service", function (res) {
                         ws.send(JSON.stringify({ my_services: res }))
                         query("SELECT groupID, name, services, avatar, creation_timestamp FROM groups_info JOIN devices ON devices.userID = groups_info.owner WHERE token="+ con.escape(data.my_services), function(groups) {
-                            ws.send(JSON.stringify({groups: groups}))
+                            if(groups.length > 0)
+                                ws.send(JSON.stringify({groups: groups}))
                         })
                     })
 
@@ -100,9 +101,11 @@ wss.on('connection', function connection(ws, req) {
 
 
             if('get_user_messages' in data && 'service_name' in data && 'token' in data) {
-                query("SELECT message_owner, threadID, id, type, senderID, timestamp, content FROM messages "+
+                query("SELECT message_owner, avatar, name, messages.service, threadID, id, messages.type, senderID, timestamp, content FROM messages "+
                 "JOIN services ON messages.message_owner=services.user AND messages.service=services.service "+
-                "JOIN devices ON services.userID = devices.userID WHERE messages.service="+con.escape(data.service_name)+
+                "JOIN devices ON services.userID = devices.userID "+
+                "JOIN profiles ON profiles.userID = messages.threadID "+
+                "WHERE messages.service="+con.escape(data.service_name)+
                 " AND threadID="+con.escape(data.get_user_messages)+" AND token="+con.escape(data.token) +
                 " ORDER BY timestamp DESC LIMIT 50", function (messages) {
                     ws.send(JSON.stringify({messages: messages}))
@@ -116,9 +119,14 @@ wss.on('connection', function connection(ws, req) {
                     query("SELECT userID FROM devices WHERE token=" + con.escape(data.token), function(res) {
                         if(res.length > 0)
                             query("INSERT INTO groups_info(name, services, owner, avatar) VALUES ("+con.escape(data.name) + ","+ con.escape(data.services) +","+ con.escape(res[0].userID) +",'https://i.imgur.com/gKCrzGD.png') ON DUPLICATE KEY UPDATE avatar=avatar", function(res) {
-                              if(ws)
-                                  if(res.affectedRows > 0)
+                                if(ws)
+                                  if(res.affectedRows > 0) {
                                     ws.send(JSON.stringify({'group_successfully_created': {name: data.name, avatar: 'https://i.imgur.com/gKCrzGD.png', groupID: res.insertId, services: data.services}}))
+                                    var sql = ""
+                                    for(let i = 0; i < data.createGroup.length; i++)
+                                        sql += "INSERT INTO groups(groupID, userID, service) VALUES ("+con.escape(res.insertId)+", "+con.escape(data.createGroup[i].userID)+", "+con.escape(data.createGroup[i].service)+");"
+                                    query(sql, function() { log('Added Users to Group', 32) })
+                                  }
                                   else
                                     ws.send(JSON.stringify({'group_creation_failed': 'group_already_exists'}))
                               
@@ -133,9 +141,43 @@ wss.on('connection', function connection(ws, req) {
                 }
             }
             
-            if('destroyGroup' in data && 'token' in data) {
-                //DELETE FROM groups WHERE id=data.destroyGroup
+            if('destroyGroup' in data && 'token' in data)
+                query("SELECT userID FROM devices WHERE token=" + con.escape(data.token), function(res) {
+                    if(res.length > 0)  {
+                        var sql = ""
+                        for(let i = 0; i < data.destroyGroup.length; i++)
+                            sql += "DELETE FROM groups_info WHERE groupID="+con.escape(data.destroyGroup[i].groupID) + " AND owner=" + con.escape(res[0].userID) + ";"+
+                                   "DELETE FROM groups WHERE groupID="+con.escape(data.destroyGroup[i].groupID) + ";"
+                        query(sql, function() { log('Deleted Group(s) Successfully By UserID: ' + res[0].userID, 32) })
+                    }
+                })
+
+            if('get_group_messages' in data) {
+                // console.log(JSON.stringify(data))
+                // {"get_group_messages":"2","services":"facebook,skype","token":"e4e68a1bc5f650f63d339ec811496ce1d598389e7ebdeb66073e961b8155f76f"}
+                query("SELECT userID, service FROM groups WHERE groupID="+ con.escape(data.get_group_messages), function(users) {
+                    if(users.length > 0)  {
+                        var sql = "SELECT message_owner, avatar, name, messages.service, threadID, id, messages.type, senderID, timestamp, content FROM messages "+
+                                  "JOIN services ON messages.message_owner=services.user AND messages.service=services.service "+
+                                  "JOIN devices ON services.userID = devices.userID JOIN profiles ON profiles.userID = messages.threadID WHERE token="+con.escape(data.token)+
+                                  " AND ((messages.service="+con.escape(users[0].service)+ " AND threadID="+con.escape(users[0].userID)+") "
+
+                        for(let i = 1; i < users.length; i++) 
+                            sql += "OR (messages.service="+con.escape(users[i].service)+" AND threadID="+con.escape(users[i].userID)+") "
+                        sql += ") ORDER BY timestamp DESC LIMIT 50"
+                        query(sql, function (messages) { ws.send(JSON.stringify({messages: messages})) })
+                    }
+                })
+                
             }
+            
+            if('sendTypingIndicator' in data && 'token' in data && 'service' in data)
+                query("SELECT user FROM services JOIN devices ON services.userID = devices.userID WHERE service=" + con.escape(data.service) + " AND token=" +
+                con.escape(data.token), function (users) {
+                    for (let i = 0; i < services.length; i++)
+                        if (services[i].user == users[0].user)
+                            services[i].markAsRead(data.sendTypingIndicator)
+                })
 
             //undefined request, what is it?
             if (!('token' in data || 'google_id' in data || 'facebook_id' in data || 'my_services' in data || 'fb_threads' in data))

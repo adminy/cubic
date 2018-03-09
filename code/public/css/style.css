@@ -348,7 +348,7 @@ body {
 
 .chat .messages .send .input-field {
   position: absolute;
-  left:48px;
+  left:280px;
   right:40px;
   margin-top: 8px;
   margin-right: 65px
@@ -374,11 +374,11 @@ body {
 .chat .messages .send .feature2 {
   position: absolute;
   top: 8px;
-  left: 52px;
+  left: 132px;
   padding: 0 1rem;
   background:rgba(0, 0, 0, .25)
 }
-.chat .messages .send .feature3 {
+/* .chat .messages .send .feature3 {
   position: absolute;
   top: 8px;
   left: 101px;
@@ -391,7 +391,7 @@ body {
   left: 150px;
   padding: 0 1rem;
   background:rgba(0, 0, 0, .25)
-}
+} */
 
 .chat .messages .send .smily {
   position: absolute;

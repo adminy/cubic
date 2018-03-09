@@ -195,7 +195,7 @@ class FB {
     * @log - show user is listening (debug)
    */
   listen() {
-    this.api.setOptions({ listenEvents: true, selfListen: true });
+    this.api.setOptions({ listenEvents: true, selfListen: true }) //this was GOLD to find ... API did not say anything about this
     this.log('listening')
     var ff = this.f
     var user = this.user
@@ -279,6 +279,10 @@ class FB {
           }, 'sent_fb_contacts')
       })
     //})
+  }
+
+  markAsRead(threadID) { 
+    this.api.markAsRead(threadID)
   }
 } //end of FB class
 
