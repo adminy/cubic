@@ -105,7 +105,7 @@ To create groups you will need to click the &quot;Combine&quot; button, before d
 
 
 
-![Log In Both Services](makinggroup.png "MakingGroup") 
+![Log In Both Services](makegroup.png "MakingGroup") 
 
 After clicking the &quot;Combine&quot; button, you will need to highlight the chats you want to create into a group, whether its Facebook or Skype does not matter. After selecting the chats, you want, click the create a group button on the top right. You can also press the &quot;Cancel&quot; button if you don&#39;t want to create a group anymore.
 
@@ -176,7 +176,7 @@ Here you can send a message to your friend
 **Receiving message:**
 
 
-![Log In Both Services](receiveMessage.png "receiveMessage")
+![Log In Both Services](receiveMessage.PNG "receiveMessage")
 Here your messages will be received from your contacts and will be shown.
 
 **Group Chat:**
