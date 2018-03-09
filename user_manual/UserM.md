@@ -76,7 +76,7 @@ This Service page is where you need to input your details allowing us to import 
 
 **Sign in Facebook/Skype:**
 
-![Log In Both Services](FilledInRegister.png "LogInBothService") 
+![Log In Both Services](FilledInRegister.PNG "LogInBothService") 
 
 
 
@@ -105,7 +105,7 @@ To create groups you will need to click the &quot;Combine&quot; button, before d
 
 
 
-![Log In Both Services](MakingGroup.png "MakingGroup") 
+![Log In Both Services](makinggroup.png "MakingGroup") 
 
 After clicking the &quot;Combine&quot; button, you will need to highlight the chats you want to create into a group, whether its Facebook or Skype does not matter. After selecting the chats, you want, click the create a group button on the top right. You can also press the &quot;Cancel&quot; button if you don&#39;t want to create a group anymore.
 
@@ -153,7 +153,7 @@ You will also have access to a search bar that will search all your imported cha
 
 
 
-![Log In Both Services](MakingGroup.png "MakingGroup") 
+![Log In Both Services](Search.png "MakingGroup") 
 
 
 # Messaging
@@ -164,12 +164,12 @@ You will also have access to a search bar that will search all your imported cha
 
 To enter the chat simply clicking on the message box will make you enter the chat message window.
 
-![Log In Both Services](enterChat.png "enterChat") 
+![Log In Both Services](enterChat.PNG "enterChat") 
 
 **Send message:**
 
 
-![Log In Both Services](send_message.png "enterChat")
+![Log In Both Services](send_message.PNG "enterChat")
 
 Here you can send a message to your friend
 
