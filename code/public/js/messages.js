@@ -90,7 +90,7 @@ function handle_message(message) {
                 } else { //it's a single user and we have their details
                 addMessage({service: 'facebook', type: ((message.body && message.body.length > 0) ? 'text' : 'other'),
                             from: message.senderID, avatar: page.talkingToAvatar,
-                            isMe: false, content: message.body, name: page.talkingToName, timestamp: message.timestamp})
+                            isMe: message.senderID != page.talkingTo, content: message.body, name: page.talkingToName, timestamp: message.timestamp})
                 }
                             //        page.participants
             //        page.fromGroupinMessage

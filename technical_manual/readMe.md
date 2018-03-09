@@ -641,28 +641,13 @@ From the server perspective all server side code over time will degrade, which c
 
 Database would need to get vacuumed over time.
 
-<center> 7	Testing </center>
+
+
+<center> 7	Appendix </center>
 ===
 	
 
-### <center> 7.1 Unit testing</center>
-
-
-
-### <center> 8.2 Black-box Testing</center>
-
-
-### <center> 8.3 White-box Testing</center>
-
-
-### <center> 8.4 User Design Test</center>
-
-
-<center> 8	Appendix </center>
-===
-	
-
-### <center> 8.1 Resources</center>
+### <center> 7.1 Resources</center>
 
 www.draw.io<br>
 www.stackoverflow.com<br>
@@ -671,7 +656,7 @@ www.mysql.com <br>
 www.w3cschools.com<br>
 www.github.com<br>
 
-### <center> 8.2 References</center>
+### <center> 7.2 References</center>
 
 www.google.com <br>
 www.computing.dcu.ie/~davids/CA326/
