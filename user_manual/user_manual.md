@@ -86,7 +86,7 @@ This Service page is where you need to input your details allowing us to import 
 
 After successfully inputting your Facebook/skype information, clicking on the respective button &quot;Facebook&quot; or &quot;Skype&quot; will register your information and your chats are now imported into our application.
 
-![Log In Both Services](fb_registered.png "LogInBothService") 
+![Log In Both Services](fb_registered.PNG "LogInBothService") 
 
 Information shown on the Services, to informs you that there is no need to log into Facebook again, as its already registered the service, users can also sign into skype.
 
@@ -164,7 +164,7 @@ You will also have access to a search bar that will search all your imported cha
 
 To enter the chat simply clicking on the message box will make you enter the chat message window.
 
-![Log In Both Services](enterChat.PNG "enterChat") 
+![Log In Both Services](enterChat.png "enterChat") 
 
 **Send message:**
 
