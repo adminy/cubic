@@ -78,22 +78,33 @@ function handle_message(message) {
             M.toast({ html: "<img src='"+contact.avatar+"' style='width:32px;height:32px' class='circle photo'>"+
                     contact.name +"<br> Typing ... <img src='https://i.imgur.com/bOl3IOa.png' style='width:29px; height:29px'>", classes: 'blue' })
         }
-        else if('body' in message) {
+        else {
             if(page.inMessage) {
-                if('facebook' in page.participants)
-                    for(let i = 0; i < page.participants.facebook.length; i++)
-                        if(page.participants.facebook[i].userID == message.senderID)
-                            addMessage({service: 'facebook', type: ((message.body && message.body.length > 0) ? 'text' : 'other'),
-                                 from: message.senderID, avatar: page.participants.skype[i].avatar,
-                isMe: false, content: message.resource.content, name:page.participants.skype[i].name, timestamp: message.resource.id})
+                if(page.fromGroupinMessage) {   //group message
+                    if('facebook' in page.participants)
+                        for(let i = 0; i < page.participants.facebook.length; i++)
+                            if(page.participants.facebook[i].userID == message.senderID)
+                                addMessage({service: 'facebook', type: ((message.body && message.body.length > 0) ? 'text' : 'other'),
+                                    from: message.senderID, avatar: page.participants.facebook[i].avatar,
+                    isMe: false, content: message.body, name:page.participants.facebook[i].name, timestamp: message.timestamp})
+                } else { //it's a single user and we have their details
+                addMessage({service: 'facebook', type: ((message.body && message.body.length > 0) ? 'text' : 'other'),
+                            from: message.senderID, avatar: page.talkingToAvatar,
+                            isMe: false, content: message.body, name: page.talkingToName, timestamp: message.timestamp})
+                }
+                            //        page.participants
+            //        page.fromGroupinMessage
+            //        page.talkingTo
+            //        page.talkingToService
+            //        page.talkingToName
             } else {
                 M.toast({ html: "<img src='"+contact.avatar+"' style='width:32px;height:32px' class='circle photo'>"+
                 contact.name +"<br> "+message.body+" <img src='https://i.imgur.com/bOl3IOa.png' style='width:29px; height:29px'>", classes: 'blue' })
             
             }
             
-        } else {
-            console.log(JSON.stringify(message))
+        // } else {
+        //     console.log(JSON.stringify(message))
         }
 
     }
@@ -245,6 +256,8 @@ function addMessage(config) {
     '<img src="https://i.imgur.com/bOl3IOa.png"  style="width:29px; height:29px">')+
     (!isMe ? '<img src="'+avatar+'" alt="'+name+'" title="'+name+'" class="circle photo" style="width:29px;height:29px">' : '')+
     (type == 'text' ? content : '<div class="card" style="filter:blur(8px)">[FILE]</div>') + '</div><div class="clear"></div>';
+
+    document.getElementById("messages").scrollTo(0, document.getElementById("messages").scrollHeight)
 }
 
 

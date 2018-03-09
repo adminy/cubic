@@ -13,6 +13,8 @@ function menu_to_message() {
           page.talkingTo = this.getAttribute('title') //set who you are going to talk to in the messages page
           page.talkingToService = this.getAttribute('alt')
           page.talkingToName = this.getAttribute('name')
+          page.talkingToAvatar = this.children[0].src
+        //   page.talkingToName = this.children[1].children[0]
           let msgdiv = document.getElementById('msgdiv')
           removeClass(msgdiv, "unloader")
           addClass(msgdiv, "loader")          
@@ -31,9 +33,7 @@ function menu_to_message() {
         if(page.breakGroup) selectedGroup(this)
         else { //you are going to what you clicked thread
           page.inMessage = true
-          page.fromGroupinMessage = true //delete on message_to_menu!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.......................................
-          //....................................................................................................................................................
-          //...........................................................................................................................................
+          page.fromGroupinMessage = true
           if (ws) ws.send(JSON.stringify({ get_group_messages: this.getAttribute('title'), services: this.getAttribute('alt'), token: getCookie("wss") }))
           page.talkingTo = this.getAttribute('title') //set who you are going to talk to in the messages page
           page.talkingToService = this.getAttribute('alt')

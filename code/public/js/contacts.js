@@ -27,7 +27,7 @@ function list_contacts(contacts, local) { //show list of users you last talked t
        document.getElementById('contacts').innerHTML += '\
        <li class="chat collection-item avatar chat-unread waves-effect list_item" title="'+contacts[i].userID+'" alt="'+contacts[i].service+'" name="'+contacts[i].name+'" data="contact">\
            <img src="'+contacts[i].avatar+'" alt="'+contacts[i].userID+'" class="circle">\
-           <span class="chat-title">'+name+ (contacts[i].service == 'skype' ? '<img src="https://i.imgur.com/edQkxse.png" style="width:29px; height:29px">' : 
+           <span class="chat-title"><span>'+name+ '</span>' + (contacts[i].service == 'skype' ? '<img src="https://i.imgur.com/edQkxse.png" style="width:29px; height:29px">' : 
                                                                               '<img src="https://i.imgur.com/bOl3IOa.png"  style="width:29px; height:29px">') + '</span>\
            <p class="truncate grey-text">'+text+'</p>\
            <span class="blue-text ultra-small">'+new Date(parseInt(contacts[i].timestamp)).toUTCString()+'</span>\

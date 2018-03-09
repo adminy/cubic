@@ -521,18 +521,18 @@ tr:nth-child(even) {
 
 ### <center>3.5 User Flow Diagram</center>
 
-![User Flow Diagram](userflow.png "UserFlow.png") 
+![User Flow Diagram](UserFlow.png "UserFlow.png") 
 
 
 ### <center>3.6 Context Diagram </center>
 
-![Context Diagram](contextdiagram.png "Context Diagram")
+![Context Diagram](ContextDiagram.png "Context Diagram")
 
 
 ### <center>3.7 Class Diagram </center>
 
 
-![Class Diagram](classdiagram.png "Class Diagram")
+![Class Diagram](ClassDiagram.png "Class Diagram")
 
 
 

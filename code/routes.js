@@ -6,6 +6,7 @@ function load_routes(express) {
     express.get('/main.html', function (req, res) { res.sendFile(__dirname + '/public/main.html') })
     express.get('/settings', function (req, res) { res.sendFile(__dirname + '/public/settings.html') })
     express.get('/blog', function (req, res) { res.sendFile(__dirname + '/public/blog.html') })
+    express.get('/testing', function (req, res) { res.sendFile(__dirname + '/public/testing.html') })
     //css style sheets
     express.get('/css/materialize.min.css', function (req, res) { res.sendFile(__dirname + '/public/css/materialize.min.css') })
     express.get('/css/materialize.css', function (req, res) { res.sendFile(__dirname + '/public/css/materialize.css') })
