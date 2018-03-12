@@ -53,10 +53,15 @@ function onSignIn(googleUser) {
   }
 
   function signOut() {
-    if(gapi && gapi.auth)
+    if(ws) {
+      ws.send(JSON.stringify({logout: getCookie('wss')}))
+      eraseCookie('wss')
+    }
+    if(typeof gapi !== 'undefined' && gapi.auth) {
       gapi.auth.signOut();
-    console.log('Logged out of Google')
-    if(FB)
+      console.log('Logged out of Google')
+    }
+    if(FB) {
       FB.getLoginStatus(function(response) {
         if (response && response.status === 'connected') {
             FB.logout(function(response) {
@@ -64,6 +69,8 @@ function onSignIn(googleUser) {
             });
         }
       });
+    }
+    window.location.reload()
   }
 
   function login_page() {

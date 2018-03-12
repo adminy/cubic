@@ -3,11 +3,9 @@
     <b>
       <span style="color: black; font-size:30px;">Cubik</span>
     </b>
-    <div class="nav-wrapper white container collection-item right" style='position:absolute;top:0;right:0;width:auto;padding:0;text-align:center;'>
-      <button class="waves-effect modal-trigger waves-light dropdown-button blue-text text-darken-2 meniu" onclick='show_menu()'>
-        <i class="material-icons right">more_vert</i>
-      </button>
-    </div>
+    <button class="btn waves-effect waves-light hoverable red lighten-3 z-depth-5 pulse right" style='height:auto;margin-right:1%' onclick='show_menu()'>
+        <i class="material-icons">menu</i>
+    </button>
   </nav>
 
   <nav class="white center">
@@ -109,7 +107,7 @@
   <!-- Modal Structure -->
   <div id="modal1" class="modal modal-fixed-footer" style='display:block;z-index:1003;'>
     <div class="modal-content">
-      <button class="right" onlick="signOut()"> Logout </button>
+      <button class="btn red right" onclick="signOut()"> Logout </button>
 
       <h4>Services</h4>
       <div id='services_list'></div>
@@ -135,6 +133,7 @@
           <!--<button class='btn waves-effect waves-light green' onclick="service_registration('hangouts')">Hangouts</button>-->
           <button class='btn waves-effect waves-light blue' style='float:right' onclick="service_registration('skype')">Skype</button>
           <!-- <button class='btn waves-effect waves-light purple' style='float:right'>Viber</button> -->
+          <!-- <button class='btn waves-effect waves-light green' style='float:right'>WhatsApp</button> -->
         </div>
 
       </div>

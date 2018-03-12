@@ -24,7 +24,7 @@ function websocket() {
       case 'contacts': list_contacts(data.contacts); break
       case 'message': handle_message(data.message); break
       case 'messages': list_messages(data.messages); break
-      // case 'group_messages': group_messages(data.group_messages); break //they should just be same as contact messages
+      case 'group_messages': group_messages(data.group_messages, data.participants, data.selected); break //they should just be same as contact messages
       // case 'contact_messages': contact_messages(data.contact_messages); break //they should just be same as group messages
       
       case 'ask_login': login_page(); break
@@ -36,6 +36,7 @@ function websocket() {
       case 'group_successfully_created': group_successfully_created(data.group_successfully_created); break
       default: console.log(data)
     }
+    // console.log(data)  //for debugging
   }
 
   ws.onerror = ws.onclose = function () {  setTimeout(websocket, 8000) /*   websocket() => attempt reconnect / recovery every 8 seconds */ }

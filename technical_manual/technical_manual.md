@@ -173,14 +173,13 @@ User will have to log in with either Google or Facebook, where we will then stor
 
 ### <center>2.2 Server </center>
 
-Server is the core of our app, it reponds to client requests as well as it has lots of managers to interact with outside world services. The important role of the server is divided in 3 parts.
-The HTTPS server serving static html files and other files through the http protocol using express in node.js. The second part is the services part, it's role is to make use of services like skype and facebook api's. The third most important part is the web sockets which handle client requests and allow clients to interact with the services part. The bridge between the 3 parts is very hard to set up, but we have at least a way to indentify which service belongs to which client through tokens. The server also has another part which unlike the 3 dependent parts it can manage fine on it's own, we are talking about the database. Database is our saviour if anything, from remembering all tokens for each browser you log in to creating groups and all the other queries which the server gets to manage.
+
 
 
 
 ### <center>2.3 Client</center>
 
-The client starts of with the communication sockets where it can ask server and listen to what the server has to say to it. then there is the social side which allows you to Log in with third party applications like facebook and google. following that we have contacts and groups which take care of listing your groups and contacts. Messages handler which does heavy work in understanding what the server is sending it. Search, the powerful tool which saves you from having to go through pages and pages of contacts. Services which allows you to add services to your account to be able to reach out to more people. Page manages data like what page you are in, and it also keeps information about the page you are currently requesting, eg: message from a contact page, stores who is the contact you seek for, so that the messages page knows what to display. 
+
 
 
 

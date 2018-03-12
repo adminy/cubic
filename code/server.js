@@ -42,7 +42,7 @@ var express = require('express')(),
     }
 //DB ----------------------------------------------------------------------------------------------------------------
 var mysql = require('mysql'),
-    db = { host: 'sql32.main-hosting.eu', user: 'u894154994_cubik', password: 'password', port: 3306, database: 'u894154994_cubik', charset: 'utf8mb4', multipleStatements: true },
+    db = { host: 'localhost', user: 'u894154994_cubik', password: 'password', port: 3306, database: 'u894154994_cubik', charset: 'utf8mb4', multipleStatements: true },
     con = mysql.createConnection(db); //keep this public so it can be accessed by `con.escape()`
 /** -- This is a shortcut function which evades typing out every time all of that, only abstract the important bits, `make a query`
  * @param {string} sql - any sql query [CREATE, DROP, SELECT, INSERT, UPDATE, DELETE] 
@@ -63,6 +63,9 @@ var server = https.createServer(ssl, express)
 server.listen(443) //at HTTPS port, serve the express server
 
 var wss = new WebSocket.Server({ server: server })
+
+var tools = { services: services, connectFB: connectFB, connectS: connectS, con: con, query: query, wss: wss, fs: fs, log: log, isJSON: isJSON, send_if_online: send_if_online }
+
 wss.on('connection', function connection(ws, req) {
     ws.on('message', function incoming(message) {
         if (isJSON(message)) {
@@ -75,10 +78,10 @@ wss.on('connection', function connection(ws, req) {
                 auth(data, ws, crypto, query, con, log)
 
             if ('token' in data && 'user' in data && 'pass' in data && 'service_name' in data)
-                register_service(data, ws, con, query, log)
+                register_service(data, ws, con, query, log, load_services, tools)
 
             if ('my_services' in data)
-                query("SELECT id AS userID, name, avatar, service, user FROM users JOIN services ON users.id = services.userID JOIN devices ON devices.userID=users.id WHERE token=" +
+                query("SELECT id AS userID, name, avatar, service, user, active FROM users JOIN services ON users.id = services.userID JOIN devices ON devices.userID=users.id WHERE token=" +
                     con.escape(data.my_services) + " GROUP BY user, service", function (res) {
                         ws.send(JSON.stringify({ my_services: res }))
                         query("SELECT groupID, name, services, avatar, creation_timestamp FROM groups_info JOIN devices ON devices.userID = groups_info.owner WHERE token="+ con.escape(data.my_services), function(groups) {
@@ -87,14 +90,24 @@ wss.on('connection', function connection(ws, req) {
                         })
                     })
 
+            if('removeService' in data && 'token' in data)
+                    query("DELETE services.*, relations.* FROM services JOIN devices ON services.userID = devices.userID JOIN relations ON relations.yourID = services.user WHERE services.user="+con.escape(data.removeService)+" AND token="+con.escape(data.token), function() {
+                        //make a for loop which deletes it from services array using splice(), as well as perhaps make a service stop function would be nice if we had more time
+                        for(let i = 0; i < services.length; i++)
+                            if(services[i].user == data.removeService)
+                                services.splice(i,i)
+                        log('Service deleted :' + data.removeService, 33)
+                    })
 
             //{ sendMessage: textarea.value, toUser: page.talkingTo, token: getCookie("wss"), service: page.talkingToService })) 
             if ('sendMessage' in data && 'toUser' in data && 'token' in data && 'service' in data)
                 query("SELECT user FROM services JOIN devices ON services.userID = devices.userID WHERE service=" + con.escape(data.service) + " AND token=" +
                     con.escape(data.token), function (users) {
                         for (let i = 0; i < services.length; i++)
-                            if (services[i].user == users[0].user)
+                            if (services[i].user == users[0].user) {
+                                services[i].markAsRead(data.toUser)
                                 services[i].send(data.toUser, data.sendMessage)
+                            }
                     })
             //first query determines if you have at least 10 people in this app which you tried talking to, if not it'll show you 10 random people, else it will show you all the ones you did talk with
             //now the beauty is that we have a listener, so even if you're new to the app, if you have friends who talk to you, the app will sort those people as we register to what we listen for better notifications system. of course we know it's a little outdated but it works and It took a lot to get it at least to this state, with future improvements perhaps the new feature will be implemented
@@ -121,7 +134,7 @@ wss.on('connection', function connection(ws, req) {
                             query("INSERT INTO groups_info(name, services, owner, avatar) VALUES ("+con.escape(data.name) + ","+ con.escape(data.services) +","+ con.escape(res[0].userID) +",'https://i.imgur.com/gKCrzGD.png') ON DUPLICATE KEY UPDATE avatar=avatar", function(res) {
                                 if(ws)
                                   if(res.affectedRows > 0) {
-                                    ws.send(JSON.stringify({'group_successfully_created': {name: data.name, avatar: 'https://i.imgur.com/gKCrzGD.png', groupID: res.insertId, services: data.services}}))
+                                    ws.send(JSON.stringify({'group_successfully_created': {name: data.name, avatar: 'https://i.imgur.com/gKCrzGD.png', groupID: res.insertId, services: data.services, creation_timestamp: data.creation_timestamp}}))
                                     var sql = ""
                                     for(let i = 0; i < data.createGroup.length; i++)
                                         sql += "INSERT INTO groups(groupID, userID, service) VALUES ("+con.escape(res.insertId)+", "+con.escape(data.createGroup[i].userID)+", "+con.escape(data.createGroup[i].service)+");"
@@ -165,7 +178,10 @@ wss.on('connection', function connection(ws, req) {
                         for(let i = 1; i < users.length; i++) 
                             sql += "OR (messages.service="+con.escape(users[i].service)+" AND threadID="+con.escape(users[i].userID)+") "
                         sql += ") ORDER BY timestamp DESC LIMIT 50"
-                        query(sql, function (messages) { ws.send(JSON.stringify({messages: messages})) })
+                        query(sql, function (messages) {
+                            query("SELECT groupID, service, groups.userID, name, avatar FROM groups JOIN profiles ON groups.userID=profiles.userID WHERE groupID="+con.escape(data.get_group_messages), function(participants) {
+                                ws.send(JSON.stringify({group_messages: messages, participants: participants, selected: ((messages.length > 0) ? messages[messages.length - 1].senderID : '') })) })
+                            })
                     }
                 })
                 
@@ -174,14 +190,20 @@ wss.on('connection', function connection(ws, req) {
             if('sendTypingIndicator' in data && 'token' in data && 'service' in data)
                 query("SELECT user FROM services JOIN devices ON services.userID = devices.userID WHERE service=" + con.escape(data.service) + " AND token=" +
                 con.escape(data.token), function (users) {
-                    for (let i = 0; i < services.length; i++)
-                        if (services[i].user == users[0].user)
-                            services[i].markAsRead(data.sendTypingIndicator)
+                    if(users.length > 0)
+                        for (let i = 0; i < services.length; i++)
+                            if (services[i].user == users[0].user)
+                                services[i].markAsRead(data.sendTypingIndicator)
                 })
 
             //undefined request, what is it?
             if (!('token' in data || 'google_id' in data || 'facebook_id' in data || 'my_services' in data || 'fb_threads' in data))
                 log(JSON.stringify(data), 31)
+
+            if('logout' in data)
+                query("DELETE FROM devices WHERE token=" + con.escape(data.logout), function() {
+                    log('A User Just Logged out!', 33)
+                })
         }
         log('Websocket User Connected', 32)
 
@@ -192,6 +214,6 @@ wss.on('connection', function connection(ws, req) {
 
 })
 
-load_services({ services: services, connectFB: connectFB, connectS: connectS, con: con, query: query, wss: wss, fs: fs, log: log, isJSON: isJSON, send_if_online: send_if_online })
+load_services(tools)
 load_routes(express)
 on_exit(log)

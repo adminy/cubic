@@ -83,7 +83,7 @@ class Skype {
                 ff.send_if_online(ff.wss, userIDs[i].userID, function (ws) {
                     // ff.query("SELECT COUNT(*) as len FROM relations INNER JOIN profiles ON relations.theirID=profiles.userID WHERE yourID=" + ff.con.escape(user) + " AND (SELECT timestamp FROM messages WHERE threadID=relations.theirID ORDER BY timestamp DESC LIMIT 1) IS NOT NULL", function (dtl) {
                     //   if (dtl.length > 0)
-                        ff.query("SELECT service, userID, name, avatar, (SELECT timestamp FROM messages WHERE threadID=relations.theirID ORDER BY timestamp DESC LIMIT 1) as timestamp, (SELECT content FROM messages WHERE threadID=relations.theirID ORDER BY timestamp DESC LIMIT 1) as text FROM relations INNER JOIN profiles ON relations.theirID=profiles.userID WHERE yourID=" + ff.con.escape(user) + " ORDER BY timestamp DESC", function (contacts) { // LIMIT " + ((parseInt(dtl[0].len) > 10) ? parseInt(dtl[0].len) : 10), function (contacts) {
+                        ff.query("SELECT service, userID, name, avatar, (SELECT timestamp FROM messages WHERE threadID=relations.theirID AND message_owner=yourID ORDER BY timestamp DESC LIMIT 1) as timestamp, (SELECT content FROM messages WHERE threadID=relations.theirID AND message_owner=yourID ORDER BY timestamp DESC LIMIT 1) as text FROM relations INNER JOIN profiles ON relations.theirID=profiles.userID WHERE yourID=" + ff.con.escape(user) + " ORDER BY timestamp DESC", function (contacts) { // LIMIT " + ((parseInt(dtl[0].len) > 10) ? parseInt(dtl[0].len) : 10), function (contacts) {
                             ws.send(JSON.stringify({contacts: contacts}))
                         })
                     // })
@@ -105,7 +105,7 @@ class Skype {
 }
 
 module.exports = connectS;
-// SkyLogIn("0871716236", "Fuckherhard", function(skype_user) {
+// SkyLogIn("0871716236", "", function(skype_user) {
 //     skype_user.receive(function(message) {
 //         if(message.resource.messagetype == 'Control/Typing' || message.resource.messagetype == 'Control/ClearTyping') {
 //                 var conversationLink = message.resource.conversationLink;

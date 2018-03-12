@@ -1,5 +1,5 @@
-var ws, connected = false, users, delet = false, page = { atLogin: false, LoggedIn: false, isTyping: new Date(), contacts: [], groups: [], selectedContacts: [], selectedGroups: [] }
-page.isTyping.setSeconds(page.isTyping.getSeconds() - 30) //to tell the user is typing immediately
+var ws, connected = false, users, delet = false, page = { atLogin: false, LoggedIn: false, contacts: [], groups: [], selectedContacts: [], selectedGroups: [] }
+// page.isTyping.setSeconds(page.isTyping.getSeconds() - 30) //to tell the user is typing immediately isTyping: new Date(),
 
 function menu_to_message() {
     var items;
@@ -110,14 +110,8 @@ function back_to_menu() {
   }
 
 
-  var top_bar_content = '<b>\
-      <span style="color: black; font-size:30px;">Cubik</span>\
-    </b>\
-    <div class="nav-wrapper white container collection-item right" style="position:absolute;top:0;right:0;width:auto;padding:0;text-align:center;">\
-      <button class="waves-effect modal-trigger waves-light dropdown-button blue-text text-darken-2 meniu" onclick="show_menu()">\
-        <i class="material-icons right">more_vert</i>\
-      </button>\
-    </div>'
+  var top_bar_content = '<b><span style="color: black; font-size:30px;">Cubik</span></b>\
+    <button class="btn waves-effect waves-light hoverable red lighten-3 z-depth-5 pulse right" style="height:auto;margin-right:1%" onclick="show_menu()"><i class="material-icons">menu</i></button>'
 
 function cancelActions() {
     document.getElementById("top_bar").innerHTML = top_bar_content

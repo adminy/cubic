@@ -1,5 +1,5 @@
 
-function register_service(data, ws, con, query, log) {
+function register_service(data, ws, con, query, log, load_services, tools) {
     //make a check for ' || " || `
     query("SELECT userID FROM devices WHERE token=" + con.escape(data.token) +
         ";SELECT COUNT(services.userID) AS found FROM devices JOIN services ON devices.userID = services.userID WHERE token=" + con.escape(data.token) +
@@ -13,6 +13,7 @@ function register_service(data, ws, con, query, log) {
                         res[0][0].userID + "," + con.escape(data.service_name) + ",''," + con.escape(data.user) + "," + con.escape(data.pass) + ",1)", function () {
                             ws.send(JSON.stringify({ 'service_successfully_registered': { service_name: data.service_name, user: data.user } }))
                             log("New " + data.service_name + " service with User:" + data.user + ' and UserID:' + res[0][0].userID)
+                            load_services(tools)
                         })
             }
         })

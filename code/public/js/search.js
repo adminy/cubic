@@ -40,7 +40,7 @@ function searching(input_box) {
         list_contacts(page.contacts, true)
       }
   
-      page.selectedContacts = []
+      // page.selectedContacts = []
   
     }
   }

@@ -38,7 +38,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
         return array.sort(function(a, b) {
             var x = a[key]; var y = b[key];
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        });
+        }).reverse();
     }
 // var people = [
 //     {
@@ -59,30 +59,30 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 // people = sortByKey(people, 'name');
 
 
-//____________________________________________Post/Get Method
- function post(path, params, method) {
-    method = method || "post"; // Set method to post by default if not specified.
+// //____________________________________________Post/Get Method
+//  function post(path, params, method) {
+//     method = method || "post"; // Set method to post by default if not specified.
   
-    // The rest of this code assumes you are not using a library.
-    // It can be made less wordy if you use one.
-    var form = document.createElement("form");
-    form.setAttribute("method", method);
-    form.setAttribute("action", path);
+//     // The rest of this code assumes you are not using a library.
+//     // It can be made less wordy if you use one.
+//     var form = document.createElement("form");
+//     form.setAttribute("method", method);
+//     form.setAttribute("action", path);
   
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
+//     for(var key in params) {
+//         if(params.hasOwnProperty(key)) {
+//             var hiddenField = document.createElement("input");
+//             hiddenField.setAttribute("type", "hidden");
+//             hiddenField.setAttribute("name", key);
+//             hiddenField.setAttribute("value", params[key]);
   
-            form.appendChild(hiddenField);
-        }
-    }
+//             form.appendChild(hiddenField);
+//         }
+//     }
   
-    document.body.appendChild(form);
-    form.submit();
-  }
+//     document.body.appendChild(form);
+//     form.submit();
+//   }
   
   //______________________________________________________COOKIE ::::::::::::::::::::::::::::::::::::::::::::::::::::
   function setCookie(name,value,days) {

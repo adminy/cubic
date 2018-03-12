@@ -49,8 +49,13 @@ function service_from_cookie(f, db_service) {
 function load_services(f) { //f -> {services, connectFB, connectS, con, query, wss, fs, log}
     f.query("SELECT userID, service, authFilePath, user, pass, active, name, email, avatar, registration_timestamp FROM services INNER JOIN users ON services.userID = users.id GROUP BY service, user", function (res) {
         for (let i = 0; i < res.length; i++) {
+            //check if service isn't already running somehow
+            let service_running = false
+            for (let j = 0; j < f.services.length; j++)
+                if (f.services[j].user == res[i].user)
+                    service_running = true
 
-            if (res[i].active == '1')
+            if (res[i].active == '1' && !service_running)
                 if (res[i].authFilePath && res[i].authFilePath.indexOf('.json') !== -1)
                     service_from_cookie(f, res[i])
                 else

@@ -17,31 +17,31 @@ function handle_message(message) {
         if(message.resource.messagetype == 'Control/ClearTyping')
             M.toast({ html: "<img src='https://i.imgur.com/edQkxse.png' style='width:29px; height:29px'>("+fromName+") Clearing ...", classes: 'blue' })
         if(message.resource.messagetype !== 'Control/Typing'  && message.resource.messagetype !== 'Control/ClearTyping') {
-        var msg = {
-                "id":1108,
-                "type":"EventMessage",
-                "resourceType":"NewMessage",
-                "time":"2018-03-09T13:55:00Z",
-                "resourceLink":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:live:20a002c57bc1f838/messages/1520603700830",
-                "resource":{
-                    "clientmessageid":"17555921056000866618",
-                    "type":"Message",
-                    "messagetype":"RichText",
-                    "originalarrivaltime":"2018-03-09T13:54:59.360Z",
-                    "version":"1520603700830",
-                    "contenttype":"text",
-                    "origincontextid":"0",
-                    "isactive":true,
-                    "from":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:live:20a002c57bc1f838",
-                    "id":"1520603700830",
-                    "conversationLink":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:live:20a002c57bc1f838",
-                    "counterpartymessageid":"1520603700830",
-                    "imdisplayname":"hasan fakhra",
-                    "ackrequired":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/conversations/ALL/messages/1520603700830/ack",
-                    "content":"ya i got ",
-                    "composetime":"2018-03-09T13:54:59.360Z"
-                }
-            }
+        // var msg = {
+        //         "id":1108,
+        //         "type":"EventMessage",
+        //         "resourceType":"NewMessage",
+        //         "time":"2018-03-09T13:55:00Z",
+        //         "resourceLink":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:live:20a002c57bc1f838/messages/1520603700830",
+        //         "resource":{
+        //             "clientmessageid":"17555921056000866618",
+        //             "type":"Message",
+        //             "messagetype":"RichText",
+        //             "originalarrivaltime":"2018-03-09T13:54:59.360Z",
+        //             "version":"1520603700830",
+        //             "contenttype":"text",
+        //             "origincontextid":"0",
+        //             "isactive":true,
+        //             "from":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/contacts/8:live:20a002c57bc1f838",
+        //             "id":"1520603700830",
+        //             "conversationLink":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/conversations/8:live:20a002c57bc1f838",
+        //             "counterpartymessageid":"1520603700830",
+        //             "imdisplayname":"hasan fakhra",
+        //             "ackrequired":"https://db4-client-s.gateway.messenger.live.com/v1/users/ME/conversations/ALL/messages/1520603700830/ack",
+        //             "content":"ya i got ",
+        //             "composetime":"2018-03-09T13:54:59.360Z"
+        //         }
+        //     }
 
             //    page.contacts
             //    page.groups
@@ -53,11 +53,10 @@ function handle_message(message) {
             //        page.talkingToName
 
             if(page.inMessage) {
-                if('skype' in page.participants)
-                    for(let i = 0; i < page.participants.skype.length; i++)
-                        if(page.participants.skype[i].userID == fromID)
-                            addMessage({service: 'skype', type: message_type, from: fromID, avatar: page.participants.skype[i].avatar,
-                                 isMe: false, content: message.resource.content, name:page.participants.skype[i].name, timestamp: message.resource.id})
+                for(let i = 0; i < page.participants.length; i++)
+                        if(page.participants[i].userID == fromID)
+                            addMessage({service: 'skype', type: message_type, from: fromID, avatar: page.participants[i].avatar,
+                                 isMe: false, content: message.resource.content, name:page.participants[i].name, timestamp: message.resource.id})
             } else {
                 //let contact = getContactById(fromID)
                 M.toast({ html: "<img src='https://i.imgur.com/drtemjh.png' style='width:32px;height:32px'>"+
@@ -81,13 +80,12 @@ function handle_message(message) {
         else {
             if(page.inMessage) {
                 if(page.fromGroupinMessage) {   //group message
-                    if('facebook' in page.participants)
-                        for(let i = 0; i < page.participants.facebook.length; i++)
-                            if(page.participants.facebook[i].userID == message.senderID)
-                                addMessage({service: 'facebook', type: ((message.body && message.body.length > 0) ? 'text' : 'other'),
-                                    from: message.senderID, avatar: page.participants.facebook[i].avatar,
-                    isMe: false, content: message.body, name:page.participants.facebook[i].name, timestamp: message.timestamp})
-                } else { //it's a single user and we have their details
+                    for(let i = 0; i < page.participants.length; i++)
+                        if(page.participants[i].userID == message.senderID)
+                            addMessage({service: 'facebook', type: ((message.body && message.body.length > 0) ? 'text' : 'other'),
+                                    from: message.senderID, avatar: page.participants[i].avatar,
+                                    isMe: false, content: message.body, name:page.participants[i].name, timestamp: message.timestamp})
+                } else { //it's a single user and we have their details in variables
                 addMessage({service: 'facebook', type: ((message.body && message.body.length > 0) ? 'text' : 'other'),
                             from: message.senderID, avatar: page.talkingToAvatar,
                             isMe: message.senderID != page.talkingTo, content: message.body, name: page.talkingToName, timestamp: message.timestamp})
@@ -216,11 +214,11 @@ function keysPress(textarea) {
     if (key === 13 && ws && page.inMessage) { // If the user has pressed enter
       send_message_to_server()
       return false;
-    }
-    else if (page.inMessage && textarea.value.length > 0 && ws && parseInt((new Date() - page.isTyping) / 1000) > 30) {
-      ws.send(JSON.stringify({sendTypingIndicator: page.talkingTo, token: getCookie("wss"), service: page.talkingToService }))
-      page.isTyping = new Date()
-    }
+    }   //typing indicator confirmed not to work on both services due to new api update ...
+    // else if (page.inMessage && textarea.value.length > 0 && ws && parseInt((new Date() - page.isTyping) / 1000) > 30) {
+    //   ws.send(JSON.stringify({sendTypingIndicator: page.talkingTo, token: getCookie("wss"), service: page.talkingToService }))
+    //   page.isTyping = new Date()
+    // }
     else return true;
   }
 
@@ -228,6 +226,8 @@ function keysPress(textarea) {
 function send_message_to_server() {
     var message_box = document.getElementById('message_textbox')
     if(message_box.value.trim().length > 0) {
+        if(page.fromGroupinMessage)
+            addMessage({service: page.talkingToService, type: 'text', isMe: true, content: message_box.value})
         ws.send(JSON.stringify({ sendMessage: message_box.value, toUser: page.talkingTo, token: getCookie("wss"), service: page.talkingToService }))
         document.getElementById("messages").scrollTo(0, document.getElementById("messages").scrollHeight)
         message_box.value = ''
@@ -260,7 +260,14 @@ function addMessage(config) {
     document.getElementById("messages").scrollTo(0, document.getElementById("messages").scrollHeight)
 }
 
+function group_messages(messages, participants, selected) {
+    page.participants = participants
+    document.getElementById('message_container').style.left = '21%';
+    updateSelectors()
+    list_messages(messages)
+    page.selectedTalker =  selected
 
+}
 
 function list_messages(messages) {
     for(let i = messages.length - 1; i >= 0; i--) { //message_owner, avatar, name, messages.service threadID, id, messages.type, senderID, timestamp, content 
@@ -275,32 +282,31 @@ function list_messages(messages) {
             page.groups[i].messages = messages
 
 
-    if(page.fromGroupinMessage) {
+    // if(page.fromGroupinMessage) {
+        //Love you code, worked hard on you, but unfortunately did you right this time
+        // var data = []
+        // var uid, found
+        // for(let i = 0; i < messages.length; i++) {
+        //     uid = messages[i].service + ',' + messages[i].senderID + ','  + messages[i].avatar + ',' + messages[i].name
+        //     found = false
+        //     for(let j = 0; j < data.length; j++)
+        //         if(data[j] == uid || messages[i].senderID != messages[i].threadID)
+        //            found = true
+        //     if(!found) data.push(uid)
 
-        var data = []
-        var uid, found
-        for(let i = 0; i < messages.length; i++) {
-            uid = messages[i].service + ',' + messages[i].senderID + ','  + messages[i].avatar + ',' + messages[i].name
-            found = false
-            for(let j = 0; j < data.length; j++)
-                if(data[j] == uid || messages[i].senderID != messages[i].threadID)
-                   found = true
-            if(!found) data.push(uid)
+        // }
 
-        }
+        // var participants = {}, user
+        // for(let i = 0; i < data.length; i++) {
+        //     user = data[i].split(',')
+        //     if(user[0] in participants) participants[user[0]].push({userID: user[1], avatar: user[2], name: user.slice(3).join()})
+        //     else participants[user[0]] = [{userID: user[1], avatar: user[2], name: user.slice(3).join()}]
+        // }
 
-        var participants = {}, user
-        for(let i = 0; i < data.length; i++) {
-            user = data[i].split(',')
-            if(user[0] in participants) participants[user[0]].push({userID: user[1], avatar: user[2], name: user.slice(3).join()})
-            else participants[user[0]] = [{userID: user[1], avatar: user[2], name: user.slice(3).join()}]
-        }
-
-        page.participants = participants
+        // page.participants = participants
         //get messages layout for a group
-        document.getElementById('message_container').style.left = '280px';
-        updateSelectors()
-    }
+        
+    // }
 }
 
 function updateSender(data) {
@@ -308,30 +314,56 @@ function updateSender(data) {
     page.talkingTo = data.split(',').slice(1).join()
 }
 function updateSelectors(select) {
-    var selected = 'facebook'
-    if(select)
-        selected = select.value
-
-    var selectors = "<select class='feature1 btn waves-effect waves-light' style='width:125px; opacity:1;pointer-events: all;' onchange='updateSelectors(this)'>"
-    if(selected == 'facebook') {
-        if('facebook' in page.participants)
-            selectors += "<option value='facebook'>Facebook</option>"
-        if('skype' in page.participants)
-            selectors += "<option value='skype'>Skype</option>"
+    // console.log(page.participants)
+    if(select) {
+        updateSender(select.value)
     } else {
-        if('skype' in page.participants)
-            selectors += "<option value='skype'>Skype</option>"
-        if('facebook' in page.participants)
-            selectors += "<option value='facebook'>Facebook</option>"
-    }
+        var selectors = "<select class='feature1 btn waves-effect waves-light' style='width:20%; opacity:1;pointer-events: all;' onchange='updateSelectors(this)'>"
         
-    selectors += "</select><select class='feature2 btn waves-effect waves-light' style='width:148px; opacity:1;pointer-events: all;' onchange='updateSender(this.value, \""+selected+"\")'>"
-    if(page.participants[selected].length > 0)
-        updateSender(selected + "," +page.participants[selected][0].userID)
+        //updates participant to the selected participant (LAST ONE WHO MESSEGED xD)
+        for(let i = 0; i < page.participants.length; i++) {
+            if(page.participants[i].userID == page.selectedTalker) {
+                var tmp = page.participants[0]
+                page.participants[0] = page.participants[i]
+                page.participants[i] = tmp
+            }
+        }
 
-    for(let i = 0; i < page.participants[selected].length; i++)
-        selectors += "<option value='"+selected+ "," +page.participants[selected][i].userID+"'>@ "+page.participants[selected][i].name+"</option>"
-    selectors += "</select>"
-    document.getElementById('option_selectors').innerHTML = selectors
 
+        for(let i = 0; i < page.participants.length; i++)
+            selectors += "<option value='"+page.participants[i].service+","+page.participants[i].userID+"'>("+page.participants[i].service+") @ " + page.participants[i].name +"</option>"
+        selectors += "</select>"
+        updateSender(page.participants[0].service + ',' + page.participants[0].userID)
+        document.getElementById('option_selectors').innerHTML = selectors
+    }
 }
+
+    // var selected = 'facebook'
+    // if(select)
+    //     selected = select.value
+
+
+
+    // var selectors = "<select class='feature1 btn waves-effect waves-light' style='width:125px; opacity:1;pointer-events: all;' onchange='updateSelectors(this)'>"
+    // if(selected == 'facebook') {
+    //     if('facebook' in page.participants)
+    //         selectors += "<option value='facebook'>Facebook</option>"
+    //     if('skype' in page.participants)
+    //         selectors += "<option value='skype'>Skype</option>"
+    // } else {
+    //     if('skype' in page.participants)
+    //         selectors += "<option value='skype'>Skype</option>"
+    //     if('facebook' in page.participants)
+    //         selectors += "<option value='facebook'>Facebook</option>"
+    // }
+        
+    // selectors += "</select><select class='feature2 btn waves-effect waves-light' style='width:148px; opacity:1;pointer-events: all;' onchange='updateSender(this.value, \""+selected+"\")'>"
+    // if(page.participants[selected].length > 0)
+    //     updateSender(selected + "," +page.participants[selected][0].userID)
+
+    // for(let i = 0; i < page.participants[selected].length; i++)
+    //     selectors += "<option value='"+selected+ "," +page.participants[selected][i].userID+"'>@ "+page.participants[selected][i].name+"</option>"
+    // selectors += "</select>"
+
+
+// }
