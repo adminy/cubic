@@ -5,6 +5,9 @@ This project creates a server with the ability to do both facebook and skype mes
 ### TO run
 
 `cd code`
+
+
+
 `node server.js`
 
 make sure you have a mysql database.
